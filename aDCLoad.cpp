@@ -1,30 +1,30 @@
-/*
-
-  Copyright (C) 2014  Lee Wiggins <lee@wigweb.com.au>
-                      F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
-
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  as published by the Free Software Foundation; either version 2
-  of the License, or (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
 /**
-******************************************************************************************************
-*****************                         BIG FAT WARNING                         ********************
-*****************                 Should be compiled with -Os flag                ********************
-****************                     (use the included Makefile)                  ********************
-******************************************************************************************************
-******************************************************************************************************
-**/
+ *
+ * \copyright Copyright (C) 2014  Lee Wiggins <lee@wigweb.com.au>
+ *  \copyright Copyright (C) 2014  F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
+ *
+ * \license
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.<br><br>
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.<br><br>
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+/**
+ *
+ * \note
+<h1><center> BIG FAT WARNING </center></h1>
+<center>Should be compiled with  <b> "-Os" </b> flag.</center>
+<center>Bootloader <b><span style="text-decoration:underline;color:red;">couldn't</span></b> be flashed, <b>ISP programming ONLY</b></center>
+<center> -=- use <i>Code::Blocks</i> or the included <i>Makefile</i> to compile -=- </center>
+*/
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 #include <LiquidCrystal.h>
@@ -35,7 +35,14 @@
 
 #include "aDCLoad.h"
 
+/** \file aDCLoad.cpp
+    \author Lee Wiggins <lee@wigweb.com.au>
+    \author F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
+*/
 
+/** \brief Glyphs definition
+ *
+ */
 static const uint8_t _glyphs[8][8] PROGMEM =
 {
     { // . ..1
@@ -127,10 +134,23 @@ static const uint8_t _glyphs[8][8] PROGMEM =
 #if 1
 void serialPrint(unsigned long, int = DEC);
 
+/** \brief Serial printing
+ *
+ * \param c char
+ * \return void
+ *
+ */
 void serialWrite(char c)
 {
     Serial.print(c);
 }
+
+/** \brief Serial printing
+ *
+ * \param ifsh const __FlashStringHelper*
+ * \return void
+ *
+ */
 void serialPrint(const __FlashStringHelper *ifsh)
 {
     const char *__attribute__((progmem)) p = (const char * ) ifsh;
@@ -142,37 +162,96 @@ void serialPrint(const __FlashStringHelper *ifsh)
         serialWrite(c);
     }
 }
+
+/** \brief Serial printing
+ *
+ * \param c char
+ * \return void
+ *
+ */
 void serialPrint(char c)
 {
     serialWrite(c);
 }
+
+/** \brief Serial printing
+ *
+ * \param n int
+ * \param base int16_t
+ * \return void
+ *
+ */
 void serialPrint(int n, int16_t base = DEC)
 {
    serialPrint((unsigned long) n, base);
 }
-void serialPrintln(void)
+
+/** \brief Serial printing
+ *
+ * \return void
+ *
+ */
+void serialPrintln()
 {
     serialPrint('\r');
     serialPrint('\n');
 }
+
+/** \brief Serial printing
+ *
+ * \param n unsigned long
+ * \param base int
+ * \return void
+ *
+ */
 void serialPrint(unsigned long n, int base)
 {
     Serial.print(n, base);
 }
+
+/** \brief Serial printing
+ *
+ * \param n double
+ * \param digits int
+ * \return void
+ *
+ */
 void serialPrint(double n, int digits)
 {
     Serial.print(n, digits);
 }
+
+/** \brief Serial printing
+ *
+ * \param n double
+ * \param digits int
+ * \return void
+ *
+ */
 void serialPrintln(double n, int digits)
 {
     Serial.print(n, digits);
     serialPrintln();
 }
+
+/** \brief Serial printing
+ *
+ * \param ifsh const __FlashStringHelper*
+ * \return void
+ *
+ */
 void serialPrintln(const __FlashStringHelper *ifsh)
 {
     serialPrint(ifsh);
     serialPrintln();
 }
+
+/** \brief Serial printing
+ *
+ * \param c char
+ * \return void
+ *
+ */
 void serialPrintln(char c)
 {
     serialWrite(c);
@@ -199,6 +278,14 @@ int8_t getNumericalLength(uint16_t n)
 /**
 *** Our float to string format function
 **/
+
+/** \brief Get float string length, according to decimal man length
+ *
+ * \param n float : <b> Float number to analyse </b>
+ * \param dLen uint8_t : <b> decimal max length (3 as default) </b>
+ * \return int8_t
+ *
+ */
 int8_t getNumericalLength(float n, uint8_t dLen = 3)
 {
     char buf[32];
@@ -214,23 +301,37 @@ int8_t getNumericalLength(float n, uint8_t dLen = 3)
 /**
 *** Our float rounding function
 **/
+/** \brief Float number rounding, extensively used
+ *
+ * \param f float : <b> Float to rounding </b>
+ * \param p float : <b> Precision </b>
+ * \return float
+ *
+ */
 float floatRounding(float f, float p = 0.001f)
 {
 	return (floor(f * (1.0f / p) + 0.5) / (1.0f / p));
 }
 
-/**
-*** Macro used in aDCSettings class setters (some of them)
-**/
-#define RETURN_IF_INVALID(type, value) \
-    do { \
-        if (value < 0) \
+/** \brief Macro used for checking "value" boundaries, using "type"_MAXIMUM constant. Returns SETTING_UNDERSIZED or SETTING_OVERSIZED if "value" is out of boundaries.
+ *
+ * Macro used in aDCSettings class setters (some of them)
+ *
+ * \param type : <b> CURRENT, VOLTAGE or POWER </b>
+ * \param value : <b> value to check </b>
+ *
+ */
+#define RETURN_IF_INVALID(type, value)\
+    do {\
+        if (value < 0)\
             return SETTING_UNDERSIZED;\
         else if (value > type ## _MAXIMUM)\
             return SETTING_OVERSIZED;\
     } while(0)
 
 
+/** \brief Constructor
+ */
 aDCSettings::aDCSettings() :
 #ifdef SIMU
                     m_readVoltage(24.000),
@@ -259,55 +360,118 @@ aDCSettings::aDCSettings() :
     _eepromRestore();
 }
 
+/** \brief Destructor
+ */
 aDCSettings::~aDCSettings()
 {
 }
 
 // Voltage
+/** \brief Voltage setter
+ *
+ * \param v float : <b> voltage </b>
+ * \return aDCSettings::SettingError
+ *
+ */
 aDCSettings::SettingError aDCSettings::setVoltageRead(float v)
 {
     RETURN_IF_INVALID(VOLTAGE, v);
     m_readVoltage =  v;
     return SETTING_VALID;
 }
+
+/** \brief Voltage getter
+ *
+ * \return float : <b> voltage </b>
+ *
+ */
 float aDCSettings::getVoltageRead()
 {
     return m_readVoltage;
 }
+
+/** \brief Synchronize displayed voltage with readed voltage values
+ *
+ * \return void
+ *
+ */
 void aDCSettings::syncVoltageDisp()
 {
     m_dispVoltage = m_readVoltage;
 }
+
+/** \brief Check if readed voltage is already displayed on the LCD
+ *
+ * \return bool : <b> true is voltage has been already displayed </b>
+ *
+ */
 bool aDCSettings::isVoltageAlreadyDisplayed()
 {
     return (_isEqual(m_readVoltage, m_dispVoltage));
 }
 
 // Current
+/** \brief Current setting setter
+ *
+ * \param v float : <b> Current </b>
+ * \return aDCSettings::SettingError
+ *
+ */
 aDCSettings::SettingError aDCSettings::setCurrentSets(float v)
 {
     RETURN_IF_INVALID(CURRENT, v);
     m_setsCurrent = v;
     return SETTING_VALID;
 }
+
+/** \brief Current setting getter
+ *
+ * \return float : <b> Current </b>
+ *
+ */
 float aDCSettings::getCurrentSets()
 {
     return m_setsCurrent;
 }
+
+/** \brief Current readed setter
+ *
+ * \param v float : <b> Current </b>
+ * \return aDCSettings::SettingError
+ *
+ */
 aDCSettings::SettingError aDCSettings::setCurrentRead(float v)
 {
     RETURN_IF_INVALID(CURRENT, v);
     m_readCurrent = v;
     return SETTING_VALID;
 }
+
+/** \brief Current readed getter
+ *
+ * \return float : <b> Current </b>
+ *
+ */
 float aDCSettings::getCurrentRead()
 {
     return m_readCurrent;
 }
+
+/** \brief Synchronize readed Current with displayed Current
+ *
+ * \return void
+ *
+ */
 void aDCSettings::syncCurrentDisp()
 {
     m_dispCurrent = (m_operationMode == OPERATION_READ) ? m_readCurrent : m_setsCurrent;
 }
+
+/** \brief Check if Current is already displayed on the LCD
+ *
+ * \return bool
+ *
+ */
 bool aDCSettings::isCurrentAlreadyDisplayed()
 {
     return (_isEqual((m_operationMode == OPERATION_READ) ? m_readCurrent : m_setsCurrent, m_dispCurrent));
@@ -315,63 +479,144 @@ bool aDCSettings::isCurrentAlreadyDisplayed()
 
 #ifdef RESISTANCE
 // Resistance
+/** \brief Resistance setting setter
+ *
+ * \param v float : <b> Resistance </b>
+ * \return aDCSettings::SettingError
+ *
+ */
 aDCSettings::SettingError aDCSettings::setResistanceSets(float v)
 {
     RETURN_IF_INVALID(RESISTANCE, v);
     m_setsResistance = v;
     return SETTING_VALID;
 }
+
+/** \brief Resistance setting getter
+ *
+ * \return float : <b> Resistance </b>
+ *
+ */
 float aDCSettings::getResistanceSets()
 {
     return m_setsResistance;
 }
+
+/** \brief Resistance readed (computed) setter
+ *
+ * \param v float : <b> Resistance </b>
+ * \return void
+ *
+ */
 void aDCSettings::setResistanceRead(float v)
 {
     m_readResistance = v;
 }
+
+/** \brief Resistance readed (computed) getter
+ *
+ * \return float : <b> Resistance </b>
+ *
+ */
 float aDCSettings::getResistanceRead()
 {
     return m_readResistance;
 }
+
+/** \brief Synchronize displayed Resistance with displayed Resistance
+ *
+ * \return void
+ *
+ */
 void aDCSettings::syncResistanceDisp()
 {
     m_dispResistance = (m_operationMode == OPERATION_READ) ? m_readResistance : m_setsResistance;
 }
+
+/** \brief Check if readed Resistance is already displayed on the LCD
+ *
+ * \return bool
+ *
+ */
 bool aDCSettings::isResistanceAlreadyDisplayed()
 {
     return (_isEqual((m_operationMode == OPERATION_READ) ? m_readResistance :  m_setsResistance, m_dispResistance));
 }
 #endif
 // Power
+/** \brief Power setting setter
+ *
+ * \param v float : <b> Power </b>
+ * \return aDCSettings::SettingError
+ *
+ */
 aDCSettings::SettingError aDCSettings::setPowerSets(float v)
 {
     RETURN_IF_INVALID(POWER, v);
     m_setsPower = v;
     return SETTING_VALID;
 }
+
+/** \brief Power setting getter
+ *
+ * \return float : <b> Power </b>
+ *
+ */
 float aDCSettings::getPowerSets()
 {
     return m_setsPower;
 }
+
+/** \brief Power readed setter
+ *
+ * \param v float
+ * \return aDCSettings::SettingError
+ *
+ */
 aDCSettings::SettingError aDCSettings::setPowerRead(float v)
 {
     RETURN_IF_INVALID(POWER, v);
     m_readPower = v;
     return SETTING_VALID;
 }
+
+/** \brief Power readed getter
+ *
+ * \return float : <b> Power </b>
+ *
+ */
 float aDCSettings::getPowerRead()
 {
     return m_readPower;
 }
+
+/** \brief Synchronize displayed Power value on the LCD
+ *
+ * \return void
+ *
+ */
 void aDCSettings::syncPowerDisp()
 {
     m_dispPower = (m_operationMode == OPERATION_READ) ? m_readPower : m_setsPower;
 }
+
+/** \brief Check if Power is already displayed on the LCD
+ *
+ * \return bool
+ *
+ */
 bool aDCSettings::isPowerAlreadyDisplayed()
 {
     return (_isEqual((m_operationMode == OPERATION_READ) ? m_readPower : m_setsPower, m_dispPower));
 }
 
+/** \brief Update values setting (Current, Resistance, Power) according to selection mode. Sanity checking is also performed.
+ *
+ * \param v float : <b> updated value </b>
+ * \param mode SelectionMode : <b> selection mode (CURRENT, RESISTANCE, POWER) </b>
+ * \return void
+ *
+ */
 void aDCSettings::updateValuesFromMode(float v, SelectionMode mode)
 {
     switch (mode)
@@ -492,43 +737,98 @@ void aDCSettings::updateValuesFromMode(float v, SelectionMode mode)
 }
 
 // Temperature
+/** \brief Temperature readed setter
+ *
+ * \param v uint8_t : <b> Temperature </b>
+ * \return void
+ *
+ */
 void aDCSettings::setTemperatureRead(uint8_t v)
 {
     m_readTemperature = v;
 }
+
+/** \brief Temperature readed getter
+ *
+ * \return uint8_t : <b> Temperature </b>
+ *
+ */
 uint8_t aDCSettings::getTemperatureRead()
 {
     return m_readTemperature;
 }
+
+/** \brief Synchronize displayed temperature with readed one.
+ *
+ * \return void
+ *
+ */
 void aDCSettings::syncTemperatureDisp()
 {
     m_dispTemperature = m_readTemperature;
 }
+
+/** \brief Check if displayed temperature match the displayed one.
+ *
+ * \return bool
+ *
+ */
 bool aDCSettings::isTemperatureAlreadyDisplayed()
 {
     return (_isEqual(static_cast<float>(m_readTemperature), static_cast<float>(m_dispTemperature)));
 }
 
 // Fan
+/** \brief Fan speed setter
+ *
+ * \param v uint16_t : <b> DAC speed value </b>
+ * \return void
+ *
+ */
 void aDCSettings::setFanSpeed(uint16_t v)
 {
     m_fanSpeed = v;
 }
+
+/** \brief Fan speed getter
+ *
+ * \return uint16_t : <b> DAC speed value </b>
+ *
+ */
 uint16_t aDCSettings::getFanSpeed()
 {
     return m_fanSpeed;
 }
 
 // Selection Mode
+/** \brief Selection mode setter
+ *
+ * \param m SelectionMode : <b> new selection mode </b>
+ * \return void
+ *
+ */
 void aDCSettings::setSelectionMode(SelectionMode m)
 {
     m_prevMode = m_Mode;
     m_Mode = m;
 }
+
+/** \brief Selection mode getter
+ *
+ * \return SelectionMode : <b> current selection mode </b>
+ *
+ */
 SelectionMode aDCSettings::getSelectionMode()
 {
     return m_Mode;
 }
+
+/** \brief Get the next selection mode, according to "origin", if any provided.
+ *
+ * \param origin SelectionMode : <b> origin starter selection mode </b>
+ * \return SelectionMode : <b> next selection mode </b>
+ *
+ */
 SelectionMode aDCSettings::getNextMode(SelectionMode origin)
 {
     if (m_dispMode == DISPLAY_SETUP)
@@ -541,6 +841,13 @@ SelectionMode aDCSettings::getNextMode(SelectionMode origin)
 
     return SELECTION_CURRENT;
 }
+
+/** \brief Get the previous selection mode, according to "origin", if any provided.
+ *
+ * \param origin SelectionMode : <b> origin starter selection mode </b>
+ * \return SelectionMode : <b> previous selection mode </b>
+ *
+ */
 SelectionMode aDCSettings::getPrevMode(SelectionMode origin)
 {
     if (m_dispMode == DISPLAY_SETUP)
@@ -554,35 +861,76 @@ SelectionMode aDCSettings::getPrevMode(SelectionMode origin)
     return SELECTION_POWER;
 }
 
+/** \brief Synchronize previous selection mode with current selection mode
+ *
+ * \return void
+ *
+ */
 void aDCSettings::syncSelectionMode()
 {
     m_prevMode = m_Mode;
 }
+
+/** \brief Check if selection mode has been changed
+ *
+ * \return bool
+ *
+ */
 bool aDCSettings::isSelectionModeChanged()
 {
     return (!_isEqual(static_cast<float>(m_Mode), static_cast<float>(m_prevMode)));
 }
 
 // Display Mode
+/** \brief Display mode setter
+ *
+ * \param d DisplayMode : <b> display mode </b>
+ * \return void
+ *
+ */
 void aDCSettings::setDisplayMode(DisplayMode d)
 {
     m_prevDispMode = m_dispMode;
     m_dispMode = d;
 }
+
+/** \brief Display mode getter
+ *
+ * \return DisplayMode : <b> Display mode </b>
+ *
+ */
 DisplayMode aDCSettings::getDisplayMode()
 {
     return m_dispMode;
 }
+
+/** \brief Synchronize previous display mode with current display one.
+ *
+ * \return void
+ *
+ */
 void aDCSettings::syncDisplayMode()
 {
     m_prevDispMode = m_dispMode;
 }
+
+/** \brief Check if display mode has been changed.
+ *
+ * \return bool
+ *
+ */
 bool aDCSettings::isDisplayModeChanged()
 {
     return (!_isEqual(static_cast<float>(m_dispMode), static_cast<float>(m_prevDispMode)));
 }
 
 // Encoder
+/** \brief Encoder position setter
+ *
+ * \param p int32_t : <b> encoder position </b>
+ * \return void
+ *
+ */
 void aDCSettings::setEncoderPosition(int32_t p)
 {
     m_prevEncoderPos = m_EncoderPos;
@@ -590,6 +938,13 @@ void aDCSettings::setEncoderPosition(int32_t p)
 
     pingAutolock();
 }
+
+/** \brief Increment stored encoder position by "p" (default = 1)
+ *
+ * \param p int32_t : <b> increment value, 1 by default </b>
+ * \return void
+ *
+ */
 void aDCSettings::incEncoderPosition(int32_t p)
 {
     m_prevEncoderPos = m_EncoderPos;
@@ -597,20 +952,44 @@ void aDCSettings::incEncoderPosition(int32_t p)
 
     pingAutolock();
 }
+
+/** \brief Encoder position getter
+ *
+ * \return int32_t : <b> encoder position </b>
+ *
+ */
 int32_t aDCSettings::getEncoderPosition()
 {
     return m_EncoderPos;
 }
+
+/** \brief Synchronize previous encoder position with current one.
+ *
+ * \return void
+ *
+ */
 void aDCSettings::syncEncoderPosition()
 {
     m_prevEncoderPos = m_EncoderPos;
 }
+
+/** \brief Check if encoder position has been changed.
+ *
+ * \return bool
+ *
+ */
 bool aDCSettings::isEncoderPositionChanged()
 {
     return (!_isEqual(m_EncoderPos, m_prevEncoderPos));
 }
 
 // Operation Mode
+/** \brief Operation mode setter
+ *
+ * \param m OperationMode : <b> new operation mode </b>
+ * \return void
+ *
+ */
 void aDCSettings::setOperationMode(OperationMode m)
 {
     m_prevOperationMode = m_operationMode;
@@ -621,10 +1000,22 @@ void aDCSettings::setOperationMode(OperationMode m)
     else
         m_operationTick = 0;
 }
+
+/** \brief Operation mode getter
+ *
+ * \return OperationMode : <b> operation mode </b>
+ *
+ */
 OperationMode aDCSettings::getOperationMode()
 {
     return m_operationMode;
 }
+
+/** \brief Automatic timeouted toggle between OPERATION_SET and OPERATION_READ
+ *
+ * \return void
+ *
+ */
 void aDCSettings::updateOperationMode()
 {
     if (m_operationMode == OPERATION_SET)
@@ -636,25 +1027,54 @@ void aDCSettings::updateOperationMode()
         }
     }
 }
+
+/** \brief Reset timeout while in OPERATION_SET mode
+ *
+ * \return void
+ *
+ */
 void aDCSettings::pingOperationMode()
 {
     if (m_operationMode == OPERATION_SET)
         m_operationTick = millis();
 }
+
+/** \brief Check if Operation mode has been changed
+ *
+ * \return bool
+ *
+ */
 bool aDCSettings::isOperationModeChanged()
 {
     return (m_operationMode != m_prevOperationMode);
 }
+
+/** \brief Synchronize previous operation mode and current one.
+ *
+ * \return void
+ *
+ */
 void aDCSettings::syncOperationMode()
 {
     m_prevOperationMode = m_operationMode;
 }
 
 // Autolock
+/** \brief Reset autolock timeout
+ *
+ * \return void
+ *
+ */
 void aDCSettings::pingAutolock()
 {
     m_lockTick = millis();
 }
+
+/** \brief Check if autolock is enabled and performs.
+ *
+ * \return bool
+ *
+ */
 bool aDCSettings::isAutolocked()
 {
     if (!(m_features & FEATURE_AUTOLOCK))
@@ -670,6 +1090,13 @@ bool aDCSettings::isAutolocked()
 }
 
 // Features bitfield
+/** \brief Helper function to manage bit-field features
+ *
+ * \param feature uint16_t : <b> FEATURE to enable/disable </b>
+ * \param enable bool : <b> FEATURE enability (default = enable) </b>
+ * \return void
+ *
+ */
 void aDCSettings::enableFeature(uint16_t feature, bool enable)
 {
     if (enable)
@@ -681,16 +1108,37 @@ void aDCSettings::enableFeature(uint16_t feature, bool enable)
     if ((feature == FEATURE_AUTODIM) || (feature == FEATURE_AUTOLOCK))
         EEPROM.write(((feature == FEATURE_AUTODIM) ? EEPROM_ADDR_AUTODIM : EEPROM_ADDR_AUTOLOCK), (m_features & feature) ? 1 : 0);
 }
+
+/** \brief Check if FEATURE is enabled
+ *
+ * \param feature uint16_t : <b> FEATURE to check against </b>
+ * \return bool
+ *
+ */
 bool aDCSettings::isFeatureEnabled(uint16_t feature)
 {
     return (m_features & feature);
 }
 
+/** \brief Check if both float values are identical
+ *
+ * \param v1 float : <b> First value to compare with </b>
+ * \param v2 float : <b> Second value to compare with </b>
+ * \return bool : <b> true if equal, false otherwise </b>
+ *
+ */
 bool aDCSettings::_isEqual(float v1, float v2)
 {
     return (v1 == v2);
 }
 
+/** \brief Check if both int32_t values are identical
+ *
+ * \param v1 int32_t : <b> First value to compare with </b>
+ * \param v2 int32_t : <b> Second value to compare with </b>
+ * \return bool : <b> true if equal, false otherwise </b>
+ *
+ */
 bool aDCSettings::_isEqual(int32_t v1, int32_t v2)
 {
     return (v1 == v2);
@@ -701,6 +1149,12 @@ bool aDCSettings::_isEqual(int32_t v1, int32_t v2)
 //
 // Check magic numbers in EEPROM
 //
+/** \brief Check for EEPROM magic numbers
+ *
+ * \return bool
+ *
+ * Used to check if some data has already been wrote in the EEPROM.
+ */
 bool aDCSettings::_eepromCheckMagic()
 {
     return ((EEPROM.read(EEPROM_ADDR_MAGIC) == 0xD) && (EEPROM.read(EEPROM_ADDR_MAGIC + 1) == 0xE) &&
@@ -709,6 +1163,11 @@ bool aDCSettings::_eepromCheckMagic()
 //
 // Write magic numbers in EEPROM
 //
+/** \brief Write magic numbers into EEPROM
+ *
+ * \return void
+ *
+ */
 void aDCSettings::_eepromWriteMagic()
 {
     // Magic numbers
@@ -720,6 +1179,11 @@ void aDCSettings::_eepromWriteMagic()
 //
 // Reset config into EEPROM
 //
+/** \brief Reset all stored parameters into EEPROM
+ *
+ * \return void
+ *
+ */
 void aDCSettings::_eepromReset()
 {
     _eepromWriteMagic();
@@ -730,6 +1194,11 @@ void aDCSettings::_eepromReset()
 //
 // Restore config from EEPROM
 //
+/** \brief Restore value from EEPROM
+ *
+ * \return void
+ *
+ */
 void aDCSettings::_eepromRestore()
 {
     if (!_eepromCheckMagic())
@@ -739,13 +1208,23 @@ void aDCSettings::_eepromRestore()
     enableFeature(FEATURE_AUTOLOCK, (EEPROM.read(EEPROM_ADDR_AUTOLOCK) == 1));
 }
 
+/** \brief Constructor
+ */
 aStepper::aStepper() : m_inc(0), m_incPrev(255)
 {
 }
+
+/** \brief Destructor
+ */
 aStepper::~aStepper()
 {
 }
 
+/** \brief Increment value, check for boundaries.
+ *
+ * \return void
+ *
+ */
 void aStepper::incIncrement()
 {
     if((m_inc + 1) <= MAX_VALUE)
@@ -754,21 +1233,42 @@ void aStepper::incIncrement()
         m_inc = 0;
 }
 
+/** \brief Value getter
+ *
+ * \return uint8_t
+ *
+ */
 uint8_t aStepper::incGetValue()
 {
     return m_inc;
 }
 
+/** \brief Reset value
+ *
+ * \return void
+ *
+ */
 void aStepper::incReset()
 {
     m_inc = 0;
 }
 
+/** \brief Value getter, according to multiple.
+ *
+ * \return int16_t
+ *
+ */
 int16_t aStepper::incGetMult()
 {
     return (_pow(10, m_inc));
 }
 
+/** \brief Get value according to selection mode
+ *
+ * \param mode SelectionMode : <b> Selection mode </b>
+ * \return int16_t
+ *
+ */
 int16_t aStepper::incGetValueFromMode(SelectionMode mode)
 {
     switch (mode)
@@ -804,16 +1304,33 @@ int16_t aStepper::incGetValueFromMode(SelectionMode mode)
     return m_inc;
 }
 
+/** \brief Synchronize value
+ *
+ * \return bool
+ *
+ */
 bool aStepper::incIsSynced()
 {
     return (m_inc == m_incPrev);
 }
 
+/** \brief Check if value is synchronized
+ *
+ * \return void
+ *
+ */
 void aStepper::incSync()
 {
     m_incPrev = m_inc;
 }
 
+/** \brief Small implementation of pow() math function
+ *
+ * \param base int : <b> base radix </b>
+ * \param exp int : <b> exponent value </b>
+ * \return int16_t : <b> result </b>
+ *
+ */
 int16_t aStepper::_pow(int base, int exp)
 {
     if(exp < 0)
@@ -835,6 +1352,18 @@ int16_t aStepper::_pow(int base, int exp)
 /**
 *** LiquidDisplay extension
 **/
+/** \brief Constructor
+ *
+ * \param rs uint8_t : <b> LCD RS pin </b>
+ * \param enable uint8_t : <b> LCD ENABLE pin </b>
+ * \param d0 uint8_t : <b> LCD d0 pin </b>
+ * \param d1 uint8_t : <b> LCD d1 pin </b>
+ * \param d2 uint8_t : <b> LCD d2 pin </b>
+ * \param d3 uint8_t : <b> LCD d3 pin </b>
+ * \param cols uint8_t : <b> LCD columns number </b>
+ * \param rows uint8_t : <b> LCD rows number </b>
+ *
+ */
 aLCD::aLCD(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t cols, uint8_t rows) :
         LiquidCrystal(rs, enable, d0, d1, d2, d3),
         m_cols(0), m_rows(0), m_curCol(0), m_curRow(0)
@@ -842,10 +1371,19 @@ aLCD::aLCD(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8
     begin(cols, rows);
 }
 
+/** \brief Destructor
+ */
 aLCD::~aLCD()
 {
 }
 
+/** \brief Initialize LCD screen size
+ *
+ * \param cols uint8_t : <b> Columns </b>
+ * \param lines uint8_t : <b> Rows </b>
+ * \return void
+ *
+ */
 void aLCD::begin(uint8_t cols, uint8_t lines)
 {
     m_cols = cols;
@@ -853,6 +1391,13 @@ void aLCD::begin(uint8_t cols, uint8_t lines)
     LiquidCrystal::begin(m_cols, m_rows);
 }
 
+/** \brief Set cursor positon
+ *
+ * \param col uint8_t : <b> Column </b>
+ * \param row uint8_t : <b> Row </b>
+ * \return void
+ *
+ */
 void aLCD::setCursor(uint8_t col, uint8_t row)
 {
     m_curCol = col;
@@ -860,6 +1405,12 @@ void aLCD::setCursor(uint8_t col, uint8_t row)
     LiquidCrystal::setCursor(col, row);
 }
 
+/** \brief Print centered string to current row
+ *
+ * \param str const char* : <b> String to display </b>
+ * \return void
+ *
+ */
 void aLCD::printCenter(const char *str)
 {
     if (str)
@@ -918,6 +1469,12 @@ void aLCD::printCenter(const char *str)
     }
 }
 
+/** \brief Print centered string to current row
+ *
+ * \param ifsh const __FlashStringHelper* : <b> string to display </b>
+ * \return void
+ *
+ */
 void aLCD::printCenter(const __FlashStringHelper *ifsh)
 {
     const char * __attribute__((progmem)) p = (const char *)ifsh;
@@ -952,6 +1509,12 @@ void aLCD::printCenter(const __FlashStringHelper *ifsh)
     printCenter(buf);
 }
 
+/** \brief Clear to end of line starting at given row
+ *
+ * \param row uint8_t : <b> Starting row </b>
+ * \return void
+ *
+ */
 void aLCD::clearLine(uint8_t row)
 {
     setCursor(0, row);
@@ -959,6 +1522,13 @@ void aLCD::clearLine(uint8_t row)
         LiquidCrystal::write(char(0x20));
 }
 
+/** \brief Clear displayed value, from given row, stopping at value end field - destMinus
+ *
+ * \param row uint8_t : <b> field row </b>
+ * \param destMinus int : <b> minus end field position (default = 0) </b>
+ * \return void
+ *
+ */
 void aLCD::clearValue(uint8_t row, int destMinus)
 {
     setCursor(OFFSET_VALUE, row);
@@ -969,16 +1539,36 @@ void aLCD::clearValue(uint8_t row, int destMinus)
 /**
 *** Class to manage display output
 **/
+/** \brief Constructor
+ *
+ * \param parent aDCEngine* : <b> Parent engine </b>
+ * \param rs uint8_t : <b> LCD RS pin </b>
+ * \param enable uint8_t : <b> LCD ENABLE pin </b>
+ * \param d0 uint8_t : <b> LCD d0 pin </b>
+ * \param d1 uint8_t : <b> LCD d1 pin </b>
+ * \param d2 uint8_t : <b> LCD d2 pin </b>
+ * \param d3 uint8_t : <b> LCD d3 pin </b>
+ * \param cols uint8_t : <b> LCD columns </b>
+ * \param rows uint8_t : <b> LCD rows </b>
+ *
+ */
 aDCDisplay::aDCDisplay(aDCEngine *parent, uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t cols, uint8_t rows) :
         aLCD(rs, enable, d0, d1, d2, d3, cols, rows),
         m_Parent(parent), m_dimmed(false), m_dimmerTick(0)
 {
 }
 
+/** \brief Destructor
+ */
 aDCDisplay::~aDCDisplay()
 {
 }
 
+/** \brief Setup function. Should be called before any other member.
+ *
+ * \return void
+ *
+ */
 void aDCDisplay::setup()
 {
     pinMode(LED_BACKLIGHT_PIN, OUTPUT);
@@ -997,6 +1587,11 @@ void aDCDisplay::setup()
     }
 }
 
+/** \brief Display small banner
+ *
+ * \return void
+ *
+ */
 void aDCDisplay::showBanner()
 {
     aLCD::clear();
@@ -1012,6 +1607,16 @@ void aDCDisplay::showBanner()
     delay(3000);
 }
 
+/** \brief Update displayed field according to operation mode
+ *
+ * \param opMode OperationMode : <b> Operation mode </b>
+ * \param vSet float : <b> Settings value </b>
+ * \param vRead float : <b> Readed value </b>
+ * \param row uint8_t : <b> LCD row position </b>
+ * \param unit uint8_t : <b> Unit character </b>
+ * \return void
+ *
+ */
 void aDCDisplay::updateField(OperationMode opMode, float vSet, float vRead, uint8_t row, uint8_t unit)
 {
     aLCD::clearValue(row);
@@ -1020,6 +1625,11 @@ void aDCDisplay::updateField(OperationMode opMode, float vSet, float vRead, uint
     aLCD::print(char(unit));
 }
 
+/** \brief Update LCD display management function
+ *
+ * \return void
+ *
+ */
 void aDCDisplay::updateDisplay()
 {
     aDCSettings    *d           = (aDCSettings *)m_Parent->_getSettings();
@@ -1274,6 +1884,12 @@ void aDCDisplay::updateDisplay()
         _dimmingBacklight();
 }
 
+/** \brief Dim/undim backlight helper function
+ *
+ * \param up bool : <b> dimmer direction </b>
+ * \return void
+ *
+ */
 void aDCDisplay::_dimBacklight(bool up)
 {
     uint16_t n = up ? 2 : 254;
@@ -1289,16 +1905,31 @@ void aDCDisplay::_dimBacklight(bool up)
     m_dimmed = (up ? false : true);
 }
 
+/** \brief Backlight dimming
+ *
+ * \return void
+ *
+ */
 void aDCDisplay::_dimmingBacklight()
 {
     _dimBacklight(false);
 }
 
+/** \brief Backlight waker
+ *
+ * \return void
+ *
+ */
 void aDCDisplay::_wakeupBacklight()
 {
     _dimBacklight(true);
 }
 
+/** \brief Reset backlight dimmer.
+ *
+ * \return void
+ *
+ */
 void aDCDisplay::pingBacklight()
 {
     m_dimmerTick = millis();
@@ -1307,6 +1938,11 @@ void aDCDisplay::pingBacklight()
         _wakeupBacklight();
 }
 
+/** \brief Check if backlight is dimmed
+ *
+ * \return bool
+ *
+ */
 bool aDCDisplay::isBacklightDimmed()
 {
     return m_dimmed;
@@ -1315,17 +1951,42 @@ bool aDCDisplay::isBacklightDimmed()
 /**
 *** Class to manage settings
 **/
+/** \brief
+ *
+ * \param rs uint8_t : <b> LCD RS pin </b>
+ * \param enable uint8_t : <b> LCD ENABLE pin </b>
+ * \param d0 uint8_t : <b> LCD d0 pin </b>
+ * \param d1 uint8_t : <b> LCD d1 pin </b>
+ * \param d2 uint8_t : <b> LCD d2 pin </b>
+ * \param d3 uint8_t : <b> LCD d3 pin </b>
+ * \param cols uint8_t : <b> LCD Columns number </b>
+ * \param rows uint8_t : <b> LCD Rows number </b>
+ * \param enca uint8_t : <b> Encoder A pin </b>
+ * \param encb uint8_t : <b> Encoder B pin </b>
+ * \param encpb uint8_t : <b> Encoder push button bin </b>
+ * \param encsteps uint8_t : <b> Encoder steps per notch </b>
+ *
+ */
 aDCEngine::aDCEngine(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t cols, uint8_t rows,
-                     uint8_t enca, uint8_t encb, uint8_t encpb, uint8_t encsteps) : aDCDisplay(this, rs, enable, d0, d1, d2, d3, cols, rows),
-                    m_encoder(new ClickEncoder(enca, encb, encpb, encsteps)), m_RXoffset(0)
+                     uint8_t enca, uint8_t encb, uint8_t encpb, uint8_t encsteps)
+                     : aDCDisplay(this, rs, enable, d0, d1, d2, d3, cols, rows),
+                       m_encoder(new ClickEncoder(enca, encb, encpb, encsteps)),
+                       m_RXoffset(0)
 {
     memset(&m_RXbuffer, '\0', sizeof(m_RXbuffer));
 }
 
+/** \brief Destructor
+ */
 aDCEngine::~aDCEngine()
 {
 }
 
+/** \brief Check and handle remote control and data logging
+ *
+ * \return void
+ *
+ */
 void aDCEngine::_updateLoggingAndRemote()
 {
     if (Serial)
@@ -1540,6 +2201,12 @@ void aDCEngine::_updateLoggingAndRemote()
     }
 }
 
+/** \brief Setup function, should be called before any other member
+ *
+ * \param isr ISRCallback : <b> callback function pointer that may call service() </b>
+ * \return void
+ *
+ */
 void aDCEngine::setup(ISRCallback isr)
 {
     // set outputs:
@@ -1575,6 +2242,11 @@ void aDCEngine::setup(ISRCallback isr)
     }
 }
 
+/** \brief Main loop function.
+ *
+ * \return void
+ *
+ */
 void aDCEngine::run()
 {
     m_Data.pingAutolock();
@@ -1738,6 +2410,12 @@ void aDCEngine::run()
     }
 }
 
+/** \brief Function that handles button clicking
+ *
+ * \param button ClickEncoder::Button
+ * \return void
+ *
+ */
 void aDCEngine::_handleButtonEvent(ClickEncoder::Button button)
 {
     switch (m_Data.getDisplayMode())
@@ -1805,17 +2483,21 @@ void aDCEngine::_handleButtonEvent(ClickEncoder::Button button)
     }
 }
 
-/**
-***
-**/
+/** \brief Caller callback function that manages encoder clicking and so on.
+ *
+ * \return void
+ *
+ */
 void aDCEngine::service()
 {
     m_encoder->service();
 }
 
-/**
-*** Function to read the input voltage and return a float number represention volts.
-**/
+/** \brief Function to read the input voltage and return a float number represention volts.
+ *
+ * \return float : <b> readed input voltage </b>
+ *
+ */
 float aDCEngine::_readInputVoltage()
 {
 #ifdef SIMU
@@ -1826,9 +2508,11 @@ float aDCEngine::_readInputVoltage()
     return (v < 0.018 ? 0 : v);
 }
 
-/**
-*** Function to measure the actual load current.
-**/
+/** \brief Function to measure the actual load current.
+ *
+ * \return float : <b> readed current </b>
+ *
+ */
 float aDCEngine::_readMeasuredCurrent()
 {
 #ifdef SIMU
@@ -1837,10 +2521,12 @@ float aDCEngine::_readMeasuredCurrent()
     return ((_readADC(ADC_MEASUREDCURRENT_CHAN)) / 0.1000);
 #endif // SIMU
 }
-/**
-*** Function to calculate and set the required load current. Accepts the mode variable to determine if the constant current,
-*** resistance or power mode is to be used.
-**/
+
+/** \brief Function to calculate and set the required load current. Accepts the mode variable to determine if the constant current, resistance or power mode is to be used.
+ *
+ * \return void
+ *
+ */
 void aDCEngine::_updateLoadCurrent()
 {
     if ((m_Data.getDisplayMode() == DISPLAY_VALUES) && m_Data.isEncoderPositionChanged())
@@ -1882,7 +2568,12 @@ void aDCEngine::_updateLoadCurrent()
             break;
     }
 }
-#warning check if currentread <= currentset
+
+/** \brief Adjust current settings
+ *
+ * \return void
+ *
+ */
 void aDCEngine::_adjustCurrent()
 {
     float roundedMeasuredCurrent = round(m_Data.getCurrentRead() * 1000) / 1000.000; // This the best way I can think of rounding a floating
@@ -1932,9 +2623,12 @@ void aDCEngine::_adjustCurrent()
     }
 }
 
-/**
-*** Function to read the ADC, accepts the channel to be read.
-**/
+/** \brief Function to read the ADC, accepts the channel to be read.
+ *
+ * \param channel uint8_t : <b> ADC channel </b>
+ * \return float : <b> readed value </b>
+ *
+ */
 float aDCEngine::_readADC(uint8_t channel)
 {
     uint8_t adcPrimaryRegister = 0b00000110;    // Sets default Primary ADC Address register B00000110, This is a default address
@@ -1970,9 +2664,13 @@ float aDCEngine::_readADC(uint8_t channel)
     return ((float(digitalValue) * 2.048) / 4096.000); // The digital value is converted to an analogue voltage using a VREF of 2.048V.
 }
 
-/**
-*** Function to set the DAC, Accepts the Value to be sent and the channel of the DAC to be used.
-**/
+/** \brief Function to set the DAC, Accepts the Value to be sent and the channel of the DAC to be used.
+ *
+ * \param value uint16_t : <b> value to send to DAC </b>
+ * \param channel uint8_t : <b> DAC channel </b>
+ * \return void
+ *
+ */
 void aDCEngine::_setDAC(uint16_t value, uint8_t channel)
 {
     uint8_t dacRegister = 0b00110000;   // Sets default DAC registers B00110000, 1st bit choses DAC, A=0 B=1, 2nd Bit bypasses input
@@ -2008,9 +2706,11 @@ void aDCEngine::_setDAC(uint16_t value, uint8_t channel)
     interrupts(); // Enable interupts
 }
 
-/**
-*** Function to read heat sink temp
-**/
+/** \brief Function that read temperature from ADC channels.
+ *
+ * \return int8_t : <b> temperature </b>
+ *
+ */
 int8_t aDCEngine::_readTemp()
 {
 #ifdef SIMU
@@ -2025,9 +2725,11 @@ int8_t aDCEngine::_readTemp()
 #endif // SIMU
 }
 
-/**
-*** Function to set the fan speed depending on the heatsink temprature.
-**/
+/** \brief Function to set the fan speed depending on the heatsink temperature.
+ *
+ * \return void
+ *
+ */
 void aDCEngine::_updateFanSpeed()
 {
     m_Data.setTemperatureRead(_readTemp());
@@ -2061,6 +2763,11 @@ void aDCEngine::_updateFanSpeed()
     }
 }
 
+/** \brief Return a pointer to settings instancied class
+ *
+ * \return const aDCSettings*
+ *
+ */
 const aDCSettings *aDCEngine::_getSettings() const
 {
     return &m_Data;
