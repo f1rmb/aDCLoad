@@ -44,6 +44,14 @@ To - Dos
 
 */
 
+/**
+ *                            !!!!! BIG FAT WARNING !!!!!
+ *                        Should be compiled with "-Os" flag.
+ *                Bootloader couldn't be flashed, ISP programming ONLY
+ *            -=- use Code::Blocks or the included Makefile to compile -=-
+ *
+**/
+
 aDCEngine engine(LCD_RS_PIN, LCD_ENABLE_PIN, LCD_D0_PIN, LCD_D1_PIN, LCD_D2_PIN, LCD_D3_PIN, LCD_COLS_NUM, LCD_ROWS_NUM,
                  ENCODER_A_PIN, ENCODER_B_PIN, ENCODER_PB_PIN, ENCODER_STEPS_PER_NOTCH);
 

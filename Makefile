@@ -1031,6 +1031,8 @@ clean:
 	  $(notdir $(ALLOBJ:%.o=%.s) $(ALLOBJ:%.o=%.i) $(ALLOBJ:%.o=%.ii))
 	-test ! -d $(OUTPUT) || $(RMDIR) $(OUTPUT)
 
+distclean:
+	$(RM) -r .objs/ bin/ *.save *~
 
 ### Dependencies file and source path.
 
