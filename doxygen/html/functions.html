@@ -77,18 +77,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li class="current"><a href="functions.html"><span>All</span></a></li>
       <li><a href="functions_func.html"><span>Functions</span></a></li>
+      <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_enum.html"><span>Enumerations</span></a></li>
       <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
+      <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
+      <li><a href="#index__"><span>_</span></a></li>
       <li><a href="#index_a"><span>a</span></a></li>
       <li><a href="#index_b"><span>b</span></a></li>
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
+      <li><a href="#index_m"><span>m</span></a></li>
       <li><a href="#index_p"><span>p</span></a></li>
       <li><a href="#index_r"><span>r</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
@@ -116,7 +120,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -126,11 +130,76 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
+<div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
+
+<h3><a class="anchor" id="index__"></a>- _ -</h3><ul>
+<li>_adjustCurrent()
+: <a class="el" href="classa_d_c_engine.html#ab54dedf4bf882ad475d93105920c5727">aDCEngine</a>
+</li>
+<li>_dimBacklight()
+: <a class="el" href="classa_d_c_display.html#ad39861bb66d8a5d2bc75c8b2c0321633">aDCDisplay</a>
+</li>
+<li>_dimmingBacklight()
+: <a class="el" href="classa_d_c_display.html#a13b29ea2db8545c09ff30627e046fbaf">aDCDisplay</a>
+</li>
+<li>_eepromCheckMagic()
+: <a class="el" href="classa_d_c_settings.html#a6c8529324c6f366d1a7e4ea23a2de899">aDCSettings</a>
+</li>
+<li>_eepromReset()
+: <a class="el" href="classa_d_c_settings.html#a963c34042edfed7f02f46306210499b4">aDCSettings</a>
+</li>
+<li>_eepromRestore()
+: <a class="el" href="classa_d_c_settings.html#af8f9eef3cea0253690809962811ce762">aDCSettings</a>
+</li>
+<li>_eepromWriteMagic()
+: <a class="el" href="classa_d_c_settings.html#a92c9862a96c30d25ceb5bc5e70106ee3">aDCSettings</a>
+</li>
+<li>_getSettings()
+: <a class="el" href="classa_d_c_engine.html#aee524ec75d3b2f85a0b54f40162c7fd2">aDCEngine</a>
+</li>
+<li>_handleButtonEvent()
+: <a class="el" href="classa_d_c_engine.html#a5f4a57bd54020fb3a06d5ea0cfd12d1e">aDCEngine</a>
+</li>
+<li>_isEqual()
+: <a class="el" href="classa_d_c_settings.html#ae06064b3e052aa6087b53cc4c14c2db8">aDCSettings</a>
+</li>
+<li>_pow()
+: <a class="el" href="classa_stepper.html#a15f227d117dffbbd09d887f51bd887d2">aStepper</a>
+</li>
+<li>_readADC()
+: <a class="el" href="classa_d_c_engine.html#ab8c7e1899e9951143346430cb90df792">aDCEngine</a>
+</li>
+<li>_readInputVoltage()
+: <a class="el" href="classa_d_c_engine.html#a50794fe28311b90226616b5c29573329">aDCEngine</a>
+</li>
+<li>_readMeasuredCurrent()
+: <a class="el" href="classa_d_c_engine.html#ab7557a6f8cd0521b9e00a909880bfb0c">aDCEngine</a>
+</li>
+<li>_readTemp()
+: <a class="el" href="classa_d_c_engine.html#a0ed3c8eb9efa4879cf4108dbdc0dc998">aDCEngine</a>
+</li>
+<li>_setDAC()
+: <a class="el" href="classa_d_c_engine.html#a3af2b0f8e9d600604b8690f788771891">aDCEngine</a>
+</li>
+<li>_updateFanSpeed()
+: <a class="el" href="classa_d_c_engine.html#a9dcf5e9eaa29e367460ac6f097f5b247">aDCEngine</a>
+</li>
+<li>_updateLoadCurrent()
+: <a class="el" href="classa_d_c_engine.html#a2121ae3e74152f2b728e8af6ba928057">aDCEngine</a>
+</li>
+<li>_updateLoggingAndRemote()
+: <a class="el" href="classa_d_c_engine.html#aaaaf3fca7867e8bce32caf30106540ff">aDCEngine</a>
+</li>
+<li>_wakeupBacklight()
+: <a class="el" href="classa_d_c_display.html#a4d58b2a62cacf405d07ae3fcda746e40">aDCDisplay</a>
+</li>
+</ul>
+
 
 <h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
-<li>aDCDisplay()
-: <a class="el" href="classa_d_c_display.html#a2bce6ec33d7002f0332b5c27b965d5d1">aDCDisplay</a>
+<li>aDCDisplay
+: <a class="el" href="classa_d_c_engine.html#a6a9dcdceefd92057e7280ac95cc96803">aDCEngine</a>
+, <a class="el" href="classa_d_c_display.html#a2bce6ec33d7002f0332b5c27b965d5d1">aDCDisplay</a>
 </li>
 <li>aDCEngine()
 : <a class="el" href="classa_d_c_engine.html#a0a434100a3a9638155f0bda3eff6bcee">aDCEngine</a>
@@ -280,6 +349,127 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>isVoltageAlreadyDisplayed()
 : <a class="el" href="classa_d_c_settings.html#a2c58d983740e59f7499ec780c6c1367e">aDCSettings</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
+<li>m_cols
+: <a class="el" href="classa_l_c_d.html#acc5e1b9602a2b327900e4287439954dd">aLCD</a>
+</li>
+<li>m_curCol
+: <a class="el" href="classa_l_c_d.html#a490136acbf068046e3c12bb449ed37f8">aLCD</a>
+</li>
+<li>m_curRow
+: <a class="el" href="classa_l_c_d.html#ae90c3d36cae7b58e9cba0b398daf036f">aLCD</a>
+</li>
+<li>m_Data
+: <a class="el" href="classa_d_c_engine.html#a25414c5108fbbc0a07d82e0ff82d93d8">aDCEngine</a>
+</li>
+<li>m_dimmed
+: <a class="el" href="classa_d_c_display.html#ac5ddd818997246eddfb6bb5c7615ddc7">aDCDisplay</a>
+</li>
+<li>m_dimmerTick
+: <a class="el" href="classa_d_c_display.html#a95be909f701379556b674c0866f2d9b4">aDCDisplay</a>
+</li>
+<li>m_dispCurrent
+: <a class="el" href="classa_d_c_settings.html#a4d36f126c4ef69e4f3ba074597ba8882">aDCSettings</a>
+</li>
+<li>m_dispMode
+: <a class="el" href="classa_d_c_settings.html#a7bd62474a10a71d4338a633120ca39c6">aDCSettings</a>
+</li>
+<li>m_dispPower
+: <a class="el" href="classa_d_c_settings.html#a93e33b72d35ea02ffa1432b0c90dad38">aDCSettings</a>
+</li>
+<li>m_dispResistance
+: <a class="el" href="classa_d_c_settings.html#ac8a76c02f31f814d4cf57696147d7be8">aDCSettings</a>
+</li>
+<li>m_dispTemperature
+: <a class="el" href="classa_d_c_settings.html#a4530d48cf109fd0045070059acd522c2">aDCSettings</a>
+</li>
+<li>m_dispVoltage
+: <a class="el" href="classa_d_c_settings.html#ab500cde07e807f38b5722e3f411f4c23">aDCSettings</a>
+</li>
+<li>m_encoder
+: <a class="el" href="classa_d_c_engine.html#aab05581cd36bf6ebcee9626704cbca93">aDCEngine</a>
+</li>
+<li>m_EncoderPos
+: <a class="el" href="classa_d_c_settings.html#a69b1199756f96ca9adf4cdd81ee55c08">aDCSettings</a>
+</li>
+<li>m_fanSpeed
+: <a class="el" href="classa_d_c_settings.html#a622dc89404cf9a3bd44b5af12dbac537">aDCSettings</a>
+</li>
+<li>m_features
+: <a class="el" href="classa_d_c_settings.html#a3efcf48f4f8f262bfeebfb020f83835e">aDCSettings</a>
+</li>
+<li>m_inc
+: <a class="el" href="classa_stepper.html#ab5466f0968259a5895f9496783416f7a">aStepper</a>
+</li>
+<li>m_incPrev
+: <a class="el" href="classa_stepper.html#aa6204a14c91347d3f840ffe8baa5571e">aStepper</a>
+</li>
+<li>m_lockTick
+: <a class="el" href="classa_d_c_settings.html#ae1e5d811fa18bc2349c2bf007cd8df49">aDCSettings</a>
+</li>
+<li>m_Mode
+: <a class="el" href="classa_d_c_settings.html#a04d7c926d33ef2ddbb3bbba4c7a8e3c7">aDCSettings</a>
+</li>
+<li>m_operationMode
+: <a class="el" href="classa_d_c_settings.html#ad8f85a7d105bb5b977f32dfd77799bb6">aDCSettings</a>
+</li>
+<li>m_operationTick
+: <a class="el" href="classa_d_c_settings.html#a5e8db9cc2d318e1393d1049aa20843df">aDCSettings</a>
+</li>
+<li>m_Parent
+: <a class="el" href="classa_d_c_display.html#a285992a92161daa422701242a679d2b9">aDCDisplay</a>
+</li>
+<li>m_prevDispMode
+: <a class="el" href="classa_d_c_settings.html#a2ef203ccb5d1bcc4c5c55dfb0e113d8e">aDCSettings</a>
+</li>
+<li>m_prevEncoderPos
+: <a class="el" href="classa_d_c_settings.html#a3a53b8aaf7ff9f3cbab5e93f8e134995">aDCSettings</a>
+</li>
+<li>m_prevMode
+: <a class="el" href="classa_d_c_settings.html#a05d4186de87118190e9e4cb253486d0b">aDCSettings</a>
+</li>
+<li>m_prevOperationMode
+: <a class="el" href="classa_d_c_settings.html#a295c68bd492e494b1338aad2d6add182">aDCSettings</a>
+</li>
+<li>m_readCurrent
+: <a class="el" href="classa_d_c_settings.html#a52ff092b321102a5c8443bf0b1e9427a">aDCSettings</a>
+</li>
+<li>m_readPower
+: <a class="el" href="classa_d_c_settings.html#a2d6daca878d695657f4254e7175f88b1">aDCSettings</a>
+</li>
+<li>m_readResistance
+: <a class="el" href="classa_d_c_settings.html#abc4446da3936109515ec4aeb46b50135">aDCSettings</a>
+</li>
+<li>m_readTemperature
+: <a class="el" href="classa_d_c_settings.html#a9b4250be1e50110f30d8a5b271a2b3ca">aDCSettings</a>
+</li>
+<li>m_readVoltage
+: <a class="el" href="classa_d_c_settings.html#ad0f4f408e7dd2a6507d43adedc4b1a53">aDCSettings</a>
+</li>
+<li>m_rows
+: <a class="el" href="classa_l_c_d.html#a0e93d6c8eaf9930cedb37082799c790a">aLCD</a>
+</li>
+<li>m_RXbuffer
+: <a class="el" href="classa_d_c_engine.html#a086de697a244121e69b95f82c5d61dd9">aDCEngine</a>
+</li>
+<li>m_RXoffset
+: <a class="el" href="classa_d_c_engine.html#a15d3419f187e0f56ffc9d1a832493f72">aDCEngine</a>
+</li>
+<li>m_setsCurrent
+: <a class="el" href="classa_d_c_settings.html#a631ecdee0a528eed9e5e44ac9c2e4d6b">aDCSettings</a>
+</li>
+<li>m_setsPower
+: <a class="el" href="classa_d_c_settings.html#a8eabad0a2cd9f00a64849a762b09216a">aDCSettings</a>
+</li>
+<li>m_setsResistance
+: <a class="el" href="classa_d_c_settings.html#a222df6c8652c12d67dbd166a93582799">aDCSettings</a>
+</li>
+<li>MAX_VALUE
+: <a class="el" href="classa_stepper.html#ab5c22269335321d72d4deed0b5b6d391">aStepper</a>
 </li>
 </ul>
 
@@ -440,7 +630,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Oct 28 2014 09:50:49 for aDCLoad by
+    <li class="footer">Generated on Tue Oct 28 2014 12:31:39 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.4 </li>
   </ul>

@@ -7,5 +7,9 @@ var classa_l_c_d =
     [ "clearValue", "classa_l_c_d.html#a637778349bcfddfdb2f90799cf4cbdf8", null ],
     [ "printCenter", "classa_l_c_d.html#a1b585bae05be1155b0569344244a5e97", null ],
     [ "printCenter", "classa_l_c_d.html#a892a5e9e61060c1ff11c608c9090b79d", null ],
-    [ "setCursor", "classa_l_c_d.html#a0df2ee1d5e08b06672ca51aa1399d2f8", null ]
+    [ "setCursor", "classa_l_c_d.html#a0df2ee1d5e08b06672ca51aa1399d2f8", null ],
+    [ "m_cols", "classa_l_c_d.html#acc5e1b9602a2b327900e4287439954dd", null ],
+    [ "m_curCol", "classa_l_c_d.html#a490136acbf068046e3c12bb449ed37f8", null ],
+    [ "m_curRow", "classa_l_c_d.html#ae90c3d36cae7b58e9cba0b398daf036f", null ],
+    [ "m_rows", "classa_l_c_d.html#a0e93d6c8eaf9930cedb37082799c790a", null ]
 ];

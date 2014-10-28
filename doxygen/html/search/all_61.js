@@ -5,7 +5,7 @@ var searchData=
   ['adc_5fmeasuredcurrent_5fchan',['ADC_MEASUREDCURRENT_CHAN',['../a_d_c_load_8h.html#a4ee78b6b8ad9ac750519a784ddb8f025',1,'aDCLoad.h']]],
   ['adc_5ftempsense1_5fchan',['ADC_TEMPSENSE1_CHAN',['../a_d_c_load_8h.html#a33b7965dc0d8579f53317b31b6a5522b',1,'aDCLoad.h']]],
   ['adc_5ftempsense2_5fchan',['ADC_TEMPSENSE2_CHAN',['../a_d_c_load_8h.html#a7f7cc8766879e6ce94bfaf5555b7e31d',1,'aDCLoad.h']]],
-  ['adcdisplay',['aDCDisplay',['../classa_d_c_display.html',1,'aDCDisplay'],['../classa_d_c_display.html#a2bce6ec33d7002f0332b5c27b965d5d1',1,'aDCDisplay::aDCDisplay()']]],
+  ['adcdisplay',['aDCDisplay',['../classa_d_c_display.html',1,'aDCDisplay'],['../classa_d_c_engine.html#a6a9dcdceefd92057e7280ac95cc96803',1,'aDCEngine::aDCDisplay()'],['../classa_d_c_display.html#a2bce6ec33d7002f0332b5c27b965d5d1',1,'aDCDisplay::aDCDisplay()']]],
   ['adcengine',['aDCEngine',['../classa_d_c_engine.html',1,'aDCEngine'],['../classa_d_c_engine.html#a0a434100a3a9638155f0bda3eff6bcee',1,'aDCEngine::aDCEngine()']]],
   ['adcload_2ecpp',['aDCLoad.cpp',['../a_d_c_load_8cpp.html',1,'']]],
   ['adcload_2eh',['aDCLoad.h',['../a_d_c_load_8h.html',1,'']]],

@@ -16,6 +16,7 @@ var searchData=
   ['isfeatureenabled',['isFeatureEnabled',['../classa_d_c_settings.html#ac5398bce9dfacdccfea88b59607b7720',1,'aDCSettings']]],
   ['isoperationmodechanged',['isOperationModeChanged',['../classa_d_c_settings.html#a7797be3d102488a4047928e094f51afd',1,'aDCSettings']]],
   ['ispoweralreadydisplayed',['isPowerAlreadyDisplayed',['../classa_d_c_settings.html#a84373ca9e207260e606d6a08aee82719',1,'aDCSettings']]],
+  ['isr',['isr',['../sketch_8cpp.html#a3d333c5a3d38fce478f9b973ab06b294',1,'sketch.cpp']]],
   ['isresistancealreadydisplayed',['isResistanceAlreadyDisplayed',['../classa_d_c_settings.html#a2c344dcd7b83257b7ef6dbb78e627d7e',1,'aDCSettings']]],
   ['isselectionmodechanged',['isSelectionModeChanged',['../classa_d_c_settings.html#a75cc881259efaf4c1d5b8c078d94ce0a',1,'aDCSettings']]],
   ['istemperaturealreadydisplayed',['isTemperatureAlreadyDisplayed',['../classa_d_c_settings.html#a528b75084ecccacc948728c31127b7b0',1,'aDCSettings']]],

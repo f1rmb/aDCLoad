@@ -17,7 +17,7 @@ var searchData=
   ['setresistancesets',['setResistanceSets',['../classa_d_c_settings.html#a2ac3895978865ab40e605375ba591ad5',1,'aDCSettings']]],
   ['setselectionmode',['setSelectionMode',['../classa_d_c_settings.html#a2e415fde6386228cdb4abe41d04ef01d',1,'aDCSettings']]],
   ['settemperatureread',['setTemperatureRead',['../classa_d_c_settings.html#a56e05dd10497b941c1dfceb264abb2ed',1,'aDCSettings']]],
-  ['setup',['setup',['../classa_d_c_display.html#a4622e023f968931a0a55d6a258c65df7',1,'aDCDisplay::setup()'],['../classa_d_c_engine.html#a59c7629fa3d7762ab9368fa34db5bb4f',1,'aDCEngine::setup()']]],
+  ['setup',['setup',['../classa_d_c_display.html#a4622e023f968931a0a55d6a258c65df7',1,'aDCDisplay::setup()'],['../classa_d_c_engine.html#a59c7629fa3d7762ab9368fa34db5bb4f',1,'aDCEngine::setup()'],['../sketch_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d',1,'setup():&#160;sketch.cpp']]],
   ['setvoltageread',['setVoltageRead',['../classa_d_c_settings.html#a5a4b393b248d573101981a7d18f68e19',1,'aDCSettings']]],
   ['showbanner',['showBanner',['../classa_d_c_display.html#a0e2e29866585363721ace454d7e095c9',1,'aDCDisplay']]],
   ['synccurrentdisp',['syncCurrentDisp',['../classa_d_c_settings.html#a52197663e1e9db6d880eb0ebf5a6d2cd',1,'aDCSettings']]],
