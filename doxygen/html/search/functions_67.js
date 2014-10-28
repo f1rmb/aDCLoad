@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['getcurrentread',['getCurrentRead',['../classa_d_c_settings.html#a2d8482d7432198d21cfb7bbf3b13d0bd',1,'aDCSettings']]],
+  ['getcurrentsets',['getCurrentSets',['../classa_d_c_settings.html#a00fe00eddb10f5f7caca5c33218c3c24',1,'aDCSettings']]],
+  ['getdisplaymode',['getDisplayMode',['../classa_d_c_settings.html#a6f323e41cb466265e41a8a9157b33b3d',1,'aDCSettings']]],
+  ['getencoderposition',['getEncoderPosition',['../classa_d_c_settings.html#a49d33909a94375f61008000639c0eb81',1,'aDCSettings']]],
+  ['getfanspeed',['getFanSpeed',['../classa_d_c_settings.html#ad0b439c61388f692aea1afdd319b357a',1,'aDCSettings']]],
+  ['getnextmode',['getNextMode',['../classa_d_c_settings.html#a8a40346ce0ac92767aa2dc93ed7583f3',1,'aDCSettings']]],
+  ['getnumericallength',['getNumericalLength',['../a_d_c_load_8cpp.html#ae0d4e2b1f3846b083c8eee6edadc2a3d',1,'aDCLoad.cpp']]],
+  ['getoperationmode',['getOperationMode',['../classa_d_c_settings.html#a2b3ebe01a6f46b15e64f850ad0cd72fe',1,'aDCSettings']]],
+  ['getpowerread',['getPowerRead',['../classa_d_c_settings.html#a828a8ed9a25c170dfaa10710d21ef3b1',1,'aDCSettings']]],
+  ['getpowersets',['getPowerSets',['../classa_d_c_settings.html#abf60499a5eb071ded15ecfd34d74d671',1,'aDCSettings']]],
+  ['getprevmode',['getPrevMode',['../classa_d_c_settings.html#ac1ec11ef87797971e8ef84fc20e6c22e',1,'aDCSettings']]],
+  ['getresistanceread',['getResistanceRead',['../classa_d_c_settings.html#a5fde552ef23afec3edc5f18c6c56dd8d',1,'aDCSettings']]],
+  ['getresistancesets',['getResistanceSets',['../classa_d_c_settings.html#ae0c75177dcceac46a509ca99f4a32a27',1,'aDCSettings']]],
+  ['getselectionmode',['getSelectionMode',['../classa_d_c_settings.html#aa99125ca76babab9c28e5a8d55eb73af',1,'aDCSettings']]],
+  ['gettemperatureread',['getTemperatureRead',['../classa_d_c_settings.html#a6bfcdae359134af0c82fedcbed6ce160',1,'aDCSettings']]],
+  ['getvoltageread',['getVoltageRead',['../classa_d_c_settings.html#a369a5fa5b89c31854ffa313522a115a6',1,'aDCSettings']]]
+];
