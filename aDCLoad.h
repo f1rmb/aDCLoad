@@ -102,7 +102,7 @@ const float         RESISTANCE_MAXIMUM          = FLT_MAX;  ///< Maximum resista
 
 // Software version
 const int8_t        SOFTWARE_VERSION_MAJOR      = 2;        ///< Software major version
-const int8_t        SOFTWARE_VERSION_MINOR      = 1;        ///< Software minor version
+const int8_t        SOFTWARE_VERSION_MINOR      = 2;        ///< Software minor version
 
 // Features bitfield (max 16)
 const uint16_t      FEATURE_LOGGING             = 1;        ///< Bitfield logging feature

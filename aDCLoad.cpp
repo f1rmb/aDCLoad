@@ -1835,6 +1835,53 @@ aDCEngine::~aDCEngine()
 {
 }
 
+/**
+ * \page remote Remote Commands
+ * See also \ref logging
+ *
+ * \note Serial port configuration: 57600 8N1
+ * \note Commands and arguments are <b>case sensitive</b>, and all in <b>UPCASE</b>
+ *
+ * \section curget Current getter
+ * <b>:ISET?:</b>
+ * Returns current setting
+ *
+ * \section curset Current setting setter
+ * <b>:ISET:<i>value</i></b>
+ * Set current <b><i>value</i></b> (in mA)
+ *
+ * \section curread Current readed getter
+ * <b>:I?:</b>
+ * Returns current readed from the load
+ *
+ * \section volread Voltage readed getter
+ * <b>:U?:</b>
+ * Returns voltage readed from the load
+ *
+ * \section logsingle Single shot logging
+ * <b>:L?:</b>
+ * Printout a single logging line
+ *
+ * \section logrun Turn ON/OFF logging
+ * <b>:L:<i>toggle</i></b>
+ * Turns <b><i>ON</i></b> or <b><i>OFF</i></b> the logging feature
+ *
+ */
+
+/**
+ * \page logging Logging data format
+ * See also \ref remote
+ * \note fields are comma separated
+ *
+ * \section logform CSV logging format
+ * <b>timestamp</b>,<b>voltage</b>,<b>current</b>,<b>temperature</b><b>\\r\\n</b>
+ * - Where:
+ *  + <b>timestamp</b> in hundred of milliseconds,
+ *  + <b>voltage</b> in mV,
+ *  + <b>current</b> in mA,
+ *  + <b>temperature</b> in Celcius degrees.
+ */
+
 /** \brief Check and handle remote control and data logging
  *
  * \return void
@@ -2028,13 +2075,6 @@ void aDCEngine::_updateLoggingAndRemote()
         }
 
         // Logging
-        /*
-         *** Format is: timestamp,voltage,current,temperature
-         ***         timestamp in hundred of milliseconds
-         ***         voltage in mV
-         ***         current in mA
-         ***         temperature in Celcius
-         */
         unsigned long m = millis();
         if ((m_Data.isFeatureEnabled(FEATURE_LOGGING) && !(m % 200)) || single)
         {

@@ -29,6 +29,7 @@ var searchData=
   ['setup',['setup',['../classa_d_c_display.html#a4622e023f968931a0a55d6a258c65df7',1,'aDCDisplay::setup()'],['../classa_d_c_engine.html#a59c7629fa3d7762ab9368fa34db5bb4f',1,'aDCEngine::setup()'],['../sketch_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d',1,'setup():&#160;sketch.cpp']]],
   ['setvoltage',['setVoltage',['../classa_d_c_settings.html#a5a383d28100c6cf6d7b7c2e003574b17',1,'aDCSettings']]],
   ['showbanner',['showBanner',['../classa_d_c_display.html#a0e2e29866585363721ace454d7e095c9',1,'aDCDisplay']]],
+  ['simu',['SIMU',['../a_d_c_load_8h.html#a55bc90ce1fe4a4912c37967a33cb7262',1,'aDCLoad.h']]],
   ['sketch_2ecpp',['sketch.cpp',['../sketch_8cpp.html',1,'']]],
   ['software_5fversion_5fmajor',['SOFTWARE_VERSION_MAJOR',['../a_d_c_load_8h.html#a6a5d1539e8857f9423d73799516fe3b9',1,'aDCLoad.h']]],
   ['software_5fversion_5fminor',['SOFTWARE_VERSION_MINOR',['../a_d_c_load_8h.html#aa00b28db26db5f4c514cc3d1047a41f4',1,'aDCLoad.h']]],
