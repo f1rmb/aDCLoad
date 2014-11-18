@@ -25,6 +25,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 <center>Bootloader <b><span style="text-decoration:underline;color:red;">couldn't</span></b> be flashed, <b>ISP programming ONLY</b></center>
 <center> -=- use <i>Code::Blocks</i> or the included <i>Makefile</i> to compile -=- </center>
 */
+#warning !!! BIG FAT WARNING !!!
+#warning !!! Should be compiled with "-Os" !!!
+
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 #include <LiquidCrystal.h>
@@ -40,92 +43,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     \author F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
 */
 
-/** \brief Glyphs definition
- *
- */
-static const uint8_t _glyphs[8][8] PROGMEM =
-{
-    { // . ..1
-        B00000,
-        B00000,
-        B00001,
-        B00001,
-        B00001,
-        B10101,
-        B00000,
-        B00000,
-    },
-    { // . .1.
-        B00000,
-        B00000,
-        B00100,
-        B00100,
-        B00100,
-        B10101,
-        B00000,
-        B00000,
-    },
-    { // . 1..
-        B00000,
-        B00000,
-        B10000,
-        B10000,
-        B10000,
-        B10101,
-        B00000,
-        B00000,
-    },
-    { // . 1k
-        B00000,
-        B00000,
-        B10000,
-        B10000,
-        B10000,
-        B10101,
-        B00110,
-        B00101,
-    },
-    { // USB
-        B00100,
-        B01110,
-        B00101,
-        B10101,
-        B10110,
-        B01100,
-        B00100,
-        B01110,
-    },
-    { // LOCK
-        B00110,
-        B00100,
-        B00110,
-        B00100,
-        B00100,
-        B01110,
-        B10001,
-        B01110,
-    },
-    { // CHECKBOX UNTICKED
-        B10101,
-        B00000,
-        B10001,
-        B00000,
-        B10001,
-        B00000,
-        B10101,
-        B00000,
-    },
-    { // CHECKBOX TICKED
-        B11110,
-        B10001,
-        B00011,
-        B10110,
-        B11101,
-        B01001,
-        B10011,
-        B00000
-    }
-};
 
 /**
 *** Implement our serial print function to save ~300ko
@@ -147,12 +64,36 @@ void serialWrite(char c)
 
 /** \brief Serial printing
  *
+ * \param str char[]
+ * \return void
+ *
+ */
+void serialPrint(const char str[])
+{
+#if 1
+    Serial.print(str);
+#else
+    char *p = (char *)str;
+
+    while(*p != '\0')
+    {
+        serialWrite(*p);
+        p++;
+    }
+#endif
+}
+
+#if 0
+/** \brief Serial printing
+ *
  * \param ifsh const __FlashStringHelper*
  * \return void
  *
  */
 void serialPrint(const __FlashStringHelper *ifsh)
 {
+    Serial.print(ifsh);
+#if 0
     const char *__attribute__((progmem)) p = (const char * ) ifsh;
     while (1)
     {
@@ -161,7 +102,9 @@ void serialPrint(const __FlashStringHelper *ifsh)
             break;
         serialWrite(c);
     }
+#endif
 }
+#endif
 
 /** \brief Serial printing
  *
@@ -186,6 +129,11 @@ void serialPrint(int n, int16_t base = DEC)
    serialPrint((unsigned long) n, base);
 }
 
+void serialFlush()
+{
+    Serial.flush();
+}
+
 /** \brief Serial printing
  *
  * \return void
@@ -193,8 +141,8 @@ void serialPrint(int n, int16_t base = DEC)
  */
 void serialPrintln()
 {
-    serialPrint('\r');
-    serialPrint('\n');
+    serialPrint("\r\n");
+    serialFlush();
 }
 
 /** \brief Serial printing
@@ -230,10 +178,14 @@ void serialPrint(double n, int digits)
  */
 void serialPrintln(double n, int digits)
 {
-    Serial.print(n, digits);
+    Serial.println(n, digits);
+#if 0
+    serialPrint(n, digits);
     serialPrintln();
+#endif
 }
 
+#if 0
 /** \brief Serial printing
  *
  * \param ifsh const __FlashStringHelper*
@@ -245,6 +197,7 @@ void serialPrintln(const __FlashStringHelper *ifsh)
     serialPrint(ifsh);
     serialPrintln();
 }
+#endif
 
 /** \brief Serial printing
  *
@@ -257,7 +210,28 @@ void serialPrintln(char c)
     serialWrite(c);
     serialPrintln();
 }
+
+/** \brief Get the number of bytes (characters) available for reading from the serial port
+ *
+ * \return int16_t
+ *
+ */
+int16_t serialAvailable()
+{
+    return Serial.available();
+}
+
+/** \brief Reads incoming serial data
+ *
+ * \return int16_t
+ *
+ */
+int16_t serialRead()
+{
+    return Serial.read();
+}
 #endif
+
 #if 0
 /**
 *** Numerical utils
@@ -282,37 +256,37 @@ int8_t getNumericalLength(uint16_t n)
 /** \brief Get float string length, according to decimal man length
  *
  * \param n float : <b> Float number to analyse </b>
- * \param dLen uint8_t : <b> decimal max length (3 as default) </b>
+ * \param len uint8_t : <b> decimal max length (3 as default) </b>
  * \return int8_t
  *
  */
-int8_t getNumericalLength(float n, uint8_t dLen = 3)
+int8_t getNumericalLength(float n, uint8_t len = 3)
 {
     char buf[32];
 
-    if (dLen > 11)
-	    dLen = 11;
+    if (len > 11)
+	    len = 11;
 
-    char *p = dtostrf(n, 1, dLen, buf);
-
-    return strlen(p);
+    return strlen(dtostrf(n, 1, len, buf));
 }
 
 /**
-*** Our float rounding function
+*** Float rounding function
 **/
 /** \brief Float number rounding, extensively used
  *
+ * We just get rid of +4 decimal values
+ *
  * \param f float : <b> Float to rounding </b>
- * \param p float : <b> Precision </b>
  * \return float
  *
  */
-float floatRounding(float f, float p = 0.001f)
+float floatRounding(float f)
 {
-	return (floor(f * (1.0f / p) + 0.5) / (1.0f / p));
+	return ((f / 1000.000) * 1000.000);
 }
 
+#if 0
 /** \brief Macro used for checking "value" boundaries, using "type"_MAXIMUM constant. Returns SETTING_UNDERSIZED or SETTING_OVERSIZED if "value" is out of boundaries.
  *
  * Macro used in aDCSettings class setters (some of them)
@@ -324,11 +298,11 @@ float floatRounding(float f, float p = 0.001f)
 #define RETURN_IF_INVALID(type, value)\
     do {\
         if (value < 0)\
-            return SETTING_UNDERSIZED;\
+            return SETTING_ERROR_UNDERSIZED;\
         else if (value > type ## _MAXIMUM)\
-            return SETTING_OVERSIZED;\
+            return SETTING_ERROR_OVERSIZED;\
     } while(0)
-
+#endif
 
 /** \brief Constructor
  */
@@ -338,24 +312,24 @@ aDCSettings::aDCSettings() :
 #else
                     m_readVoltage(0),
 #endif
-                    m_dispVoltage(-1), m_setsCurrent(0), m_readCurrent(0), m_dispCurrent(-1),
+                    m_setsCurrent(0), m_readCurrent(0),
 #ifdef RESISTANCE
-                    m_setsResistance(0), m_readResistance(0), m_dispResistance(-1),
+                    m_setsResistance(0), m_readResistance(0),
 #endif
-                    m_setsPower(0), m_readPower(0), m_dispPower(-1),
+                    m_setsPower(0), m_readPower(0),
 #ifdef SIMU
                     m_readTemperature(20),
 #else
                     m_readTemperature(0),
 #endif
-                    m_dispTemperature(1),
                     m_fanSpeed(1),
-                    m_operationMode(OPERATION_READ), m_prevOperationMode(OPERATION_UNKNOWN),
-                    m_Mode(SELECTION_CURRENT), m_prevMode(SELECTION_UNKNOWN),
-                    m_EncoderPos(0), m_prevEncoderPos(-1),
-                    m_dispMode(DISPLAY_VALUES), m_prevDispMode(DISPLAY_UNKNOWN),
+                    m_operationMode(OPERATION_MODE_READ),
+                    m_mode(SELECTION_MODE_CURRENT),
+                    m_encoderPos(0),
+                    m_dispMode(DISPLAY_MODE_VALUES),
                     m_lockTick(0), m_operationTick(0),
-                    m_features(0x0)
+                    m_features(0x0),
+                    m_datas(0xFFFF)
 {
     _eepromRestore();
 }
@@ -370,14 +344,12 @@ aDCSettings::~aDCSettings()
 /** \brief Voltage setter
  *
  * \param v float : <b> voltage </b>
- * \return aDCSettings::SettingError
+ * \return aDCSettings::SettingError_t
  *
  */
-aDCSettings::SettingError aDCSettings::setVoltageRead(float v)
+aDCSettings::SettingError_t aDCSettings::setVoltage(float v)
 {
-    RETURN_IF_INVALID(VOLTAGE, v);
-    m_readVoltage =  v;
-    return SETTING_VALID;
+    return _setValue(aDCSettings::OPERATION_MODE_READ, DATA_VOLTAGE, v, m_readVoltage, m_readVoltage, VOLTAGE_MAXIMUM);
 }
 
 /** \brief Voltage getter
@@ -385,287 +357,158 @@ aDCSettings::SettingError aDCSettings::setVoltageRead(float v)
  * \return float : <b> voltage </b>
  *
  */
-float aDCSettings::getVoltageRead()
+float aDCSettings::getVoltage()
 {
     return m_readVoltage;
 }
 
-/** \brief Synchronize displayed voltage with readed voltage values
- *
- * \return void
- *
- */
-void aDCSettings::syncVoltageDisp()
-{
-    m_dispVoltage = m_readVoltage;
-}
-
-/** \brief Check if readed voltage is already displayed on the LCD
- *
- * \return bool : <b> true is voltage has been already displayed </b>
- *
- */
-bool aDCSettings::isVoltageAlreadyDisplayed()
-{
-    return (_isEqual(m_readVoltage, m_dispVoltage));
-}
-
 // Current
-/** \brief Current setting setter
+/** \brief Current setter
  *
  * \param v float : <b> Current </b>
- * \return aDCSettings::SettingError
+ * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
+ * \return aDCSettings::SettingError_t
  *
  */
-aDCSettings::SettingError aDCSettings::setCurrentSets(float v)
+aDCSettings::SettingError_t aDCSettings::setCurrent(float v, OperationMode_t mode)
 {
-    RETURN_IF_INVALID(CURRENT, v);
-    m_setsCurrent = v;
-    return SETTING_VALID;
+    return _setValue(mode, (mode == OPERATION_MODE_SET) ? DATA_CURRENT_SETS : DATA_CURRENT_READ, v, m_setsCurrent, m_readCurrent, CURRENT_MAXIMUM);
 }
 
-/** \brief Current setting getter
+/** \brief Current getter
  *
+ * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
  * \return float : <b> Current </b>
  *
  */
-float aDCSettings::getCurrentSets()
+float aDCSettings::getCurrent(OperationMode_t mode)
 {
-    return m_setsCurrent;
+    return (mode == OPERATION_MODE_SET) ? m_setsCurrent : m_readCurrent;
 }
 
-/** \brief Current readed setter
- *
- * \param v float : <b> Current </b>
- * \return aDCSettings::SettingError
- *
- */
-aDCSettings::SettingError aDCSettings::setCurrentRead(float v)
-{
-    RETURN_IF_INVALID(CURRENT, v);
-    m_readCurrent = v;
-    return SETTING_VALID;
-}
 
-/** \brief Current readed getter
- *
- * \return float : <b> Current </b>
- *
- */
-float aDCSettings::getCurrentRead()
-{
-    return m_readCurrent;
-}
-
-/** \brief Synchronize readed Current with displayed Current
- *
- * \return void
- *
- */
-void aDCSettings::syncCurrentDisp()
-{
-    m_dispCurrent = (m_operationMode == OPERATION_READ) ? m_readCurrent : m_setsCurrent;
-}
-
-/** \brief Check if Current is already displayed on the LCD
- *
- * \return bool
- *
- */
-bool aDCSettings::isCurrentAlreadyDisplayed()
-{
-    return (_isEqual((m_operationMode == OPERATION_READ) ? m_readCurrent : m_setsCurrent, m_dispCurrent));
-}
-
-#ifdef RESISTANCE
 // Resistance
-/** \brief Resistance setting setter
+#ifdef RESISTANCE
+/** \brief Resistance setter
  *
  * \param v float : <b> Resistance </b>
- * \return aDCSettings::SettingError
+ * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
+ * \return aDCSettings::SettingError_t
  *
  */
-aDCSettings::SettingError aDCSettings::setResistanceSets(float v)
+aDCSettings::SettingError_t aDCSettings::setResistance(float v, OperationMode_t mode)
 {
-    RETURN_IF_INVALID(RESISTANCE, v);
-    m_setsResistance = v;
-    return SETTING_VALID;
+    return _setValue(mode, (mode == OPERATION_MODE_SET) ? DATA_RESISTANCE_SETS : DATA_RESISTANCE_READ, v, m_setsResistance, m_readResistance, RESISTANCE_MAXIMUM);
+
 }
 
-/** \brief Resistance setting getter
+/** \brief Resistance getter
  *
+ * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
  * \return float : <b> Resistance </b>
  *
  */
-float aDCSettings::getResistanceSets()
+float aDCSettings::getResistance(OperationMode_t mode)
 {
-    return m_setsResistance;
+    return (mode == OPERATION_MODE_SET) ? m_setsResistance : m_readResistance;
 }
 
-/** \brief Resistance readed (computed) setter
- *
- * \param v float : <b> Resistance </b>
- * \return void
- *
- */
-void aDCSettings::setResistanceRead(float v)
-{
-    m_readResistance = v;
-}
-
-/** \brief Resistance readed (computed) getter
- *
- * \return float : <b> Resistance </b>
- *
- */
-float aDCSettings::getResistanceRead()
-{
-    return m_readResistance;
-}
-
-/** \brief Synchronize displayed Resistance with displayed Resistance
- *
- * \return void
- *
- */
-void aDCSettings::syncResistanceDisp()
-{
-    m_dispResistance = (m_operationMode == OPERATION_READ) ? m_readResistance : m_setsResistance;
-}
-
-/** \brief Check if readed Resistance is already displayed on the LCD
- *
- * \return bool
- *
- */
-bool aDCSettings::isResistanceAlreadyDisplayed()
-{
-    return (_isEqual((m_operationMode == OPERATION_READ) ? m_readResistance :  m_setsResistance, m_dispResistance));
-}
 #endif
+
 // Power
-/** \brief Power setting setter
+/** \brief Power setter
  *
  * \param v float : <b> Power </b>
- * \return aDCSettings::SettingError
+ * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
+ * \return aDCSettings::SettingError_t
  *
  */
-aDCSettings::SettingError aDCSettings::setPowerSets(float v)
+aDCSettings::SettingError_t aDCSettings::setPower(float v, OperationMode_t mode)
 {
-    RETURN_IF_INVALID(POWER, v);
-    m_setsPower = v;
-    return SETTING_VALID;
+    return _setValue(mode, (mode == OPERATION_MODE_SET) ? DATA_POWER_SETS : DATA_POWER_READ, v, m_setsPower, m_readPower, POWER_MAXIMUM);
+
 }
 
-/** \brief Power setting getter
+/** \brief Power getter
  *
+ * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
  * \return float : <b> Power </b>
  *
  */
-float aDCSettings::getPowerSets()
+float aDCSettings::getPower(OperationMode_t mode)
 {
-    return m_setsPower;
-}
-
-/** \brief Power readed setter
- *
- * \param v float
- * \return aDCSettings::SettingError
- *
- */
-aDCSettings::SettingError aDCSettings::setPowerRead(float v)
-{
-    RETURN_IF_INVALID(POWER, v);
-    m_readPower = v;
-    return SETTING_VALID;
-}
-
-/** \brief Power readed getter
- *
- * \return float : <b> Power </b>
- *
- */
-float aDCSettings::getPowerRead()
-{
-    return m_readPower;
-}
-
-/** \brief Synchronize displayed Power value on the LCD
- *
- * \return void
- *
- */
-void aDCSettings::syncPowerDisp()
-{
-    m_dispPower = (m_operationMode == OPERATION_READ) ? m_readPower : m_setsPower;
-}
-
-/** \brief Check if Power is already displayed on the LCD
- *
- * \return bool
- *
- */
-bool aDCSettings::isPowerAlreadyDisplayed()
-{
-    return (_isEqual((m_operationMode == OPERATION_READ) ? m_readPower : m_setsPower, m_dispPower));
+    return (mode == OPERATION_MODE_SET) ? m_setsPower : m_readPower;
 }
 
 /** \brief Update values setting (Current, Resistance, Power) according to selection mode. Sanity checking is also performed.
  *
  * \param v float : <b> updated value </b>
- * \param mode SelectionMode : <b> selection mode (CURRENT, RESISTANCE, POWER) </b>
+ * \param mode SelectionMode_t : <b> selection mode (CURRENT, RESISTANCE, POWER) </b>
  * \return void
  *
  */
-void aDCSettings::updateValuesFromMode(float v, SelectionMode mode)
+void aDCSettings::updateValuesFromMode(float v, SelectionMode_t mode)
 {
+    float voltage = getVoltage();
+    float currentSets = getCurrent(aDCSettings::OPERATION_MODE_SET);
+
     switch (mode)
     {
-        case SELECTION_CURRENT:
-            switch (setCurrentSets(v))
+        case SELECTION_MODE_CURRENT:
+            switch (setCurrent(v, aDCSettings::OPERATION_MODE_SET))
             {
-                case aDCSettings::SETTING_UNDERSIZED:
-                    setCurrentSets(0.0);
+                case aDCSettings::SETTING_ERROR_UNDERSIZED:
+                    setCurrent(0.0, aDCSettings::OPERATION_MODE_SET);
                     setEncoderPosition(0);
                     break;
 
-                case aDCSettings::SETTING_OVERSIZED:
-                    setCurrentSets(CURRENT_MAXIMUM);
-                    setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(CURRENT_MAXIMUM) * floatRounding(500.000))));
+                case aDCSettings::SETTING_ERROR_OVERSIZED:
+                    setCurrent(CURRENT_MAXIMUM, aDCSettings::OPERATION_MODE_SET);
+                    setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(CURRENT_MAXIMUM) * 500.000)));
                     break;
 
                 default:
                     break;
             }
 
-            switch (setPowerSets(floatRounding(floatRounding(getVoltageRead()) * floatRounding(getCurrentSets()))))
+            currentSets = getCurrent(aDCSettings::OPERATION_MODE_SET);
+
+            switch (setPower(floatRounding(floatRounding(voltage) * floatRounding(currentSets)), aDCSettings::OPERATION_MODE_SET))
             {
-                case aDCSettings::SETTING_OVERSIZED:
-                    setCurrentSets(floatRounding(floatRounding(POWER_MAXIMUM) / floatRounding(getVoltageRead())));
+                case aDCSettings::SETTING_ERROR_OVERSIZED:
+                    setCurrent(floatRounding(floatRounding(POWER_MAXIMUM) / floatRounding(voltage)), aDCSettings::OPERATION_MODE_SET);
+                    currentSets = getCurrent(aDCSettings::OPERATION_MODE_SET);
 #ifdef RESISTANCE
-                    setResistanceSets((getCurrentSets() > 0.0) ? floatRounding(floatRounding(POWER_MAXIMUM) / floatRounding(floatRounding(getCurrentSets()) * floatRounding(getCurrentSets()))) : -1);
+                    setResistance((currentSets > 0.0) ? floatRounding(floatRounding(POWER_MAXIMUM) / floatRounding(floatRounding(getCurrent(aDCSettings::OPERATION_MODE_SET)) * floatRounding(getCurrent(aDCSettings::OPERATION_MODE_SET)))) : -1, OPERATION_MODE_SET);
 #endif
-                    setPowerSets(floatRounding(floatRounding(getVoltageRead()) * floatRounding(getCurrentSets())));
-                    setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(getCurrentSets()) * floatRounding(500.000))));
+                    setPower(floatRounding(floatRounding(voltage) * floatRounding(currentSets)), aDCSettings::OPERATION_MODE_SET);
+                    setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(currentSets) * 500.000)));
                     break;
 
-                case aDCSettings::SETTING_UNDERSIZED:
+                case aDCSettings::SETTING_ERROR_UNDERSIZED:
                     break;
 
-                case aDCSettings::SETTING_VALID:
+                case aDCSettings::SETTING_ERROR_VALID:
 #ifdef RESISTANCE
-                    setResistanceSets((getCurrentSets() > 0.0) ? floatRounding(floatRounding(getVoltageRead()) / floatRounding(getCurrentSets())) : 0);
+                    currentSets = getCurrent(aDCSettings::OPERATION_MODE_SET);
+                    setResistance((currentSets > 0.0) ? floatRounding(floatRounding(voltage) / floatRounding(currentSets)) : 0, OPERATION_MODE_SET);
 #endif
                     break;
             }
             break;
 
 #ifdef RESISTANCE
-        case SELECTION_RESISTANCE:
-            switch (setResistanceSets(v))
+        case SELECTION_MODE_RESISTANCE:
+            if (voltage == 0.0)
             {
-                case aDCSettings::SETTING_UNDERSIZED:
-                    setResistanceSets(0.0);
+                setEncoderPosition(0);
+                break;
+            }
+
+            switch (setResistance(v, aDCSettings::OPERATION_MODE_SET))
+            {
+                case aDCSettings::SETTING_ERROR_UNDERSIZED:
+                    setResistance(0.0, aDCSettings::OPERATION_MODE_SET);
                     setEncoderPosition(0);
                     break;
 
@@ -673,31 +516,34 @@ void aDCSettings::updateValuesFromMode(float v, SelectionMode mode)
                     break;
             }
 
-            switch (setCurrentSets((getResistanceSets() > 0.0) ? floatRounding(floatRounding(getVoltageRead()) / floatRounding(getResistanceSets())) : 0))
+            switch (setCurrent((getResistance(aDCSettings::OPERATION_MODE_SET) > 0.0) ? floatRounding(floatRounding(voltage) / floatRounding(getResistance(OPERATION_MODE_SET))) : 0, aDCSettings::OPERATION_MODE_SET))
             {
-                case aDCSettings::SETTING_OVERSIZED:
-                    setCurrentSets(floatRounding(CURRENT_MAXIMUM));
-                    setResistanceSets(floatRounding(floatRounding(getVoltageRead()) / floatRounding(CURRENT_MAXIMUM)));
-                    setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(getResistanceSets()) * floatRounding(1000.000))));
+                case aDCSettings::SETTING_ERROR_OVERSIZED:
+                    setCurrent(CURRENT_MAXIMUM, aDCSettings::OPERATION_MODE_SET);
+                    setResistance(floatRounding(floatRounding(voltage) / floatRounding(CURRENT_MAXIMUM)), aDCSettings::OPERATION_MODE_SET);
+                    setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(getResistance(OPERATION_MODE_SET)) * 1000.000)));
                     break;
 
-                case aDCSettings::SETTING_UNDERSIZED:
+                case aDCSettings::SETTING_ERROR_UNDERSIZED:
                     break;
 
                 default:
                     break;
             }
 
-            switch (setPowerSets(floatRounding(floatRounding(getVoltageRead()) * floatRounding(getCurrentSets()))))
+            currentSets = getCurrent(aDCSettings::OPERATION_MODE_SET);
+
+            switch (setPower(floatRounding(floatRounding(voltage) * floatRounding(currentSets)), aDCSettings::OPERATION_MODE_SET))
             {
-                case aDCSettings::SETTING_OVERSIZED:
-                    setCurrentSets(floatRounding(floatRounding(POWER_MAXIMUM) / floatRounding(getVoltageRead())));
-                    setResistanceSets((getCurrentSets() > 0.0) ? floatRounding(floatRounding(POWER_MAXIMUM) / floatRounding(floatRounding(getCurrentSets()) * floatRounding(getCurrentSets()))) : 0);
-                    setPowerSets(floatRounding(floatRounding(getVoltageRead()) * floatRounding(getCurrentSets())));
-                    setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(getResistanceSets()) * floatRounding(1000.000))));
+                case aDCSettings::SETTING_ERROR_OVERSIZED:
+                    setCurrent(floatRounding(floatRounding(POWER_MAXIMUM) / floatRounding(voltage)), aDCSettings::OPERATION_MODE_SET);
+                    currentSets = getCurrent(aDCSettings::OPERATION_MODE_SET);
+                    setResistance((currentSets > 0.0) ? floatRounding(floatRounding(POWER_MAXIMUM) / floatRounding(floatRounding(currentSets) * floatRounding(currentSets))) : 0, OPERATION_MODE_SET);
+                    setPower(floatRounding(floatRounding(voltage) * floatRounding(currentSets)), aDCSettings::OPERATION_MODE_SET);
+                    setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(getResistance(aDCSettings::OPERATION_MODE_SET)) * 1000.000)));
                     break;
 
-                case aDCSettings::SETTING_UNDERSIZED:
+                case aDCSettings::SETTING_ERROR_UNDERSIZED:
                     break;
 
                 default:
@@ -706,26 +552,34 @@ void aDCSettings::updateValuesFromMode(float v, SelectionMode mode)
             break;
 #endif
 
-        case SELECTION_POWER:
-            switch (setPowerSets(v))
+        case SELECTION_MODE_POWER:
+            if (voltage == 0.0)
             {
-                case aDCSettings::SETTING_OVERSIZED:
-                    setPowerSets(floatRounding(POWER_MAXIMUM));
-                    setCurrentSets(floatRounding(floatRounding(getPowerSets()) / floatRounding(getVoltageRead())));
+                setEncoderPosition(0);
+                break;
+            }
+
+            switch (setPower(v, aDCSettings::OPERATION_MODE_SET))
+            {
+                case aDCSettings::SETTING_ERROR_OVERSIZED:
+                    setPower(POWER_MAXIMUM, aDCSettings::OPERATION_MODE_SET);
+                    setCurrent(floatRounding(floatRounding(getPower(aDCSettings::OPERATION_MODE_SET)) / floatRounding(voltage)), aDCSettings::OPERATION_MODE_SET);
 #ifdef RESISTANCE
-                    setResistanceSets((getCurrentSets() > 0.0) ? floatRounding(floatRounding(POWER_MAXIMUM) / floatRounding(floatRounding(getCurrentSets()) * floatRounding(getCurrentSets()))) : 0);
+                    currentSets = getCurrent(aDCSettings::OPERATION_MODE_SET);
+                    setResistance((currentSets > 0.0) ? floatRounding(floatRounding(POWER_MAXIMUM) / floatRounding(floatRounding(currentSets) * floatRounding(currentSets))) : 0, aDCSettings::OPERATION_MODE_SET);
 #endif
-                    setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(getPowerSets()) * floatRounding(1000.000))));
+                    setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(getPower(aDCSettings::OPERATION_MODE_SET)) * 1000.000)));
                     break;
 
-                case aDCSettings::SETTING_UNDERSIZED:
-                    setPowerSets(0.0);
+                case aDCSettings::SETTING_ERROR_UNDERSIZED:
+                    setPower(0.0, aDCSettings::OPERATION_MODE_SET);
                     setEncoderPosition(0);
 
                 default:
-                    setCurrentSets(floatRounding(floatRounding(getPowerSets()) / floatRounding(getVoltageRead())));
+                    setCurrent(floatRounding(floatRounding(getPower(aDCSettings::OPERATION_MODE_SET)) / floatRounding(voltage)), aDCSettings::OPERATION_MODE_SET);
 #ifdef RESISTANCE
-                    setResistanceSets((getCurrentSets() > 0.0) ? floatRounding(floatRounding(getVoltageRead()) / floatRounding(getCurrentSets())) : 0);
+                    currentSets = getCurrent(aDCSettings::OPERATION_MODE_SET);
+                    setResistance((currentSets > 0.0) ? floatRounding(floatRounding(voltage) / floatRounding(currentSets)) : 0.0, aDCSettings::OPERATION_MODE_SET);
 #endif
                     break;
             }
@@ -739,43 +593,26 @@ void aDCSettings::updateValuesFromMode(float v, SelectionMode mode)
 // Temperature
 /** \brief Temperature readed setter
  *
- * \param v uint8_t : <b> Temperature </b>
+ * \param v uint16_t : <b> Temperature </b>
  * \return void
  *
  */
-void aDCSettings::setTemperatureRead(uint8_t v)
+void aDCSettings::setTemperature(uint16_t v)
 {
+    uint16_t p = m_readTemperature;
     m_readTemperature = v;
+
+    _enableDataCheck(DATA_TEMPERATURE, (p != m_readTemperature));
 }
 
 /** \brief Temperature readed getter
  *
- * \return uint8_t : <b> Temperature </b>
+ * \return uint16_t : <b> Temperature </b>
  *
  */
-uint8_t aDCSettings::getTemperatureRead()
+uint16_t aDCSettings::getTemperature()
 {
     return m_readTemperature;
-}
-
-/** \brief Synchronize displayed temperature with readed one.
- *
- * \return void
- *
- */
-void aDCSettings::syncTemperatureDisp()
-{
-    m_dispTemperature = m_readTemperature;
-}
-
-/** \brief Check if displayed temperature match the displayed one.
- *
- * \return bool
- *
- */
-bool aDCSettings::isTemperatureAlreadyDisplayed()
-{
-    return (_isEqual(static_cast<float>(m_readTemperature), static_cast<float>(m_dispTemperature)));
 }
 
 // Fan
@@ -803,152 +640,111 @@ uint16_t aDCSettings::getFanSpeed()
 // Selection Mode
 /** \brief Selection mode setter
  *
- * \param m SelectionMode : <b> new selection mode </b>
+ * \param m SelectionMode_t : <b> new selection mode </b>
+ * \param force bool : <b> force the bit setting in m_datas to be set (default : false) </b>
  * \return void
  *
  */
-void aDCSettings::setSelectionMode(SelectionMode m)
+void aDCSettings::setSelectionMode(SelectionMode_t m, bool force)
 {
-    m_prevMode = m_Mode;
-    m_Mode = m;
+    SelectionMode_t p = m_mode;
+    m_mode = m;
+
+    _enableDataCheck(DATA_SELECTION, (force || (p != m_mode)));
 }
 
 /** \brief Selection mode getter
  *
- * \return SelectionMode : <b> current selection mode </b>
+ * \return SelectionMode_t : <b> current selection mode </b>
  *
  */
-SelectionMode aDCSettings::getSelectionMode()
+aDCSettings::SelectionMode_t aDCSettings::getSelectionMode()
 {
-    return m_Mode;
+    return m_mode;
 }
 
 /** \brief Get the next selection mode, according to "origin", if any provided.
  *
- * \param origin SelectionMode : <b> origin starter selection mode </b>
- * \return SelectionMode : <b> next selection mode </b>
+ * \param origin SelectionMode_t : <b> origin starter selection mode </b>
+ * \param next bool : <b> Next or Previous mode </b>
+ * \return SelectionMode_t : <b> next selection mode </b>
  *
  */
-SelectionMode aDCSettings::getNextMode(SelectionMode origin)
+aDCSettings::SelectionMode_t aDCSettings::getPrevNextMode(aDCSettings::SelectionMode_t origin, bool next)
 {
-    if (m_dispMode == DISPLAY_SETUP)
-        return (static_cast<SelectionMode>(((origin != SELECTION_UNKNOWN) ? !origin : !m_Mode)));
+    if (m_dispMode == DISPLAY_MODE_SETUP)
+        return (static_cast<SelectionMode_t>(((origin != SELECTION_MODE_UNKNOWN) ? !origin : !m_mode)));
 
-    uint8_t m = static_cast<uint8_t>(origin != SELECTION_UNKNOWN ? origin : m_Mode);
+    uint8_t m = static_cast<uint8_t>(origin != SELECTION_MODE_UNKNOWN ? origin : m_mode);
 
-    if ((static_cast<uint8_t>(origin != SELECTION_UNKNOWN ? origin : m_Mode) + 1) < static_cast<uint8_t>(SELECTION_UNKNOWN))
-        return static_cast<SelectionMode>(m + 1);
+    if (next)
+    {
+        if ((static_cast<uint8_t>(origin != SELECTION_MODE_UNKNOWN ? origin : m_mode) + 1) < static_cast<uint8_t>(SELECTION_MODE_UNKNOWN))
+            return static_cast<SelectionMode_t>(m + 1);
+    }
+    else
+    {
+        if ((static_cast<uint8_t>(origin != SELECTION_MODE_UNKNOWN ? origin : m_mode) - 1) >= static_cast<uint8_t>(SELECTION_MODE_CURRENT))
+            return static_cast<SelectionMode_t>(m - 1);
+    }
 
-    return SELECTION_CURRENT;
-}
-
-/** \brief Get the previous selection mode, according to "origin", if any provided.
- *
- * \param origin SelectionMode : <b> origin starter selection mode </b>
- * \return SelectionMode : <b> previous selection mode </b>
- *
- */
-SelectionMode aDCSettings::getPrevMode(SelectionMode origin)
-{
-    if (m_dispMode == DISPLAY_SETUP)
-        return (static_cast<SelectionMode>(((origin != SELECTION_UNKNOWN) ? !origin : !m_Mode)));
-
-    uint8_t m = static_cast<uint8_t>(origin != SELECTION_UNKNOWN ? origin : m_Mode);
-
-    if ((static_cast<uint8_t>(origin != SELECTION_UNKNOWN ? origin : m_Mode) - 1) >= static_cast<uint8_t>(SELECTION_CURRENT))
-        return static_cast<SelectionMode>(m - 1);
-
-    return SELECTION_POWER;
-}
-
-/** \brief Synchronize previous selection mode with current selection mode
- *
- * \return void
- *
- */
-void aDCSettings::syncSelectionMode()
-{
-    m_prevMode = m_Mode;
-}
-
-/** \brief Check if selection mode has been changed
- *
- * \return bool
- *
- */
-bool aDCSettings::isSelectionModeChanged()
-{
-    return (!_isEqual(static_cast<float>(m_Mode), static_cast<float>(m_prevMode)));
+    return (next ? SELECTION_MODE_CURRENT : SELECTION_MODE_POWER);
 }
 
 // Display Mode
 /** \brief Display mode setter
  *
- * \param d DisplayMode : <b> display mode </b>
+ * \param d DisplayMode_t : <b> display mode </b>
  * \return void
  *
  */
-void aDCSettings::setDisplayMode(DisplayMode d)
+void aDCSettings::setDisplayMode(DisplayMode_t d)
 {
-    m_prevDispMode = m_dispMode;
+    DisplayMode_t p = m_dispMode;
     m_dispMode = d;
+
+    _enableDataCheck(DATA_DISPLAY, (p != m_dispMode));
 }
 
 /** \brief Display mode getter
  *
- * \return DisplayMode : <b> Display mode </b>
+ * \return DisplayMode_t : <b> Display mode </b>
  *
  */
-DisplayMode aDCSettings::getDisplayMode()
+aDCSettings::DisplayMode_t aDCSettings::getDisplayMode()
 {
     return m_dispMode;
-}
-
-/** \brief Synchronize previous display mode with current display one.
- *
- * \return void
- *
- */
-void aDCSettings::syncDisplayMode()
-{
-    m_prevDispMode = m_dispMode;
-}
-
-/** \brief Check if display mode has been changed.
- *
- * \return bool
- *
- */
-bool aDCSettings::isDisplayModeChanged()
-{
-    return (!_isEqual(static_cast<float>(m_dispMode), static_cast<float>(m_prevDispMode)));
 }
 
 // Encoder
 /** \brief Encoder position setter
  *
- * \param p int32_t : <b> encoder position </b>
+ * \param v int32_t : <b> encoder position </b>
  * \return void
  *
  */
-void aDCSettings::setEncoderPosition(int32_t p)
+void aDCSettings::setEncoderPosition(int32_t v)
 {
-    m_prevEncoderPos = m_EncoderPos;
-    m_EncoderPos = p;
+    int32_t p = m_encoderPos;
+    m_encoderPos = v;
+
+    _enableDataCheck(DATA_ENCODER, (p != m_encoderPos));
 
     pingAutolock();
 }
 
 /** \brief Increment stored encoder position by "p" (default = 1)
  *
- * \param p int32_t : <b> increment value, 1 by default </b>
+ * \param v int32_t : <b> increment value, 1 by default </b>
  * \return void
  *
  */
-void aDCSettings::incEncoderPosition(int32_t p)
+void aDCSettings::incEncoderPosition(int32_t v)
 {
-    m_prevEncoderPos = m_EncoderPos;
-    m_EncoderPos += p;
+    int32_t p = m_encoderPos;
+    m_encoderPos += v;
+
+    _enableDataCheck(DATA_ENCODER, (p != m_encoderPos));
 
     pingAutolock();
 }
@@ -960,53 +756,32 @@ void aDCSettings::incEncoderPosition(int32_t p)
  */
 int32_t aDCSettings::getEncoderPosition()
 {
-    return m_EncoderPos;
-}
-
-/** \brief Synchronize previous encoder position with current one.
- *
- * \return void
- *
- */
-void aDCSettings::syncEncoderPosition()
-{
-    m_prevEncoderPos = m_EncoderPos;
-}
-
-/** \brief Check if encoder position has been changed.
- *
- * \return bool
- *
- */
-bool aDCSettings::isEncoderPositionChanged()
-{
-    return (!_isEqual(m_EncoderPos, m_prevEncoderPos));
+    return m_encoderPos;
 }
 
 // Operation Mode
 /** \brief Operation mode setter
  *
- * \param m OperationMode : <b> new operation mode </b>
+ * \param m OperationMode_t : <b> new operation mode </b>
  * \return void
  *
  */
-void aDCSettings::setOperationMode(OperationMode m)
+void aDCSettings::setOperationMode(OperationMode_t m)
 {
-    m_prevOperationMode = m_operationMode;
+    OperationMode_t p = m_operationMode;
     m_operationMode = m;
 
-    if (m_operationMode == OPERATION_SET)
-        m_operationTick = millis();
-    else
-        m_operationTick = 0;
+    _enableDataCheck(DATA_OPERATION, (p != m_operationMode));
+
+    m_operationTick = (m_operationMode == OPERATION_MODE_SET) ? millis() : 0;
 }
 
 /** \brief Operation mode getter
  *
- * \return OperationMode : <b> operation mode </b>
+ * \return OperationMode_t : <b> operation mode </b>
  *
  */
-OperationMode aDCSettings::getOperationMode()
+aDCSettings::OperationMode_t aDCSettings::getOperationMode()
 {
     return m_operationMode;
 }
@@ -1018,13 +793,10 @@ OperationMode aDCSettings::getOperationMode()
  */
 void aDCSettings::updateOperationMode()
 {
-    if (m_operationMode == OPERATION_SET)
+    if (m_operationMode == OPERATION_MODE_SET)
     {
         if ((millis() - m_operationTick) > OPERATION_SET_TIMEOUT)
-        {
-            m_operationMode = OPERATION_READ;
-            m_operationTick = 0;
-        }
+            setOperationMode(OPERATION_MODE_READ);
     }
 }
 
@@ -1035,28 +807,8 @@ void aDCSettings::updateOperationMode()
  */
 void aDCSettings::pingOperationMode()
 {
-    if (m_operationMode == OPERATION_SET)
+    if (m_operationMode == OPERATION_MODE_SET)
         m_operationTick = millis();
-}
-
-/** \brief Check if Operation mode has been changed
- *
- * \return bool
- *
- */
-bool aDCSettings::isOperationModeChanged()
-{
-    return (m_operationMode != m_prevOperationMode);
-}
-
-/** \brief Synchronize previous operation mode and current one.
- *
- * \return void
- *
- */
-void aDCSettings::syncOperationMode()
-{
-    m_prevOperationMode = m_operationMode;
 }
 
 // Autolock
@@ -1120,29 +872,6 @@ bool aDCSettings::isFeatureEnabled(uint16_t feature)
     return (m_features & feature);
 }
 
-/** \brief Check if both float values are identical
- *
- * \param v1 float : <b> First value to compare with </b>
- * \param v2 float : <b> Second value to compare with </b>
- * \return bool : <b> true if equal, false otherwise </b>
- *
- */
-bool aDCSettings::_isEqual(float v1, float v2)
-{
-    return (v1 == v2);
-}
-
-/** \brief Check if both int32_t values are identical
- *
- * \param v1 int32_t : <b> First value to compare with </b>
- * \param v2 int32_t : <b> Second value to compare with </b>
- * \return bool : <b> true if equal, false otherwise </b>
- *
- */
-bool aDCSettings::_isEqual(int32_t v1, int32_t v2)
-{
-    return (v1 == v2);
-}
 /**
 *** EEPROM functions
 **/
@@ -1208,6 +937,64 @@ void aDCSettings::_eepromRestore()
     enableFeature(FEATURE_AUTOLOCK, (EEPROM.read(EEPROM_ADDR_AUTOLOCK) == 1));
 }
 
+/** \brief Enable a bit in the m_datas bit-field storage
+ *
+ * \param bit uint16_t : <b> Bit to set </b>
+ * \param enable bool : <b> Bit enability </b>
+ * \return void
+ *
+ */
+void aDCSettings::_enableData(uint16_t bit, bool enable)
+{
+    if (enable)
+        m_datas |= bit;
+    else
+        m_datas &= (0xFFFF ^ bit);
+
+}
+
+/** \brief Enable a bit in the m_datas bit-field storage, checking for previous state.
+ *
+ * If the bit is already sets to TRUE, we don't touch his state, syncData() should be called for this.
+ *
+ * \param bit uint16_t : <b> Bit to set </b>
+ * \param enable bool : <b> Bit enability </b>
+ * \return void
+ *
+ */
+void aDCSettings::_enableDataCheck(uint16_t bit, bool enable)
+{
+    if (m_datas & bit)
+        return;
+
+    if (enable)
+        m_datas |= bit;
+    else
+        m_datas &= (0xFFFF ^ bit);
+}
+
+/** \brief Get bit enability in m_datas bit-field storage
+ *
+ * \param bit uint16_t : <b> Bit to check </b>
+ * \return bool
+ *
+ */
+bool aDCSettings::isDataEnabled(uint16_t bit)
+{
+    return (m_datas & bit);
+}
+
+/** \brief Clear a bit in m_datas bit-field storage
+ *
+ * \param bit uint16_t
+ * \return void
+ *
+ */
+void aDCSettings::syncData(uint16_t bit)
+{
+    _enableData(bit, false);
+}
+
 /** \brief Constructor
  */
 aStepper::aStepper() : m_inc(0), m_incPrev(255)
@@ -1265,35 +1052,38 @@ int16_t aStepper::incGetMult()
 
 /** \brief Get value according to selection mode
  *
- * \param mode SelectionMode : <b> Selection mode </b>
+ * \param mode uint16_t : <b> Selection mode (will be typecasted to aDCSettings::SelectionMode_t)</b>
  * \return int16_t
  *
  */
-int16_t aStepper::incGetValueFromMode(SelectionMode mode)
+int16_t aStepper::incGetValueFromMode(uint8_t mode)
 {
-    switch (mode)
+    switch (static_cast<aDCSettings::SelectionMode_t>(mode))
     {
-        case SELECTION_CURRENT:
+        case aDCSettings::SELECTION_MODE_CURRENT:
             {
                 switch (incGetMult())
                 {
                     case 10:
                         return 5;
                         break;
+
                     case 100:
                         return 50;
                         break;
+
                     case 1000:
                         return 500;
+                        break;
                 }
                 return 1;
             }
             break;
 
 #ifdef RESISTANCE
-        case SELECTION_RESISTANCE:
+        case aDCSettings::SELECTION_MODE_RESISTANCE:
 #endif
-        case SELECTION_POWER:
+        case aDCSettings::SELECTION_MODE_POWER:
             return incGetMult();
             break;
 
@@ -1331,7 +1121,7 @@ void aStepper::incSync()
  * \return int16_t : <b> result </b>
  *
  */
-int16_t aStepper::_pow(int base, int exp)
+inline int16_t aStepper::_pow(int base, int exp)
 {
     if(exp < 0)
         return -1;
@@ -1418,17 +1208,14 @@ void aLCD::printCenter(const char *str)
         uint8_t len = strlen(str);
 
         // Scrolling is disabled due to memory footprint
+        uint8_t x = 0;
         if (len <= m_cols)
-        {
-            uint8_t x = (m_cols - len) >> 1;
+            x = (m_cols - len) >> 1;
 
-            setCursor(x, m_curRow);
-        }
-        else
-            setCursor(0, m_curRow);
+        setCursor(x, m_curRow);
 
         LiquidCrystal::print(str);
-
+        m_curCol = x + strlen(str);
 #if 0
         else
         {
@@ -1509,19 +1296,6 @@ void aLCD::printCenter(const __FlashStringHelper *ifsh)
     printCenter(buf);
 }
 
-/** \brief Clear to end of line starting at given row
- *
- * \param row uint8_t : <b> Starting row </b>
- * \return void
- *
- */
-void aLCD::clearLine(uint8_t row)
-{
-    setCursor(0, row);
-    for (uint8_t i = 0; i < 40; i++)
-        LiquidCrystal::write(char(0x20));
-}
-
 /** \brief Clear displayed value, from given row, stopping at value end field - destMinus
  *
  * \param row uint8_t : <b> field row </b>
@@ -1571,20 +1345,97 @@ aDCDisplay::~aDCDisplay()
  */
 void aDCDisplay::setup()
 {
+    static const uint8_t _glyphs[8][8] =
+    {
+        { // . ..1
+            B00000,
+            B00000,
+            B00001,
+            B00001,
+            B00001,
+            B10101,
+            B00000,
+            B00000
+        },
+        { // . .1.
+            B00000,
+            B00000,
+            B00100,
+            B00100,
+            B00100,
+            B10101,
+            B00000,
+            B00000
+        },
+        { // . 1..
+            B00000,
+            B00000,
+            B10000,
+            B10000,
+            B10000,
+            B10101,
+            B00000,
+            B00000
+        },
+        { // . 1k
+            B00000,
+            B00000,
+            B10000,
+            B10000,
+            B10000,
+            B10101,
+            B00110,
+            B00101
+        },
+        { // USB
+            B00100,
+            B01110,
+            B00101,
+            B10101,
+            B10110,
+            B01100,
+            B00100,
+            B01110
+        },
+        { // LOCK
+            B00110,
+            B00100,
+            B00110,
+            B00100,
+            B00100,
+            B01110,
+            B10001,
+            B01110
+        },
+        { // CHECKBOX UNTICKED
+            B10101,
+            B00000,
+            B10001,
+            B00000,
+            B10001,
+            B00000,
+            B10101,
+            B00000
+        },
+        { // CHECKBOX TICKED
+            B11110,
+            B10001,
+            B00011,
+            B10110,
+            B11101,
+            B01001,
+            B10011,
+            B00000
+        }
+    };
+
     pinMode(LED_BACKLIGHT_PIN, OUTPUT);
 
     // set the LCD Backlight high
     digitalWrite(LED_BACKLIGHT_PIN, HIGH);
 
     for (uint8_t i = 0; i < sizeof(_glyphs) / sizeof(_glyphs[0]); i++)
-    {
-        uint8_t gl[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-
-        for (uint8_t j = 0 ; j < 8; j++)
-            gl[j] = pgm_read_byte(&_glyphs[i][j]);
-
-        aLCD::createChar(i, gl);
-    }
+        aLCD::createChar(i, (uint8_t *)_glyphs[i]);
 }
 
 /** \brief Display small banner
@@ -1596,7 +1447,7 @@ void aDCDisplay::showBanner()
 {
     aLCD::clear();
     aLCD::setCursor(0, 1);
-    aLCD::printCenter(F("DC Electronic Load"));
+    aLCD::printCenter("DC Electronic Load");
 
     char buffer[LCD_COLS_NUM + 1];
     snprintf(buffer, LCD_COLS_NUM, "Version %d.%d", SOFTWARE_VERSION_MAJOR, SOFTWARE_VERSION_MINOR);
@@ -1609,7 +1460,7 @@ void aDCDisplay::showBanner()
 
 /** \brief Update displayed field according to operation mode
  *
- * \param opMode OperationMode : <b> Operation mode </b>
+ * \param opMode OperationMode_t : <b> Operation mode </b>
  * \param vSet float : <b> Settings value </b>
  * \param vRead float : <b> Readed value </b>
  * \param row uint8_t : <b> LCD row position </b>
@@ -1617,105 +1468,107 @@ void aDCDisplay::showBanner()
  * \return void
  *
  */
-void aDCDisplay::updateField(OperationMode opMode, float vSet, float vRead, uint8_t row, uint8_t unit)
+void aDCDisplay::updateField(aDCSettings::OperationMode_t opMode, float vSet, float vRead, uint8_t row, uint8_t unit)
 {
     aLCD::clearValue(row);
-    aLCD::setCursor(((opMode == OPERATION_READ) ? OFFSET_VALUE : (OFFSET_MARKER_RIGHT - getNumericalLength(vSet)) - 1), row);
-    aLCD::print((opMode == OPERATION_READ) ? vRead : vSet, 3);
+    aLCD::setCursor(((opMode == aDCSettings::OPERATION_MODE_READ) ? OFFSET_VALUE : (OFFSET_MARKER_RIGHT - getNumericalLength(vSet)) - 1), row);
+    aLCD::print((opMode == aDCSettings::OPERATION_MODE_READ) ? vRead : vSet, 3);
     aLCD::print(char(unit));
 }
 
 /** \brief Update LCD display management function
+ *
+ * Draw/Redraw on screen datas
  *
  * \return void
  *
  */
 void aDCDisplay::updateDisplay()
 {
-    aDCSettings    *d           = (aDCSettings *)m_Parent->_getSettings();
-    bool            fullRedraw  = false;
-    OperationMode   opMode;
+    aDCSettings                    *d           = (aDCSettings *)m_Parent->_getSettings();
+    bool                            fullRedraw  = false;
+    aDCSettings::OperationMode_t    opMode;
 
     switch (d->getDisplayMode())
     {
-        case DISPLAY_VALUES:
-            if (d->isDisplayModeChanged())
+        case aDCSettings::DISPLAY_MODE_VALUES:
+            if (d->isDataEnabled(aDCSettings::DATA_DISPLAY))
             {
                 fullRedraw = true;
 
                 aLCD::clear();
                 aLCD::setCursor(OFFSET_UNIT, 0);
-                aLCD::print(F("U: "));
+                aLCD::print("U: ");
                 aLCD::setCursor(OFFSET_UNIT + OFFSET_TEMP, 0);
                 aLCD::print(char(0xDF)); // °
-                aLCD::print(F("C: "));
-                aLCD::setCursor(OFFSET_UNIT, SELECTION_CURRENT + 1);
-                aLCD::print(F("I: "));
+                aLCD::print("C: ");
+                aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_CURRENT + 1);
+                aLCD::print("I: ");
 #ifdef RESISTANCE
-                aLCD::setCursor(OFFSET_UNIT, SELECTION_RESISTANCE + 1);
-                aLCD::print(F("R: "));
+                aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_RESISTANCE + 1);
+                aLCD::print("R: ");
 #endif
-                aLCD::setCursor(OFFSET_UNIT, SELECTION_POWER + 1);
-                aLCD::print(F("P: "));
+                aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_POWER + 1);
+                aLCD::print("P: ");
             }
 
-            if (!d->isVoltageAlreadyDisplayed() || fullRedraw)
+            if (d->isDataEnabled(aDCSettings::DATA_VOLTAGE) || fullRedraw)
             {
                 aLCD::clearValue(0, -2);
                 aLCD::setCursor(OFFSET_VALUE, 0);
-                aLCD::print(d->getVoltageRead(), 3);
+                aLCD::print(d->getVoltage(), 3);
                 aLCD::print('V');
-                d->syncVoltageDisp();
+                d->syncData(aDCSettings::DATA_VOLTAGE);
             }
 
-            if (!d->isTemperatureAlreadyDisplayed() || fullRedraw)
+            if (d->isDataEnabled(aDCSettings::DATA_TEMPERATURE) || fullRedraw)
             {
                 aLCD::setCursor(OFFSET_VALUE + OFFSET_TEMP + 1, 0);
-                aLCD::print(F("   "));
+                aLCD::print("   ");
                 aLCD::setCursor(OFFSET_VALUE + OFFSET_TEMP + 1, 0);
-                aLCD::print(d->getTemperatureRead(), DEC);
-                d->syncTemperatureDisp();
+                aLCD::print(d->getTemperature(), DEC);
+                d->syncData(aDCSettings::DATA_TEMPERATURE);
             }
 
             // Display Current Set/Read
             opMode = d->getOperationMode();
 
-            if (d->isOperationModeChanged())
+            if (d->isDataEnabled(aDCSettings::DATA_OPERATION))
             {
                 fullRedraw = true;
-                d->syncOperationMode();
+                d->syncData(aDCSettings::DATA_OPERATION);
             }
 
-            if (!d->isCurrentAlreadyDisplayed() || fullRedraw)
+            if (d->isDataEnabled((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_CURRENT_READ : aDCSettings::DATA_CURRENT_SETS) || fullRedraw)
             {
-                updateField(opMode, d->getCurrentSets(), d->getCurrentRead(), SELECTION_CURRENT + 1, 'A');
-                d->syncCurrentDisp();
+                updateField(opMode, d->getCurrent(aDCSettings::OPERATION_MODE_SET), d->getCurrent(aDCSettings::OPERATION_MODE_READ), aDCSettings::SELECTION_MODE_CURRENT + 1, 'A');
+                d->syncData((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_CURRENT_READ : aDCSettings::DATA_CURRENT_SETS);
             }
 
 #ifdef RESISTANCE
-            if (!d->isResistanceAlreadyDisplayed() || fullRedraw)
+            if (d->isDataEnabled((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_RESISTANCE_READ : aDCSettings::DATA_RESISTANCE_SETS) || fullRedraw)
             {
-                updateField(opMode, d->getResistanceSets(), d->getResistanceRead(), SELECTION_RESISTANCE + 1, char(0xF4));
-                d->syncResistanceDisp();
+                updateField(opMode, d->getResistance(aDCSettings::OPERATION_MODE_SET), d->getResistance(aDCSettings::OPERATION_MODE_READ), aDCSettings::SELECTION_MODE_RESISTANCE + 1, char(0xF4));
+                d->syncData((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_RESISTANCE_READ : aDCSettings::DATA_RESISTANCE_SETS);
             }
 #endif // RESISTANCE
 
-            if (!d->isPowerAlreadyDisplayed() || fullRedraw)
+            if (d->isDataEnabled((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_POWER_READ : aDCSettings::DATA_POWER_SETS) || fullRedraw)
             {
-                updateField(opMode, d->getPowerSets(), d->getPowerRead(), SELECTION_POWER + 1, 'W');
-                d->syncPowerDisp();
+                updateField(opMode, d->getPower(aDCSettings::OPERATION_MODE_SET), d->getPower(aDCSettings::OPERATION_MODE_READ), aDCSettings::SELECTION_MODE_POWER + 1, 'W');
+                d->syncData((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_POWER_READ : aDCSettings::DATA_POWER_SETS);
             }
 
-            if (d->isSelectionModeChanged() || d->isDisplayModeChanged() || fullRedraw)
+            if (d->isDataEnabled(aDCSettings::DATA_SELECTION) || d->isDataEnabled(aDCSettings::DATA_DISPLAY) || fullRedraw)
             {
-                uint8_t prevMode = static_cast<uint8_t>(d->getPrevMode(d->getSelectionMode())) + 1;
                 uint8_t mode = static_cast<uint8_t>(d->getSelectionMode()) + 1;
+                uint8_t prevMode = static_cast<uint8_t>(d->getPrevNextMode(static_cast<aDCSettings::SelectionMode_t>(mode - 1), false)) + 1;
 
                 // Clear previous mode selection markers
                 aLCD::setCursor(OFFSET_MARKER_LEFT, prevMode);
                 aLCD::print(' ');
                 aLCD::setCursor(OFFSET_MARKER_RIGHT, prevMode);
-                aLCD::print(F("  ")); // Marker + stepper
+                aLCD::print("  "); // Marker + stepper
 
                 // Force stepper redraw
                 fullRedraw = true;
@@ -1725,7 +1578,7 @@ void aDCDisplay::updateDisplay()
                 aLCD::setCursor(OFFSET_MARKER_RIGHT, mode);
                 aLCD::print(']');
 
-                d->syncSelectionMode();
+                d->syncData(aDCSettings::DATA_SELECTION);
             }
 
             // Update Stepper icon
@@ -1783,14 +1636,14 @@ void aDCDisplay::updateDisplay()
                 d->enableFeature(FEATURE_OVP_VISIBLE);
 
                 aLCD::setCursor(ALARM_OV_X_COORD, ALARM_OV_Y_COORD);
-                aLCD::print(F("OV"));
+                aLCD::print("OV");
             }
             else if (!d->isFeatureEnabled(FEATURE_OVP) && (d->isFeatureEnabled(FEATURE_OVP_VISIBLE) || fullRedraw))
             {
                 d->enableFeature(FEATURE_OVP_VISIBLE, false);
 
                 aLCD::setCursor(ALARM_OV_X_COORD, ALARM_OV_Y_COORD);
-                aLCD::print(F("  "));
+                aLCD::print("  ");
             }
 
             // OCP
@@ -1799,26 +1652,26 @@ void aDCDisplay::updateDisplay()
                 d->enableFeature(FEATURE_OCP_VISIBLE);
 
                 aLCD::setCursor(ALARM_OC_X_COORD, ALARM_OC_Y_COORD);
-                aLCD::print(F("OC"));
+                aLCD::print("OC");
             }
             else if (!d->isFeatureEnabled(FEATURE_OCP) && (d->isFeatureEnabled(FEATURE_OCP_VISIBLE) || fullRedraw))
             {
                 d->enableFeature(FEATURE_OCP_VISIBLE, false);
 
                 aLCD::setCursor(ALARM_OC_X_COORD, ALARM_OC_Y_COORD);
-                aLCD::print(F("  "));
+                aLCD::print("  ");
             }
             break;
 
-      case DISPLAY_SETUP:
+      case aDCSettings::DISPLAY_MODE_SETUP:
             pingBacklight();
             d->pingAutolock();
-            if (d->isDisplayModeChanged())
+            if (d->isDataEnabled(aDCSettings::DATA_DISPLAY))
             {
                 aLCD::clear();
                 aLCD::setCursor(0, 0);
                 aLCD::print("Options:");
-                d->syncDisplayMode();
+                d->syncData(aDCSettings::DATA_DISPLAY);
 
                 aLCD::setCursor(0, 1);
                 aLCD::printCenter("Auto Dimmer");
@@ -1826,10 +1679,10 @@ void aDCDisplay::updateDisplay()
                 aLCD::printCenter("Auto Lock");
             }
 
-            if (d->isSelectionModeChanged() || d->isDisplayModeChanged() || fullRedraw)
+            if (d->isDataEnabled(aDCSettings::DATA_SELECTION) || d->isDataEnabled(aDCSettings::DATA_DISPLAY) || fullRedraw)
             {
-                uint8_t prevMode = static_cast<uint8_t>(d->getPrevMode(d->getSelectionMode())) + 1;
                 uint8_t mode = static_cast<uint8_t>(d->getSelectionMode()) + 1;
+                uint8_t prevMode = static_cast<uint8_t>(d->getPrevNextMode(static_cast<aDCSettings::SelectionMode_t>(mode - 1), false)) + 1;
 
                 // Clear previous mode selection markers
                 aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT, prevMode);
@@ -1845,7 +1698,7 @@ void aDCDisplay::updateDisplay()
                 aLCD::setCursor(OFFSET_SETUP_MARKER_RIGHT, mode);
                 aLCD::print(']');
 
-                d->syncSelectionMode();
+                d->syncData(aDCSettings::DATA_SELECTION);
             }
 
             if (d->isFeatureEnabled(FEATURE_AUTODIM) && (!d->isFeatureEnabled(FEATURE_AUTODIM_VISIBLE) || fullRedraw))
@@ -1973,7 +1826,7 @@ aDCEngine::aDCEngine(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t
                        m_encoder(new ClickEncoder(enca, encb, encpb, encsteps)),
                        m_RXoffset(0)
 {
-    memset(&m_RXbuffer, '\0', sizeof(m_RXbuffer));
+    m_RXbuffer[0] = '\0';
 }
 
 /** \brief Destructor
@@ -1989,20 +1842,21 @@ aDCEngine::~aDCEngine()
  */
 void aDCEngine::_updateLoggingAndRemote()
 {
+#if 1
     if (Serial)
     {
         bool single = false;
 
-        if (Serial.available() > 0)
+        if (serialAvailable() > 0)
         {
             bool EOL = false;
 
             if (!m_Data.isFeatureEnabled(FEATURE_USB))
                 m_Data.enableFeature(FEATURE_USB);
 
-            while (Serial.available() > 0)
+            while (serialAvailable() > 0)
             {
-                m_RXbuffer[m_RXoffset] = Serial.read();
+                m_RXbuffer[m_RXoffset] = serialRead();
 
                 if (m_RXbuffer[m_RXoffset] == 0xA)
                 {
@@ -2021,6 +1875,12 @@ void aDCEngine::_updateLoggingAndRemote()
 
                 if (m_RXoffset >= 3)
                 {
+                    /*
+                     *** Format is: :CMD:<ARG>
+                     ***         CMD is command
+                     ***         ARG is optional argument
+                     */
+
                     uint8_t *cmdStart, *cmdEnd;
                     if (((cmdStart = (uint8_t *)strchr((const char *)&m_RXbuffer[0], ':')) != NULL) &&
                         ((cmdEnd = (uint8_t *)strchr((const char *)cmdStart + 1, ':')) != NULL))
@@ -2033,88 +1893,88 @@ void aDCEngine::_updateLoggingAndRemote()
 
                         serialPrint(':');
 
-                        if (!strcasecmp((const char *)cmd, "ISET?")) // Get Current Settings
+                        if (!strcmp((const char *)cmd, "ISET?")) // Get Current Settings
                         {
-                            serialPrint(floatRounding(floatRounding(m_Data.getCurrentSets()) * floatRounding(1000.000)), 0);
+                            serialPrint(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET)) * 1000.000), 0);
                             valid = true;
                         }
-                        else if (!strcasecmp((const char *)cmd, "ISET")) // Current Setting
+                        else if (!strcmp((const char *)cmd, "ISET")) // Current Setting
                         {
                             float v = atof((const char *)arg);
-                            float nv = floatRounding(floatRounding(v) / floatRounding(1000.000));
+                            float nv = floatRounding(floatRounding(v) / 1000.000);
 
-                            m_Data.updateValuesFromMode(nv, SELECTION_CURRENT);
+                            m_Data.updateValuesFromMode(nv, aDCSettings::SELECTION_MODE_CURRENT);
 
-                            serialPrint(floatRounding(floatRounding(m_Data.getCurrentSets()) * floatRounding(1000.000)), 0);
+                            serialPrint(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET)) * 1000.000), 0);
 
                             switch (m_Data.getSelectionMode())
                             {
-                                case SELECTION_CURRENT:
-                                    m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getCurrentSets()) * floatRounding(500.000))));
+                                case aDCSettings::SELECTION_MODE_CURRENT:
+                                    m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET)) * 500.000)));
                                     break;
 #ifdef RESISTANCE
-                                case SELECTION_RESISTANCE:
-                                    m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getResistanceSets()) * floatRounding(1000.000))));
+                                case aDCSettings::SELECTION_MODE_RESISTANCE:
+                                    m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getResistance(aDCSettings::OPERATION_MODE_SET)) * 1000.000)));
                                     break;
 #endif
-                                case SELECTION_POWER:
-                                    m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getPowerSets()) * floatRounding(1000.000))));
+                                case aDCSettings::SELECTION_MODE_POWER:
+                                    m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getPower(aDCSettings::OPERATION_MODE_SET)) * 1000.000)));
                                     break;
                                 default:
                                     break;
                             }
 
-                            m_Data.syncEncoderPosition();
+                            m_Data.syncData(aDCSettings::DATA_ENCODER);
 
-                            valid = (m_Data.getCurrentSets() == nv);
+                            valid = (m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET) == nv);
                         }
 #ifdef SIMU
-                        else if (!strcasecmp((const char *)cmd, "USET")) // Voltage Read Setting
+                        else if (!strcmp((const char *)cmd, "USET")) // Voltage Read Setting
                         {
                             float v = atof((const char *)arg);
-                            if (m_Data.setVoltageRead(floatRounding(floatRounding(v) / floatRounding(1000.000))) == aDCSettings::SETTING_OVERSIZED)
+                            if (m_Data.setVoltage(floatRounding(floatRounding(v) / 1000.000)) == aDCSettings::SETTING_ERROR_OVERSIZED)
                             {
                                 m_Data.enableFeature(FEATURE_OVP);
-                                m_Data.setCurrentSets(0.0);
+                                m_Data.setCurrent(0.0, aDCSettings::OPERATION_MODE_SET);
                                 m_Data.setEncoderPosition(0);
-                                m_Data.syncEncoderPosition();
+                                m_Data.syncData(aDCSettings::DATA_ENCODER);
                             }
 
-                            serialPrint(floatRounding(floatRounding(m_Data.getVoltageRead()) * floatRounding(1000.000)), 0);
+                            serialPrint(floatRounding(floatRounding(m_Data.getVoltage()) * 1000.000), 0);
                             valid = true;
                         }
-                        else if (!strcasecmp((const char *)cmd, "IS")) // Set Current Read
+                        else if (!strcmp((const char *)cmd, "IS")) // Set Current Read
                         {
                             float v = atof((const char *)arg);
-                            float nv = floatRounding(floatRounding(v) / floatRounding(1000.000));
+                            float nv = floatRounding(floatRounding(v) / 1000.000);
 
-                            m_Data.setCurrentRead(nv);
+                            m_Data.setCurrent(nv, aDCSettings::OPERATION_MODE_READ);
 
-                            serialPrint(floatRounding(floatRounding(m_Data.getCurrentRead()) * floatRounding(1000.000)), 0);
+                            serialPrint(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) * 1000.000), 0);
 
-                            valid = (m_Data.getCurrentRead() == nv);
+                            valid = (m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ) == nv);
                         }
 #endif
-                        else if (!strcasecmp((const char *)cmd, "I?")) // Report Current Read
+                        else if (!strcmp((const char *)cmd, "I?")) // Report Current Read
                         {
-                            serialPrint(floatRounding(floatRounding(m_Data.getCurrentRead()) * floatRounding(1000.000)), 0);
+                            serialPrint(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) * 1000.000), 0);
                             valid = true;
                         }
-                        else if (!strcasecmp((const char *)cmd, "U?")) // Report Voltage Read
+                        else if (!strcmp((const char *)cmd, "U?")) // Report Voltage Read
                         {
-                            serialPrint(floatRounding(floatRounding(m_Data.getVoltageRead()) * floatRounding(1000.000)), 0);
+                            serialPrint(floatRounding(floatRounding(m_Data.getVoltage()) * 1000.000), 0);
                             valid = true;
                         }
-                        else if (!strcasecmp((const char *)cmd, "L?")) // Logging Ask
+                        else if (!strcmp((const char *)cmd, "L?")) // Logging Ask
                         {
-                            serialPrint(m_Data.isFeatureEnabled(FEATURE_LOGGING) ? F("ON") : F("OFF"));
+                            serialPrint(m_Data.isFeatureEnabled(FEATURE_LOGGING) ? "ON" : "OFF");
                             valid = true;
                         }
-                        else if (!strcasecmp((const char *)cmd, "L")) // Logging ON/OFF
+                        else if (!strcmp((const char *)cmd, "L")) // Logging ON/OFF
                         {
-                            if (!strcasecmp((const char *)arg, "OFF"))
+                            if (!strcmp((const char *)arg, "OFF"))
                                 m_Data.enableFeature(FEATURE_LOGGING, false);
-                            else if (!strcasecmp((const char *)arg, "ON"))
+                            else if (!strcmp((const char *)arg, "ON"))
                                 m_Data.enableFeature(FEATURE_LOGGING, true);
                             else
                                 single = true;
@@ -2122,73 +1982,73 @@ void aDCEngine::_updateLoggingAndRemote()
                             valid = true;
                         }
 #ifdef SIMU
-                        else if (!strcasecmp((const char *)cmd, "T")) // Temperature Read Setting
+                        else if (!strcmp((const char *)cmd, "T")) // Temperature Read Setting
                         {
                             uint8_t v = static_cast<uint8_t>(atoi((const char *)arg));
-                            m_Data.setTemperatureRead(v);
+                            m_Data.setTemperature(v);
 
-                            serialPrint(m_Data.getTemperatureRead());
+                            serialPrint(int(m_Data.getTemperature()));
                             valid = true;
                         }
 #endif
 #if 0
-                        else if (!strcasecmp((const char *)cmd, "?")) // Temperature Read Setting
+                        else if (!strcmp((const char *)cmd, "?")) // Temperature Read Setting
                         {
-                            serialPrintln(F("Usage :CMD:ARG"));
-                            serialPrintln(F("  CMD are:"));
-                            serialPrintln(F("    I?      Get current."));
-                            serialPrintln(F("    I       Set max current."));
-                            serialPrintln(F("    ISET    Set current setting."));
-                            serialPrintln(F("    ISET?   Get current setting."));
-                            serialPrintln(F("    U?      Get Voltage."));
-                            serialPrintln(F("    L       Turn logging ON*, OFF* or SINGLE*."));
-                            serialPrintln(F("    ?       This help."));
+                            serialPrintln("Usage :CMD:ARG");
+                            serialPrintln("  CMD are:");
+                            serialPrintln("    I?      Get current.");
+                            serialPrintln("    I       Set max current.");
+                            serialPrintln("    ISET    Set current setting.");
+                            serialPrintln("    ISET?   Get current setting.");
+                            serialPrintln("    U?      Get Voltage.");
+                            serialPrintln("    L       Turn logging ON*, OFF* or SINGLE*.");
+                            serialPrintln("    ?       This help.");
 #ifdef SIMU
-                            serialPrintln(F("IS,USET,T (simulation)."));
+                            serialPrintln("IS,USET,T (simulation).");
 #endif
-                            serialPrintln(F(""));
-                            serialPrintln(F("* is ARG"));
-                            serialPrintln(F("returns value (is needed) + ':OK:' or ':ERR:'"));
+                            serialPrintln("");
+                            serialPrintln("* is ARG");
+                            serialPrintln("returns value (is needed) + ':OK:' or ':ERR:'");
                             valid = true;
                         }
 #endif
                         else
-                            serialPrint(F("INVALID"));
+                            serialPrint("INVALID");
                     }
 
                     // Clear buffer for next command
-                    memset(&m_RXbuffer, '\0', sizeof(m_RXbuffer));
+                    m_RXbuffer[0] = '\0';
                     m_RXoffset = 0;
                 }
 
                 serialPrint(':');
-                serialPrint(valid ? F("OK") : F("ERR"));
+                serialPrint(valid ? "OK" : "ERR");
                 serialPrintln(':');
             }
         }
 
         // Logging
-        /**
-        *** Format is: :L:timestamp:voltage:current:temperature::
-        ***         timestamp in milliseconds
-        ***         voltage in mV
-        ***         current in mA
-        ***         temperature in Celcius
-        **/
+        /*
+         *** Format is: timestamp,voltage,current,temperature
+         ***         timestamp in hundred of milliseconds
+         ***         voltage in mV
+         ***         current in mA
+         ***         temperature in Celcius
+         */
         unsigned long m = millis();
-        if ((m_Data.isFeatureEnabled(FEATURE_LOGGING) && !(m % 100)) || single)
+        if ((m_Data.isFeatureEnabled(FEATURE_LOGGING) && !(m % 200)) || single)
         {
             serialPrint(m / 100);
             serialPrint(',');
-            serialPrint(floatRounding(floatRounding(m_Data.getVoltageRead()) * floatRounding(1000.000)), 0);
+            serialPrint(floatRounding(floatRounding(m_Data.getVoltage()) * 1000.000), 0);
             serialPrint(',');
-            serialPrint(floatRounding(floatRounding(m_Data.getCurrentRead()) * floatRounding(1000.000)), 0);
+            serialPrint(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) * 1000.000), 0);
             serialPrint(',');
-            serialPrint(m_Data.getTemperatureRead());
+            serialPrint(int(m_Data.getTemperature()));
             serialPrintln();
         }
 
-        Serial.flush();
+        serialFlush();
     }
     else
     {
@@ -2199,6 +2059,7 @@ void aDCEngine::_updateLoggingAndRemote()
             m_Data.enableFeature(FEATURE_USB, false);
 
     }
+#endif
 }
 
 /** \brief Setup function, should be called before any other member
@@ -2232,14 +2093,12 @@ void aDCEngine::setup(ISRCallback isr)
     aDCDisplay::showBanner();
 
     // Data Logging and Remote Control
-    Serial.begin(9600);
-    Serial.flush();
+    Serial.begin(57600);
+    serialFlush();
     // Flushing buffered char.
      if (Serial)
-    {
-        while (Serial.available() > 0)
-            Serial.read();
-    }
+        while (serialAvailable() > 0)
+            serialRead();
 }
 
 /** \brief Main loop function.
@@ -2260,7 +2119,7 @@ void aDCEngine::run()
 
         m_Data.updateOperationMode();
 
-        if ((v != 0) && (!m_Data.isFeatureEnabled(FEATURE_LOCKED)) && (m_Data.getDisplayMode() == DISPLAY_VALUES))
+        if ((v != 0) && (!m_Data.isFeatureEnabled(FEATURE_LOCKED)) && (m_Data.getDisplayMode() == aDCSettings::DISPLAY_MODE_VALUES))
         {
             int16_t mult = m_Data.incGetValueFromMode(m_Data.getSelectionMode());
 
@@ -2269,13 +2128,13 @@ void aDCEngine::run()
 
 
         // Is USB control is enabled and the encoder has been rotated, turn OFF USB icon
-        if (m_Data.isEncoderPositionChanged())
+        if (m_Data.isDataEnabled(aDCSettings::DATA_ENCODER))
         {
             // Is dimmed, wake up the backlight
             if (isBacklightDimmed())
             {
                 m_Data.setEncoderPosition(oldPos);
-                m_Data.syncEncoderPosition();
+                m_Data.syncData(aDCSettings::DATA_ENCODER);
 
                 pingBacklight();
                 continue;
@@ -2293,13 +2152,13 @@ void aDCEngine::run()
                 m_Data.enableFeature(FEATURE_USB, false);
 
             // If current operation mode is READ, set display to SET mode, handling next encoder event
-            if (m_Data.getOperationMode() == OPERATION_READ)
+            if (m_Data.getOperationMode() == aDCSettings::OPERATION_MODE_READ)
             {
                 // Ignore new encoder position
                 m_Data.setEncoderPosition(oldPos);
-                m_Data.syncEncoderPosition();
+                m_Data.syncData(aDCSettings::DATA_ENCODER);
                 // Turn on settings adjustments
-                m_Data.setOperationMode(OPERATION_SET);
+                m_Data.setOperationMode(aDCSettings::OPERATION_MODE_SET);
                 m_Data.pingOperationMode();
                 continue;
             }
@@ -2359,21 +2218,20 @@ void aDCEngine::run()
                 pingBacklight();
             }
 
-            if (!m_Data.isFeatureEnabled(FEATURE_LOCKED) && (b == ClickEncoder::Held && !m_Data.isDisplayModeChanged()))
+            if (!m_Data.isFeatureEnabled(FEATURE_LOCKED) && (b == ClickEncoder::Held && !m_Data.isDataEnabled(aDCSettings::DATA_DISPLAY)))
             {
                 do
                 {
                     m_Data.pingAutolock();
                 } while (m_encoder->getButton() != ClickEncoder::Released);
 
-                m_Data.setSelectionMode(SELECTION_UNKNOWN);
-                m_Data.setSelectionMode(SELECTION_CURRENT);
+                m_Data.setSelectionMode(aDCSettings::SELECTION_MODE_CURRENT, true);
                 m_Data.enableFeature(FEATURE_LOCKED, false);
-                m_Data.setDisplayMode(static_cast<DisplayMode>(!m_Data.getDisplayMode()));
+                m_Data.setDisplayMode(static_cast<aDCSettings::DisplayMode_t>(!m_Data.getDisplayMode()));
             }
 
             // Increment encoder step (0.001, 0.01, 0.1, 1.0)
-            if ((b == ClickEncoder::Clicked) && (m_Data.getDisplayMode() == DISPLAY_VALUES))
+            if ((b == ClickEncoder::Clicked) && (m_Data.getDisplayMode() == aDCSettings::DISPLAY_MODE_VALUES))
                 m_Data.incIncrement();
 
             // Change selection mode according to double click.
@@ -2381,11 +2239,11 @@ void aDCEngine::run()
         }
 
         // Reads input voltage from the load source. ****MAXIMUM 24V INPUT****
-        if (m_Data.setVoltageRead(_readInputVoltage()) == aDCSettings::SETTING_OVERSIZED)
+        if (m_Data.setVoltage(_readInputVoltage()) == aDCSettings::SETTING_ERROR_OVERSIZED)
         {
             // Over-Voltage protection triggered
             m_Data.enableFeature(FEATURE_OVP);
-            m_Data.setCurrentSets(0.0);
+            m_Data.setCurrent(0.0, aDCSettings::OPERATION_MODE_SET);
             m_Data.setEncoderPosition(0);
         }
 
@@ -2399,11 +2257,11 @@ void aDCEngine::run()
         // Updates the LCD display. Accepts the lcdDisplay variable which defines if the values or menu is to be displayed.
         updateDisplay();
 
-        if (m_Data.isDisplayModeChanged())
-            m_Data.syncDisplayMode();
+        if (m_Data.isDataEnabled(aDCSettings::DATA_DISPLAY))
+            m_Data.syncData(aDCSettings::DATA_DISPLAY);
 
-        if (m_Data.isEncoderPositionChanged())
-            m_Data.syncEncoderPosition();
+        if (m_Data.isDataEnabled(aDCSettings::DATA_ENCODER))
+            m_Data.syncData(aDCSettings::DATA_ENCODER);
 
          // Data logging and USB controlling
         _updateLoggingAndRemote();
@@ -2420,25 +2278,25 @@ void aDCEngine::_handleButtonEvent(ClickEncoder::Button button)
 {
     switch (m_Data.getDisplayMode())
     {
-        case DISPLAY_VALUES:
+        case aDCSettings::DISPLAY_MODE_VALUES:
             if (button == ClickEncoder::DoubleClicked)
             {
-                m_Data.setSelectionMode(m_Data.getNextMode());
+                m_Data.setSelectionMode(m_Data.getPrevNextMode());
                 // Force redraw
                 m_Data.incEncoderPosition(-1);
 
                 switch (m_Data.getSelectionMode())
                 {
-                    case SELECTION_CURRENT:
-                        m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getCurrentSets()) * floatRounding(500.000))));
+                    case aDCSettings::SELECTION_MODE_CURRENT:
+                        m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET)) * 500.000)));
                         break;
 #ifdef RESISTANCE
-                    case SELECTION_RESISTANCE:
-                        m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getResistanceSets()) * floatRounding(1000.000))));
+                    case aDCSettings::SELECTION_MODE_RESISTANCE:
+                        m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getResistance(aDCSettings::OPERATION_MODE_SET)) * 1000.000)));
                         break;
 #endif
-                    case SELECTION_POWER:
-                        m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getPowerSets()) * floatRounding(1000.000))));
+                    case aDCSettings::SELECTION_MODE_POWER:
+                        m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getPower(aDCSettings::OPERATION_MODE_SET)) * 1000.000)));
                         break;
                     default:
                         break;
@@ -2446,24 +2304,24 @@ void aDCEngine::_handleButtonEvent(ClickEncoder::Button button)
             }
             break;
 
-        case DISPLAY_SETUP:
+        case aDCSettings::DISPLAY_MODE_SETUP:
             switch (button)
             {
                 case ClickEncoder::DoubleClicked:
-                    m_Data.setSelectionMode(m_Data.getNextMode());
+                    m_Data.setSelectionMode(m_Data.getPrevNextMode());
                     break;
 
                 case ClickEncoder::Clicked:
                     switch(m_Data.getSelectionMode())
                     {
-                        case SELECTION_CURRENT:
+                        case aDCSettings::SELECTION_MODE_CURRENT:
                             m_Data.enableFeature(FEATURE_AUTODIM, !m_Data.isFeatureEnabled(FEATURE_AUTODIM));
                             break;
 
 #ifdef RESISTANCE
-                        case SELECTION_RESISTANCE:
+                        case aDCSettings::SELECTION_MODE_RESISTANCE:
 #else
-                        case SELECTION_POWER:
+                        case aDCSettings::SELECTION_MODE_POWER:
 #endif
                             m_Data.enableFeature(FEATURE_AUTOLOCK, !m_Data.isFeatureEnabled(FEATURE_AUTOLOCK));
                             break;
@@ -2501,7 +2359,7 @@ void aDCEngine::service()
 float aDCEngine::_readInputVoltage()
 {
 #ifdef SIMU
-    float v = m_Data.getVoltageRead();// 1.000;
+    float v = m_Data.getVoltage();// 1.000;
 #else
     float v = (_readADC(ADC_INPUTVOLTAGE_CHAN)) * 12.03;
 #endif
@@ -2516,7 +2374,7 @@ float aDCEngine::_readInputVoltage()
 float aDCEngine::_readMeasuredCurrent()
 {
 #ifdef SIMU
-    return m_Data.getCurrentRead();
+    return m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ);
 #else
     return ((_readADC(ADC_MEASUREDCURRENT_CHAN)) / 0.1000);
 #endif // SIMU
@@ -2529,21 +2387,26 @@ float aDCEngine::_readMeasuredCurrent()
  */
 void aDCEngine::_updateLoadCurrent()
 {
-    if ((m_Data.getDisplayMode() == DISPLAY_VALUES) && m_Data.isEncoderPositionChanged())
+    bool encoderChanged = m_Data.isDataEnabled(aDCSettings::DATA_ENCODER);
+
+    if ((m_Data.getDisplayMode() == aDCSettings::DISPLAY_MODE_VALUES) && encoderChanged)
     {
         switch (m_Data.getSelectionMode())
         {
-            case SELECTION_CURRENT:
-                m_Data.updateValuesFromMode(static_cast<float>(floatRounding(floatRounding(float(m_Data.getEncoderPosition())) / floatRounding(500.000))), SELECTION_CURRENT);
+            case aDCSettings::SELECTION_MODE_CURRENT:
+                m_Data.updateValuesFromMode(m_Data.getEncoderPosition() / 500.000, aDCSettings::SELECTION_MODE_CURRENT);
+                //m_Data.updateValuesFromMode(static_cast<float>(floatRounding(floatRounding(float(m_Data.getEncoderPosition())) / 500.000)), aDCSettings::SELECTION_MODE_CURRENT);
                 break;
 
 #ifdef RESISTANCE
-            case SELECTION_RESISTANCE:
-                m_Data.updateValuesFromMode(static_cast<float>(floatRounding(floatRounding(float(m_Data.getEncoderPosition())) / floatRounding(1000.000))), SELECTION_RESISTANCE);
+            case aDCSettings::SELECTION_MODE_RESISTANCE:
+                m_Data.updateValuesFromMode(m_Data.getEncoderPosition() / 1000.000, aDCSettings::SELECTION_MODE_RESISTANCE);
+                //m_Data.updateValuesFromMode(static_cast<float>(floatRounding(floatRounding(float(m_Data.getEncoderPosition())) / 1000.000)), aDCSettings::SELECTION_MODE_RESISTANCE);
                 break;
 #endif
-            case SELECTION_POWER:
-                m_Data.updateValuesFromMode(static_cast<float>(floatRounding(floatRounding(float(m_Data.getEncoderPosition())) / floatRounding(1000.000))), SELECTION_POWER);
+            case aDCSettings::SELECTION_MODE_POWER:
+                m_Data.updateValuesFromMode(m_Data.getEncoderPosition() / 1000.000, aDCSettings::SELECTION_MODE_POWER);
+//                m_Data.updateValuesFromMode(static_cast<float>(floatRounding(floatRounding(float(m_Data.getEncoderPosition())) / 1000.000)), aDCSettings::SELECTION_MODE_POWER);
                 break;
 
             default:
@@ -2552,17 +2415,18 @@ void aDCEngine::_updateLoadCurrent()
     }
 
     // Convert the set current into an voltage to be sent to the DAC
-    switch (m_Data.setCurrentRead(_readMeasuredCurrent()))
+    switch (m_Data.setCurrent(_readMeasuredCurrent(), aDCSettings::OPERATION_MODE_READ))
     {
-        case aDCSettings::SETTING_OVERSIZED:
+        case aDCSettings::SETTING_ERROR_OVERSIZED:
             // Overcurrent alarm
-            m_Data.enableFeature(FEATURE_OCP);
-            m_Data.setCurrentSets(0.0);
-            m_Data.setEncoderPosition(0);
+            if (encoderChanged)
+                m_Data.enableFeature(FEATURE_OCP);
+            m_Data.setCurrent(encoderChanged ? 1 : 0.0, aDCSettings::OPERATION_MODE_SET);
+            m_Data.setEncoderPosition(encoderChanged ? 0 : 0);
             break;
 
-        case aDCSettings::SETTING_UNDERSIZED:
-        case aDCSettings::SETTING_VALID:
+        case aDCSettings::SETTING_ERROR_UNDERSIZED:
+        case aDCSettings::SETTING_ERROR_VALID:
             //m_Data.setOverCurrent(false);
             _adjustCurrent();
             break;
@@ -2576,18 +2440,18 @@ void aDCEngine::_updateLoadCurrent()
  */
 void aDCEngine::_adjustCurrent()
 {
-    float roundedMeasuredCurrent = round(m_Data.getCurrentRead() * 1000) / 1000.000; // This the best way I can think of rounding a floating
+    float roundedMeasuredCurrent = round(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ) * 1000) / 1000.000; // This the best way I can think of rounding a floating
                                                                                      // point number to 3 decimal places.
     //only adjust the current of the set and measured currents are different.
-    if (roundedMeasuredCurrent != m_Data.getCurrentSets())
+    if (roundedMeasuredCurrent != m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET))
     {
         float adjustedCurrent = 0.0;
 
         // To ensure we are not dividing by 0.
-        if (m_Data.getCurrentRead() != 0.0)                                                                  // Turn the current error between set and measured
-            adjustedCurrent = (m_Data.getCurrentSets() / m_Data.getCurrentRead()) * m_Data.getCurrentSets(); // into a percentage so it can be adjusted
+        if (m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ) != 0.0)                                                                  // Turn the current error between set and measured
+            adjustedCurrent = (m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET) / m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) * m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET); // into a percentage so it can be adjusted
         else
-            adjustedCurrent = m_Data.getCurrentSets();
+            adjustedCurrent = m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET);
 
         int16_t dacCurrent = ((adjustedCurrent * 0.1 * 2.5) / 2.048) * 4096;
 
@@ -2596,24 +2460,25 @@ void aDCEngine::_adjustCurrent()
 
         // Read current value again
 #ifdef SIMU
-        m_Data.setCurrentRead(m_Data.getCurrentSets());
+        m_Data.setCurrent(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET), aDCSettings::OPERATION_MODE_READ);
 #else
-        m_Data.setCurrentRead(_readMeasuredCurrent());
+        m_Data.setCurrent(_readMeasuredCurrent(), aDCSettings::OPERATION_MODE_READ);
 #endif
     }
 
 #ifdef RESISTANCE
-    m_Data.setResistanceRead((m_Data.getCurrentRead() > 0.0) ? m_Data.getVoltageRead() / m_Data.getCurrentRead() : 0);
+    m_Data.setResistance((m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ) > 0.0) ? m_Data.getVoltage() / m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ) : 0, aDCSettings::OPERATION_MODE_READ);
 #endif // RESISTANCE
 
-    switch (m_Data.setPowerRead(m_Data.getVoltageRead() * m_Data.getCurrentRead()))
+    switch (m_Data.setPower(floatRounding(m_Data.getVoltage() * m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)), aDCSettings::OPERATION_MODE_READ))
     {
-        case aDCSettings::SETTING_OVERSIZED:
+        case aDCSettings::SETTING_ERROR_OVERSIZED:
             m_Data.enableFeature(FEATURE_OCP);
-            m_Data.setCurrentSets(0.0);
-#ifdef SIMU
-            m_Data.setCurrentRead(0.0);
-#endif // SIMU
+            m_Data.setCurrent(0.0, aDCSettings::OPERATION_MODE_SET);
+            m_Data.setPower(0.0, aDCSettings::OPERATION_MODE_SET);
+#ifdef RESISTANCE
+            m_Data.setResistance(0.0, aDCSettings::OPERATION_MODE_SET);
+#endif
             m_Data.setEncoderPosition(0);
             _adjustCurrent();
             break;
@@ -2708,20 +2573,20 @@ void aDCEngine::_setDAC(uint16_t value, uint8_t channel)
 
 /** \brief Function that read temperature from ADC channels.
  *
- * \return int8_t : <b> temperature </b>
+ * \return int16_t : <b> temperature </b>
  *
  */
-int8_t aDCEngine::_readTemp()
+int16_t aDCEngine::_readTemp()
 {
 #ifdef SIMU
-    return m_Data.getTemperatureRead();
+    return m_Data.getTemperature();
 #else
     float tempSensor1 = _readADC(ADC_TEMPSENSE1_CHAN);
     float tempSensor2 = _readADC(ADC_TEMPSENSE2_CHAN);
     float tempVoltage = ((tempSensor1 + tempSensor2) / 2) * 1000; // This takes an average of bothe temp sensors and converts the
                                                                   // value to millivolts
 
-    return int8_t(((tempVoltage - 1885) / -11.2692307) + 20); //This comes from the datasheet to calculate the temp from the voltage given.
+    return static_cast<int16_t>(((tempVoltage - 1885) / -11.2692307) + 20); // This comes from the datasheet to calculate the temp from the voltage given.
 #endif // SIMU
 }
 
@@ -2732,9 +2597,9 @@ int8_t aDCEngine::_readTemp()
  */
 void aDCEngine::_updateFanSpeed()
 {
-    m_Data.setTemperatureRead(_readTemp());
+    m_Data.setTemperature(_readTemp());
 
-    uint8_t heatSinkTemp = m_Data.getTemperatureRead();
+    uint16_t heatSinkTemp = m_Data.getTemperature();
     static const struct
     {
         uint16_t temp;
@@ -2748,15 +2613,18 @@ void aDCEngine::_updateFanSpeed()
         { 30, 2000 },
         { 0,  0}
     };
+#warning handle over temp
 
     for (uint8_t i = 0; i < (sizeof(fanThresholds) / sizeof(fanThresholds[0])); i++)
     {
         if (heatSinkTemp >= static_cast<uint16_t>(pgm_read_word(&fanThresholds[i].temp)))
         {
-            if (m_Data.getFanSpeed() != static_cast<uint16_t>(pgm_read_word(&fanThresholds[i].speed)))
+            uint16_t speed;
+
+            if (m_Data.getFanSpeed() != (speed = static_cast<uint16_t>(pgm_read_word(&fanThresholds[i].speed))))
             {
-                m_Data.setFanSpeed(static_cast<uint16_t>(pgm_read_word(&fanThresholds[i].speed)));
-                _setDAC(m_Data.getFanSpeed(), DAC_FAN_CHAN);
+                m_Data.setFanSpeed(speed);
+                _setDAC(speed, DAC_FAN_CHAN);
             }
             break;
         }

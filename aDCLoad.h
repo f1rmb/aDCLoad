@@ -28,39 +28,39 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     \author F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
 */
 
-//#define SIMU 1
+#define SIMU 1
 #define RESISTANCE 1                                        ///< Define this if you want to display Resistance settings
 
 // Set Constants
 const uint8_t       ADC_CHIPSELECT_PIN          = 8;        ///< set pin 8 as the chip select for the ADC:
 const uint8_t       ADC_INPUTVOLTAGE_CHAN       = 0;        ///< set the ADC channel that reads the input voltage.
 const uint8_t       ADC_MEASUREDCURRENT_CHAN    = 1;        ///< set the ADC channel that reads the input current by measuring the voltage on the input side of the sense resistors.
-const uint8_t       ADC_TEMPSENSE1_CHAN         = 2;        ///< set the ADC channel that reads the temprature sensor 1 under the heatsink.
-const uint8_t       ADC_TEMPSENSE2_CHAN         = 3;        ///< set the ADC channel that reads the temprature sensor 2 under the heatsink.
+const uint8_t       ADC_TEMPSENSE1_CHAN         = 2;        ///< set the ADC channel that reads the temperature sensor 1 under the heatsink.
+const uint8_t       ADC_TEMPSENSE2_CHAN         = 3;        ///< set the ADC channel that reads the temperature sensor 2 under the heatsink.
 
 const uint8_t       DAC_CHIPSELECT_PIN          = 9;        ///< set pin 9 as the chip select for the DAC:
 const uint16_t      DAC_CURRENT_CHAN            = 0;        ///< set The DAC channel that sets the constant current.
 const uint16_t      DAC_FAN_CHAN                = 1;        ///< set The DAC channel that sets the fan speed.
 
-const uint8_t       LCD_RS_PIN                  = 10;       ///< LCD RS pin.
+const uint8_t       LCD_RS_PIN                  = 13;//10;       ///< LCD RS pin.
 const uint8_t       LCD_ENABLE_PIN              = 12;       ///< LCD ENABLE pin.
-const uint8_t       LCD_D0_PIN                  = 4;        ///< LCD d0 pin.
-const uint8_t       LCD_D1_PIN                  = 13;       ///< LCD d1 pin.
-const uint8_t       LCD_D2_PIN                  = 6;        ///< LCD d2 pin.
-const uint8_t       LCD_D3_PIN                  = 5;        ///< LCD d3 pin.
+const uint8_t       LCD_D0_PIN                  = 10;//4;        ///< LCD d0 pin.
+const uint8_t       LCD_D1_PIN                  = 9;//13;       ///< LCD d1 pin.
+const uint8_t       LCD_D2_PIN                  = 8;//6;        ///< LCD d2 pin.
+const uint8_t       LCD_D3_PIN                  = 7;//5;        ///< LCD d3 pin.
 const uint8_t       LCD_COLS_NUM                = 20;       ///< LCD columns size
 const uint8_t       LCD_ROWS_NUM                = 4;        ///< LCD rows size
 
-const uint8_t       ENCODER_A_PIN               = 3;        ///< set pin 3 as the channel A for encoder 1, int.0:
-const uint8_t       ENCODER_B_PIN               = 2;        ///< set pin 2 as the channel B for encoder 1, int.1:
+const uint8_t       ENCODER_A_PIN               = 3;//3;        ///< set pin 3 as the channel A for encoder 1, int.0:
+const uint8_t       ENCODER_B_PIN               = 2;//2;        ///< set pin 2 as the channel B for encoder 1, int.1:
 #ifdef SIMU
-const uint8_t       ENCODER_PB_PIN              = 21;       ///< set pin 21 as the push button for encoder 1
+const uint8_t       ENCODER_PB_PIN              = 48;//21;       ///< set pin 21 as the push button for encoder 1
 #else
-const uint8_t       ENCODER_PB_PIN              = 0;        ///< set pin 0 as the push button for encoder 1
+const uint8_t       ENCODER_PB_PIN              = 48;//0;        ///< set pin 0 as the push button for encoder 1
 #endif // SIMU
 const uint8_t       ENCODER_STEPS_PER_NOTCH     = 4;        ///< Depending on the type of your encoder, you can define use the constructors parameter `stepsPerNotch` an set it to either `1`, `2` or `4` steps per notch, with `1` being the default.
 
-const uint8_t       LED_BACKLIGHT_PIN           = 11;       ///< LCD backlight pin.
+const uint8_t       LED_BACKLIGHT_PIN           = 6;//11;       ///< LCD backlight pin.
 
 // Values offsets
 const uint8_t       OFFSET_UNIT                 = 1;        ///< Unit column LCD offset
@@ -102,7 +102,7 @@ const float         RESISTANCE_MAXIMUM          = FLT_MAX;  ///< Maximum resista
 
 // Software version
 const int8_t        SOFTWARE_VERSION_MAJOR      = 2;        ///< Software major version
-const int8_t        SOFTWARE_VERSION_MINOR      = 0;        ///< Software minor version
+const int8_t        SOFTWARE_VERSION_MINOR      = 1;        ///< Software minor version
 
 // Features bitfield (max 16)
 const uint16_t      FEATURE_LOGGING             = 1;        ///< Bitfield logging feature
@@ -137,46 +137,9 @@ const int16_t       EEPROM_ADDR_AUTOLOCK        = 5;        ///< EEPROM start of
 
 typedef void (*ISRCallback)();                              ///< Function prototype for ISR callback
 
-// Display Modes
-/** \brief Display mode enumeration
- *
- */
-typedef enum
-{
-    DISPLAY_VALUES, /**< Display read/set values mode */
-    DISPLAY_SETUP,  /**< Display settings mode */
-    DISPLAY_UNKNOWN /**< Display in undefined (internal) */
-} DisplayMode;
-
-// Selection Modes
-/** \brief Selection settings mode enumeration
- *
- *
- */
-typedef enum
-{
-    SELECTION_CURRENT, /**< Current selected */
-#ifdef RESISTANCE
-    SELECTION_RESISTANCE, /**< Resistance selected */
-#endif
-    SELECTION_POWER, /**< Power selected */
-    SELECTION_UNKNOWN /**< Nothing selected (internal) */
-} SelectionMode;
-
-// Operation Modes
-/** \brief Operation mode enumeration
- *
- */
-typedef enum
-{
-    OPERATION_READ, /**< Reading values */
-    OPERATION_SET, /**< Settings values */
-    OPERATION_UNKNOWN /**< Unset (internal) */
-} OperationMode;
-
 
 /**
-*** Class declarations
+*** Classes declarations
 **/
 
 /** \brief Class that handle increase/decrease step multiplier
@@ -194,109 +157,137 @@ class aStepper
         uint8_t             incGetValue();
         void                incReset();
         int16_t             incGetMult();
-        int16_t             incGetValueFromMode(SelectionMode);
+        int16_t             incGetValueFromMode(uint8_t);
         bool                incIsSynced();
         void                incSync();
 
     private:
-        int16_t             _pow(int, int);
+        inline int16_t      _pow(int, int);
 
     private:
-        uint8_t             m_inc, m_incPrev;
+        uint8_t             m_inc, m_incPrev; ///< Stepper counters
 };
+
 
 /** \brief Class that handle settings.
  */
 class aDCSettings : public aStepper
 {
     public:
+        // Operation Modes
+        /** \brief Operation mode enumeration
+         *
+         */
+        typedef enum
+        {
+            OPERATION_MODE_READ,        ///< Reading values
+            OPERATION_MODE_SET,         ///< Settings values
+            OPERATION_MODE_UNKNOWN      ///< Unset (internal)
+        } OperationMode_t;
+
+        // Selection Modes
+        /** \brief Selection settings mode enumeration
+         *
+         *
+         */
+        typedef enum
+        {
+            SELECTION_MODE_CURRENT,     ///< Current selected
+#ifdef RESISTANCE
+            SELECTION_MODE_RESISTANCE,  ///< Resistance selected
+#endif
+            SELECTION_MODE_POWER,       ///< Power selected
+            SELECTION_MODE_UNKNOWN      ///< Nothing selected (internal)
+        } SelectionMode_t;
+
+        // Display Modes
+        /** \brief Display mode enumeration
+         *
+         */
+        typedef enum
+        {
+            DISPLAY_MODE_VALUES,        ///< Display read/set values mode
+            DISPLAY_MODE_SETUP,         ///< Display settings mode
+            DISPLAY_MODE_UNKNOWN        ///< Display in undefined (internal)
+        } DisplayMode_t;
+
+
         /** \brief Setting error enumeration
          *
          */
-
         typedef enum
         {
-            SETTING_OVERSIZED, ///< Setting value is oversized
-            SETTING_UNDERSIZED, ///< Setting value is undersized
-            SETTING_VALID ///< Setting value is valid
-        } SettingError;
+            SETTING_ERROR_OVERSIZED,    ///< Setting value is oversized
+            SETTING_ERROR_UNDERSIZED,   ///< Setting value is undersized
+            SETTING_ERROR_VALID         ///< Setting value is valid
+        } SettingError_t;
+
+        static const uint16_t   DATA_VOLTAGE            = 1;        ///< bit-field storage: Voltage readed
+        static const uint16_t   DATA_CURRENT_SETS       = 1 << 1;   ///< bit-field storage: Current sets
+        static const uint16_t   DATA_CURRENT_READ       = 1 << 2;   ///< bit-field storage: Current readed
+#ifdef RESISTANCE
+        static const uint16_t   DATA_RESISTANCE_SETS    = 1 << 3;   ///< bit-field storage: Resistance sets
+        static const uint16_t   DATA_RESISTANCE_READ    = 1 << 4;   ///< bit-field storage: Resistance readed
+#endif
+        static const uint16_t   DATA_POWER_SETS         = 1 << 5;   ///< bit-field storage: Power sets
+        static const uint16_t   DATA_POWER_READ         = 1 << 6;   ///< bit-field storage: Power readed
+        static const uint16_t   DATA_TEMPERATURE        = 1 << 7;   ///< bit-field storage: Temperature readed
+        static const uint16_t   DATA_SELECTION          = 1 << 8;   ///< bit-field storage: Selection mode sets
+        static const uint16_t   DATA_DISPLAY            = 1 << 9;   ///< bit-field storage: Display mode sets
+        static const uint16_t   DATA_ENCODER            = 1 << 10;  ///< bit-field storage: Encoder position sets
+        static const uint16_t   DATA_OPERATION          = 1 << 11;  ///< bit-field storage: Operation mode sets
 
     public:
         aDCSettings();
         ~aDCSettings();
 
         // Voltage
-        SettingError        setVoltageRead(float);
-        float               getVoltageRead();
-        void                syncVoltageDisp();
-        bool                isVoltageAlreadyDisplayed();
+        SettingError_t      setVoltage(float);
+        float               getVoltage();
 
         // Current
-        SettingError        setCurrentSets(float);
-        float               getCurrentSets();
-        SettingError        setCurrentRead(float);
-        float               getCurrentRead();
-        void                syncCurrentDisp();
-        bool                isCurrentAlreadyDisplayed();
+        SettingError_t      setCurrent(float, OperationMode_t);
+        float               getCurrent(OperationMode_t);
 
 #ifdef RESISTANCE
         // Resistance
-        SettingError        setResistanceSets(float);
-        float               getResistanceSets();
-        void                setResistanceRead(float);
-        float               getResistanceRead();
-        void                syncResistanceDisp();
-        bool                isResistanceAlreadyDisplayed();
+        SettingError_t      setResistance(float, OperationMode_t);
+        float               getResistance(OperationMode_t);
 #endif
 
         // Power
-        SettingError        setPowerSets(float);
-        float               getPowerSets();
-        SettingError        setPowerRead(float);
-        float               getPowerRead();
-        void                syncPowerDisp();
-        bool                isPowerAlreadyDisplayed();
+        SettingError_t      setPower(float, OperationMode_t);
+        float               getPower(OperationMode_t);
 
-        void                updateValuesFromMode(float, SelectionMode);
+        void                updateValuesFromMode(float, SelectionMode_t);
 
         // Temperature
-        void                setTemperatureRead(uint8_t);
-        uint8_t             getTemperatureRead();
-        void                syncTemperatureDisp();
-        bool                isTemperatureAlreadyDisplayed();
+        void                setTemperature(uint16_t);
+        uint16_t            getTemperature();
 
         // Fan
         void                setFanSpeed(uint16_t);
         uint16_t            getFanSpeed();
 
         // Mode
-        void                setSelectionMode(SelectionMode);
-        SelectionMode       getSelectionMode();
-        SelectionMode       getNextMode(SelectionMode = SELECTION_UNKNOWN);
-        SelectionMode       getPrevMode(SelectionMode = SELECTION_UNKNOWN);
-        void                syncSelectionMode();
-        bool                isSelectionModeChanged();
+        void                setSelectionMode(SelectionMode_t, bool = false);
+        SelectionMode_t     getSelectionMode();
+        SelectionMode_t     getPrevNextMode(SelectionMode_t = SELECTION_MODE_UNKNOWN, bool = true);
 
         // Display Mode
-        void                setDisplayMode(DisplayMode);
-        DisplayMode         getDisplayMode();
-        void                syncDisplayMode();
-        bool                isDisplayModeChanged();
+        void                setDisplayMode(DisplayMode_t);
+        DisplayMode_t       getDisplayMode();
 
         // Encoder
         void                setEncoderPosition(int32_t);
         void                incEncoderPosition(int32_t = 1);
         int32_t             getEncoderPosition();
-        void                syncEncoderPosition();
-        bool                isEncoderPositionChanged();
 
         // Operation Mode
-        void                setOperationMode(OperationMode);
-        OperationMode       getOperationMode();
+        void                setOperationMode(OperationMode_t);
+        OperationMode_t     getOperationMode();
         void                updateOperationMode();
         void                pingOperationMode();
-        bool                isOperationModeChanged();
-        void                syncOperationMode();
 
         // Autolock
         void                pingAutolock();
@@ -306,36 +297,59 @@ class aDCSettings : public aStepper
         void                enableFeature(uint16_t, bool = true);
         bool                isFeatureEnabled(uint16_t);
 
+        bool                isDataEnabled(uint16_t);
+        void                syncData(uint16_t);
+
     private:
-        bool                _isEqual(float, float);
-        bool                _isEqual(int32_t, int32_t);
         bool                _eepromCheckMagic();
         void                _eepromWriteMagic();
         void                _eepromReset();
         void                _eepromRestore();
+        void                _enableData(uint16_t, bool);
+        void                _enableDataCheck(uint16_t, bool);
+        template<typename T>
+        SettingError_t      _setValue(OperationMode_t mode, uint16_t bit, T value, T &sets, T &read, float maximum)
+        {
+            if (value < 0)
+                return SETTING_ERROR_UNDERSIZED;
+            else if (value > maximum)
+                return SETTING_ERROR_OVERSIZED;
+
+            T p = (mode == OPERATION_MODE_SET) ? sets : read;
+
+            if (mode == OPERATION_MODE_SET)
+                sets = value;
+            else
+                read = value;
+
+            _enableDataCheck(bit, (p != ((mode == OPERATION_MODE_SET) ? sets : read)));
+
+            return SETTING_ERROR_VALID;
+        }
 
     private:
-        float               m_readVoltage, m_dispVoltage;                           // voltage storage
-        float               m_setsCurrent, m_readCurrent, m_dispCurrent;            // current storage
+        float               m_readVoltage;                          ///< voltage storage
+        float               m_setsCurrent, m_readCurrent;           ///< current storage
 #ifdef RESISTANCE
-        float               m_setsResistance, m_readResistance, m_dispResistance;   // resistance storage
+        float               m_setsResistance, m_readResistance;     ///< resistance storage
 #endif
-        float               m_setsPower, m_readPower, m_dispPower;                  // power storage
-        uint8_t             m_readTemperature, m_dispTemperature;                   // temperature storage
+        float               m_setsPower, m_readPower;               ///< power storage
+        uint16_t            m_readTemperature;                      ///< temperature storage
 
-        uint16_t            m_fanSpeed;                                             // fan speed storage
+        uint16_t            m_fanSpeed;                             ///< fan speed storage
 
-        OperationMode       m_operationMode, m_prevOperationMode;                   // operation mode (see OperationMode enum)
+        OperationMode_t     m_operationMode;                        ///< operation mode @see OperationMode
 
-        SelectionMode       m_Mode, m_prevMode;                                     // selection mode (see SelectionMode enum)
-        int32_t             m_EncoderPos, m_prevEncoderPos;                         // encoder position (yeah, 32bits, due to resistance max val (12000 * 1000);
+        SelectionMode_t     m_mode;                                 ///< selection mode @see SelectionMode
+        int32_t             m_encoderPos;                           ///< encoder position (yeah, 32bits, due to resistance max val (12000 * 1000);
 
-        DisplayMode         m_dispMode, m_prevDispMode;                             // display mode (see DisplayMode enum)
+        DisplayMode_t       m_dispMode;                             ///< display mode @see DisplayMode
 
-        unsigned long       m_lockTick;                                             // tick count storage, for autolock feature
-        unsigned long       m_operationTick;                                        // tick count storage, for SET/READ operation
+        unsigned long       m_lockTick;                             ///< tick count storage, for autolock feature
+        unsigned long       m_operationTick;                        ///< tick count storage, for SET/READ operation
 
-        uint16_t            m_features;                                             // boolean features storage
+        uint16_t            m_features;                             ///< boolean features storage
+        uint16_t            m_datas;                                ///< boolean displayes data storage
 };
 
 
@@ -354,12 +368,11 @@ class aLCD : public LiquidCrystal
         void                setCursor(uint8_t, uint8_t);
         void                printCenter(const char *);
         void                printCenter(const __FlashStringHelper *);
-        void                clearLine(uint8_t);
         void                clearValue(uint8_t, int = 0);
 
     private:
-        uint8_t             m_cols, m_rows;
-        uint8_t             m_curCol, m_curRow;
+        uint8_t             m_cols, m_rows;     ///< LCD sizes
+        uint8_t             m_curCol, m_curRow; ///< Current cursor position
 };
 
 class aDCEngine;
@@ -374,7 +387,7 @@ class aDCDisplay : public aLCD
 
         void                setup();
         void                showBanner();
-        void                updateField(OperationMode, float, float, uint8_t, uint8_t);
+        void                updateField(aDCSettings::OperationMode_t, float, float, uint8_t, uint8_t);
 
         void                updateDisplay();
         void                pingBacklight();
@@ -386,9 +399,9 @@ class aDCDisplay : public aLCD
         void                _wakeupBacklight();
 
     private:
-        aDCEngine          *m_Parent;
-        bool                m_dimmed;
-        unsigned long       m_dimmerTick;
+        aDCEngine          *m_Parent;       ///< Pointer to aDCEngine parent
+        bool                m_dimmed;       ///< Dimmed state storage
+        unsigned long       m_dimmerTick;   ///< Dimmer timeout tick counter
 };
 
 /** \brief Main class
@@ -410,7 +423,7 @@ class aDCEngine : public aDCDisplay
         float               _readInputVoltage();
         float               _readADC(uint8_t);
         void                _setDAC(uint16_t, uint8_t);
-        int8_t              _readTemp();
+        int16_t             _readTemp();
         void                _updateFanSpeed();
         float               _readMeasuredCurrent();
         void                _updateLoadCurrent();
@@ -419,10 +432,10 @@ class aDCEngine : public aDCDisplay
         void                _updateLoggingAndRemote();
 
     private:
-        aDCSettings         m_Data;
-        ClickEncoder       *m_encoder;
-        uint8_t             m_RXbuffer[63 + 1];
-        uint8_t             m_RXoffset;
+        aDCSettings         m_Data;                 ///< Settings object
+        ClickEncoder       *m_encoder;              ///< Encoder object
+        uint8_t             m_RXbuffer[63 + 1];     ///< USB rx buffer
+        uint8_t             m_RXoffset;             ///< USB rx buffer offset counter
 };
 
 #endif // ADCLOAD_H
