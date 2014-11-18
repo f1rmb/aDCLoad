@@ -1842,29 +1842,44 @@ aDCEngine::~aDCEngine()
  * \note Serial port configuration: 57600 8N1
  * \note Commands and arguments are <b>case sensitive</b>, and all in <b>UPCASE</b>
  *
- * \section curget Current getter
+ * \section curget Current setting getter
  * <b>:ISET?:</b>
  * Returns current setting
+ * .<br> See \ref retval.
  *
  * \section curset Current setting setter
  * <b>:ISET:<i>value</i></b>
  * Set current <b><i>value</i></b> (in mA)
+ * .<br> See \ref retval.
  *
  * \section curread Current readed getter
  * <b>:I?:</b>
  * Returns current readed from the load
+ * .<br> See \ref retval.
  *
  * \section volread Voltage readed getter
  * <b>:U?:</b>
  * Returns voltage readed from the load
+ * .<br> See \ref retval.
  *
- * \section logsingle Single shot logging
+ * \section logsingle Logging enability
  * <b>:L?:</b>
- * Printout a single logging line
+ * Printout if logging is ON or OFF.
+ * .<br> See \ref retval.
  *
- * \section logrun Turn ON/OFF logging
+ * \section logrun Logging enability
  * <b>:L:<i>toggle</i></b>
- * Turns <b><i>ON</i></b> or <b><i>OFF</i></b> the logging feature
+ * Turns <b><i>ON</i></b> or <b><i>OFF</i></b> the logging feature.<br>
+ * If <b><i>toggle</i></b> value is not specified, a single logging line is returned.
+ * .<br> See \ref retval.
+ *
+ *
+ * \section retval Return value
+ * <b>:<i>value</i>:<i>status</i>:</b>
+ * - Where:
+ *  * <b>value</b> if any expected. <b>INVALID</b> on unknown command.
+ *  * <b>status</b> could be <b>OK</b> on success or <b>ERR</b> on failure.
+ *
  *
  */
 

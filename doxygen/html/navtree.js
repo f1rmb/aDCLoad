@@ -2,12 +2,13 @@ var NAVTREE =
 [
   [ "aDCLoad", "index.html", [
     [ "Remote Commands", "remote.html", [
-      [ "Current getter", "remote.html#curget", null ],
+      [ "Current setting getter", "remote.html#curget", null ],
       [ "Current setting setter", "remote.html#curset", null ],
       [ "Current readed getter", "remote.html#curread", null ],
       [ "Voltage readed getter", "remote.html#volread", null ],
-      [ "Single shot logging", "remote.html#logsingle", null ],
-      [ "Turn ON/OFF logging", "remote.html#logrun", null ]
+      [ "Logging enability", "remote.html#logsingle", null ],
+      [ "Logging enability", "remote.html#logrun", null ],
+      [ "Return value", "remote.html#retval", null ]
     ] ],
     [ "Logging data format", "logging.html", [
       [ "CSV logging format", "logging.html#logform", null ]

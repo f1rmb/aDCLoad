@@ -104,29 +104,46 @@ $(document).ready(function(){initNavTree('remote.html','');});
 <dd>
 Commands and arguments are <b>case sensitive</b>, and all in <b>UPCASE</b></dd></dl>
 <h1><a class="anchor" id="curget"></a>
-Current getter</h1>
-<p><b>:ISET?:</b> Returns current setting</p>
+Current setting getter</h1>
+<p><b>:ISET?:</b> Returns current setting .<br/>
+ See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="curset"></a>
 Current setting setter</h1>
-<p><b>:ISET:<em>value</em></b> Set current <b><em>value</em></b> (in mA)</p>
+<p><b>:ISET:<em>value</em></b> Set current <b><em>value</em></b> (in mA) .<br/>
+ See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="curread"></a>
 Current readed getter</h1>
-<p><b>:I?:</b> Returns current readed from the load</p>
+<p><b>:I?:</b> Returns current readed from the load .<br/>
+ See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="volread"></a>
 Voltage readed getter</h1>
-<p><b>:U?:</b> Returns voltage readed from the load</p>
+<p><b>:U?:</b> Returns voltage readed from the load .<br/>
+ See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="logsingle"></a>
-Single shot logging</h1>
-<p><b>:L?:</b> Printout a single logging line</p>
+Logging enability</h1>
+<p><b>:L?:</b> Printout if logging is ON or OFF. .<br/>
+ See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="logrun"></a>
-Turn ON/OFF logging</h1>
-<p><b>:L:<em>toggle</em></b> Turns <b><em>ON</em></b> or <b><em>OFF</em></b> the logging feature </p>
+Logging enability</h1>
+<p><b>:L:<em>toggle</em></b> Turns <b><em>ON</em></b> or <b><em>OFF</em></b> the logging feature.<br/>
+ If <b><em>toggle</em></b> value is not specified, a single logging line is returned. .<br/>
+ See <a class="el" href="remote.html#retval">Return value</a>.</p>
+<h1><a class="anchor" id="retval"></a>
+Return value</h1>
+<p><b>:<em>value</em>:<em>status</em>:</b></p>
+<ul>
+<li>Where:<ul>
+<li><b>value</b> if any expected. <b>INVALID</b> on unknown command.</li>
+<li><b>status</b> could be <b>OK</b> on success or <b>ERR</b> on failure. </li>
+</ul>
+</li>
+</ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 18 2014 15:49:39 for aDCLoad by
+    <li class="footer">Generated on Tue Nov 18 2014 16:04:26 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.4 </li>
   </ul>

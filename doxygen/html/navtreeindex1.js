@@ -32,6 +32,7 @@ var NAVTREEINDEX1 =
 "remote.html#curset":[0,1],
 "remote.html#logrun":[0,5],
 "remote.html#logsingle":[0,4],
+"remote.html#retval":[0,6],
 "remote.html#volread":[0,3],
 "sketch_8cpp.html":[4,0,10],
 "sketch_8cpp.html#a3d333c5a3d38fce478f9b973ab06b294":[4,0,10,0],
