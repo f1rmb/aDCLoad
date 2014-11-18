@@ -141,9 +141,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0639ef0c2f385ce68bcbbb3fea4893e2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a0639ef0c2f385ce68bcbbb3fea4893e2">incGetMult</a> ()</td></tr>
 <tr class="memdesc:a0639ef0c2f385ce68bcbbb3fea4893e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value getter, according to multiple.  <a href="#a0639ef0c2f385ce68bcbbb3fea4893e2">More...</a><br/></td></tr>
 <tr class="separator:a0639ef0c2f385ce68bcbbb3fea4893e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acca90ab50f88786d7eb2a5de35d936e9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#acca90ab50f88786d7eb2a5de35d936e9">incGetValueFromMode</a> (<a class="el" href="a_d_c_load_8h.html#a7059dfa0ed70c89facc3d317fb4138b3">SelectionMode</a>)</td></tr>
-<tr class="memdesc:acca90ab50f88786d7eb2a5de35d936e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value according to selection mode.  <a href="#acca90ab50f88786d7eb2a5de35d936e9">More...</a><br/></td></tr>
-<tr class="separator:acca90ab50f88786d7eb2a5de35d936e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9881df345a7fec6d7d549f44637f3366"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a9881df345a7fec6d7d549f44637f3366">incGetValueFromMode</a> (uint8_t)</td></tr>
+<tr class="memdesc:a9881df345a7fec6d7d549f44637f3366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value according to selection mode.  <a href="#a9881df345a7fec6d7d549f44637f3366">More...</a><br/></td></tr>
+<tr class="separator:a9881df345a7fec6d7d549f44637f3366"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d5f11d8a31d370d68c99b7ef2550510"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a8d5f11d8a31d370d68c99b7ef2550510">incIsSynced</a> ()</td></tr>
 <tr class="memdesc:a8d5f11d8a31d370d68c99b7ef2550510"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronize value.  <a href="#a8d5f11d8a31d370d68c99b7ef2550510">More...</a><br/></td></tr>
 <tr class="separator:a8d5f11d8a31d370d68c99b7ef2550510"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,6 +162,7 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:ab5466f0968259a5895f9496783416f7a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#ab5466f0968259a5895f9496783416f7a">m_inc</a></td></tr>
 <tr class="separator:ab5466f0968259a5895f9496783416f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6204a14c91347d3f840ffe8baa5571e"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#aa6204a14c91347d3f840ffe8baa5571e">m_incPrev</a></td></tr>
+<tr class="memdesc:aa6204a14c91347d3f840ffe8baa5571e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stepper counters.  <a href="#aa6204a14c91347d3f840ffe8baa5571e">More...</a><br/></td></tr>
 <tr class="separator:aa6204a14c91347d3f840ffe8baa5571e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
@@ -171,7 +172,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that handle increase/decrease step multiplier. </p>
-<p>Class declarations </p>
+<p>Classes declarations </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ad807a96795f77f8e553e086e1be0bd90"></a>
 <div class="memitem">
@@ -235,7 +236,7 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -288,14 +289,14 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="acca90ab50f88786d7eb2a5de35d936e9"></a>
+<a class="anchor" id="a9881df345a7fec6d7d549f44637f3366"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int16_t aStepper::incGetValueFromMode </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a_d_c_load_8h.html#a7059dfa0ed70c89facc3d317fb4138b3">SelectionMode</a>&#160;</td>
+          <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>mode</em>)</td><td></td>
           <td></td>
         </tr>
@@ -305,7 +306,7 @@ Static Private Attributes</h2></td></tr>
 <p>Get value according to selection mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>SelectionMode : <b> Selection mode </b> </td></tr>
+    <tr><td class="paramname">mode</td><td>uint16_t : <b> Selection mode (will be typecasted to <a class="el" href="classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35" title="Selection settings mode enumeration. ">aDCSettings::SelectionMode_t</a>)</b> </td></tr>
   </table>
   </dd>
 </dl>
@@ -424,6 +425,8 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Stepper counters. </p>
+
 </div>
 </div>
 <a class="anchor" id="ab5c22269335321d72d4deed0b5b6d391"></a>
@@ -456,7 +459,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classa_stepper.html">aStepper</a></li>
-    <li class="footer">Generated on Tue Oct 28 2014 12:31:39 for aDCLoad by
+    <li class="footer">Generated on Tue Nov 18 2014 14:57:43 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.4 </li>
   </ul>

@@ -14,5 +14,5 @@ var searchData=
   ['feature_5fovp_5fvisible',['FEATURE_OVP_VISIBLE',['../a_d_c_load_8h.html#ad769978a587e4878dcb0cf83b10691c5',1,'aDCLoad.h']]],
   ['feature_5fusb',['FEATURE_USB',['../a_d_c_load_8h.html#a761cce28d18fbfc113cd527de6a7f5ce',1,'aDCLoad.h']]],
   ['feature_5fusb_5fvisible',['FEATURE_USB_VISIBLE',['../a_d_c_load_8h.html#a76062cbb46fb64fc6f51a3a621058c5e',1,'aDCLoad.h']]],
-  ['floatrounding',['floatRounding',['../a_d_c_load_8cpp.html#a9e6e677bc7dc8215c7598a404f3ebe7b',1,'aDCLoad.cpp']]]
+  ['floatrounding',['floatRounding',['../a_d_c_load_8cpp.html#a910f6d10ce9ed56158e95218514f495a',1,'aDCLoad.cpp']]]
 ];

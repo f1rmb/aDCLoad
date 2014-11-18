@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['selection_5fcurrent',['SELECTION_CURRENT',['../a_d_c_load_8h.html#a7059dfa0ed70c89facc3d317fb4138b3a74335c4496855f9641f5169d5e29ee2b',1,'aDCLoad.h']]],
-  ['selection_5fpower',['SELECTION_POWER',['../a_d_c_load_8h.html#a7059dfa0ed70c89facc3d317fb4138b3a15ad572c36900cdf215b29f200f9acac',1,'aDCLoad.h']]],
-  ['selection_5fresistance',['SELECTION_RESISTANCE',['../a_d_c_load_8h.html#a7059dfa0ed70c89facc3d317fb4138b3aaf10b3de20d9be6a0afde1c549758df2',1,'aDCLoad.h']]],
-  ['selection_5funknown',['SELECTION_UNKNOWN',['../a_d_c_load_8h.html#a7059dfa0ed70c89facc3d317fb4138b3a9da85c899c07a75a8f2b787e80165e86',1,'aDCLoad.h']]],
-  ['setting_5foversized',['SETTING_OVERSIZED',['../classa_d_c_settings.html#a826e5d71d28bad5472429e3f3396e14da763d1fa3cd41bb6b6a9e3ad5d68495d9',1,'aDCSettings']]],
-  ['setting_5fundersized',['SETTING_UNDERSIZED',['../classa_d_c_settings.html#a826e5d71d28bad5472429e3f3396e14dab6a268f1dcaadd895aa9b54d18d1a908',1,'aDCSettings']]],
-  ['setting_5fvalid',['SETTING_VALID',['../classa_d_c_settings.html#a826e5d71d28bad5472429e3f3396e14daea0735af1d39e1e8c4556d427be9ea42',1,'aDCSettings']]]
+  ['selection_5fmode_5fcurrent',['SELECTION_MODE_CURRENT',['../classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35a9edf59cc291fdd158c96b2a813f57af8',1,'aDCSettings']]],
+  ['selection_5fmode_5fpower',['SELECTION_MODE_POWER',['../classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35a95400c9529da3d197e15ee2c21e19b3d',1,'aDCSettings']]],
+  ['selection_5fmode_5fresistance',['SELECTION_MODE_RESISTANCE',['../classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35ac8c4f8ec0b9890975a6843b3809b6d88',1,'aDCSettings']]],
+  ['selection_5fmode_5funknown',['SELECTION_MODE_UNKNOWN',['../classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35abf13fab765b0da271af7c7c4e2075a7e',1,'aDCSettings']]],
+  ['setting_5ferror_5foversized',['SETTING_ERROR_OVERSIZED',['../classa_d_c_settings.html#a493db8c7659fc379940eb2873c77b3f4acda4d7488e27b1cf33878ef72c93995d',1,'aDCSettings']]],
+  ['setting_5ferror_5fundersized',['SETTING_ERROR_UNDERSIZED',['../classa_d_c_settings.html#a493db8c7659fc379940eb2873c77b3f4a1d1f10162ce15faa140df883e763655a',1,'aDCSettings']]],
+  ['setting_5ferror_5fvalid',['SETTING_ERROR_VALID',['../classa_d_c_settings.html#a493db8c7659fc379940eb2873c77b3f4a6983bc7ab2e74b80fc81a1d225fffd40',1,'aDCSettings']]]
 ];

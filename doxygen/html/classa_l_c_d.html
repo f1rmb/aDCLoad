@@ -141,9 +141,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a892a5e9e61060c1ff11c608c9090b79d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_l_c_d.html#a892a5e9e61060c1ff11c608c9090b79d">printCenter</a> (const __FlashStringHelper *)</td></tr>
 <tr class="memdesc:a892a5e9e61060c1ff11c608c9090b79d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print centered string to current row.  <a href="#a892a5e9e61060c1ff11c608c9090b79d">More...</a><br/></td></tr>
 <tr class="separator:a892a5e9e61060c1ff11c608c9090b79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61b52bc8f4b967aa1a4eb83b4e93b22d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_l_c_d.html#a61b52bc8f4b967aa1a4eb83b4e93b22d">clearLine</a> (uint8_t)</td></tr>
-<tr class="memdesc:a61b52bc8f4b967aa1a4eb83b4e93b22d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear to end of line starting at given row.  <a href="#a61b52bc8f4b967aa1a4eb83b4e93b22d">More...</a><br/></td></tr>
-<tr class="separator:a61b52bc8f4b967aa1a4eb83b4e93b22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a637778349bcfddfdb2f90799cf4cbdf8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_l_c_d.html#a637778349bcfddfdb2f90799cf4cbdf8">clearValue</a> (uint8_t, int=0)</td></tr>
 <tr class="memdesc:a637778349bcfddfdb2f90799cf4cbdf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear displayed value, from given row, stopping at value end field - destMinus.  <a href="#a637778349bcfddfdb2f90799cf4cbdf8">More...</a><br/></td></tr>
 <tr class="separator:a637778349bcfddfdb2f90799cf4cbdf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,10 +150,12 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:acc5e1b9602a2b327900e4287439954dd"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_l_c_d.html#acc5e1b9602a2b327900e4287439954dd">m_cols</a></td></tr>
 <tr class="separator:acc5e1b9602a2b327900e4287439954dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e93d6c8eaf9930cedb37082799c790a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_l_c_d.html#a0e93d6c8eaf9930cedb37082799c790a">m_rows</a></td></tr>
+<tr class="memdesc:a0e93d6c8eaf9930cedb37082799c790a"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD sizes.  <a href="#a0e93d6c8eaf9930cedb37082799c790a">More...</a><br/></td></tr>
 <tr class="separator:a0e93d6c8eaf9930cedb37082799c790a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a490136acbf068046e3c12bb449ed37f8"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_l_c_d.html#a490136acbf068046e3c12bb449ed37f8">m_curCol</a></td></tr>
 <tr class="separator:a490136acbf068046e3c12bb449ed37f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae90c3d36cae7b58e9cba0b398daf036f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_l_c_d.html#ae90c3d36cae7b58e9cba0b398daf036f">m_curRow</a></td></tr>
+<tr class="memdesc:ae90c3d36cae7b58e9cba0b398daf036f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current cursor position.  <a href="#ae90c3d36cae7b58e9cba0b398daf036f">More...</a><br/></td></tr>
 <tr class="separator:ae90c3d36cae7b58e9cba0b398daf036f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -287,31 +286,6 @@ Private Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">cols</td><td>uint8_t : <b> Columns </b> </td></tr>
     <tr><td class="paramname">lines</td><td>uint8_t : <b> Rows </b> </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a61b52bc8f4b967aa1a4eb83b4e93b22d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void aLCD::clearLine </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>row</em>)</td><td></td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Clear to end of line starting at given row. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">row</td><td>uint8_t : <b> Starting row </b> </td></tr>
   </table>
   </dd>
 </dl>
@@ -500,6 +474,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Current cursor position. </p>
+
 </div>
 </div>
 <a class="anchor" id="a0e93d6c8eaf9930cedb37082799c790a"></a>
@@ -520,6 +496,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>LCD sizes. </p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
@@ -532,7 +510,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classa_l_c_d.html">aLCD</a></li>
-    <li class="footer">Generated on Tue Oct 28 2014 12:31:39 for aDCLoad by
+    <li class="footer">Generated on Tue Nov 18 2014 14:57:43 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.4 </li>
   </ul>

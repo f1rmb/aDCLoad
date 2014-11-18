@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['operationmode',['OperationMode',['../a_d_c_load_8h.html#a25bbfb7442459b8d546e1f1551835479',1,'aDCLoad.h']]]
+  ['operationmode_5ft',['OperationMode_t',['../classa_d_c_settings.html#ab0ad0158433b15808e27a3e7551e07e3',1,'aDCSettings']]]
 ];

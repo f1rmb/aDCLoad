@@ -7,22 +7,6 @@ var a_d_c_load_8h =
     [ "aDCEngine", "classa_d_c_engine.html", "classa_d_c_engine" ],
     [ "RESISTANCE", "a_d_c_load_8h.html#ace4a5f45531bc260002ba9962713268b", null ],
     [ "ISRCallback", "a_d_c_load_8h.html#a398836a1d5ab903d8431c7cf974f4c55", null ],
-    [ "DisplayMode", "a_d_c_load_8h.html#a59b40c5838e0a3d2bfbfa64c85d7ca27", [
-      [ "DISPLAY_VALUES", "a_d_c_load_8h.html#a59b40c5838e0a3d2bfbfa64c85d7ca27acfc3638e724326a160bfb39dcf2c4c8c", null ],
-      [ "DISPLAY_SETUP", "a_d_c_load_8h.html#a59b40c5838e0a3d2bfbfa64c85d7ca27a31234a10eb255dd4a34e758ca29224c5", null ],
-      [ "DISPLAY_UNKNOWN", "a_d_c_load_8h.html#a59b40c5838e0a3d2bfbfa64c85d7ca27a8033d3e89abfedf13d34eda97b86f832", null ]
-    ] ],
-    [ "OperationMode", "a_d_c_load_8h.html#a25bbfb7442459b8d546e1f1551835479", [
-      [ "OPERATION_READ", "a_d_c_load_8h.html#a25bbfb7442459b8d546e1f1551835479ad7d9000f0bef073e897dccf44ca9f35c", null ],
-      [ "OPERATION_SET", "a_d_c_load_8h.html#a25bbfb7442459b8d546e1f1551835479a5662626ceb79917533976176d46e72fa", null ],
-      [ "OPERATION_UNKNOWN", "a_d_c_load_8h.html#a25bbfb7442459b8d546e1f1551835479a7ba837d230b38e8db8a9599be75fb666", null ]
-    ] ],
-    [ "SelectionMode", "a_d_c_load_8h.html#a7059dfa0ed70c89facc3d317fb4138b3", [
-      [ "SELECTION_CURRENT", "a_d_c_load_8h.html#a7059dfa0ed70c89facc3d317fb4138b3a74335c4496855f9641f5169d5e29ee2b", null ],
-      [ "SELECTION_RESISTANCE", "a_d_c_load_8h.html#a7059dfa0ed70c89facc3d317fb4138b3aaf10b3de20d9be6a0afde1c549758df2", null ],
-      [ "SELECTION_POWER", "a_d_c_load_8h.html#a7059dfa0ed70c89facc3d317fb4138b3a15ad572c36900cdf215b29f200f9acac", null ],
-      [ "SELECTION_UNKNOWN", "a_d_c_load_8h.html#a7059dfa0ed70c89facc3d317fb4138b3a9da85c899c07a75a8f2b787e80165e86", null ]
-    ] ],
     [ "ADC_CHIPSELECT_PIN", "a_d_c_load_8h.html#a1a23fb6043d623e2555b778671c32fd5", null ],
     [ "ADC_INPUTVOLTAGE_CHAN", "a_d_c_load_8h.html#ac382ee5538e7af5d2c1376416069323b", null ],
     [ "ADC_MEASUREDCURRENT_CHAN", "a_d_c_load_8h.html#a4ee78b6b8ad9ac750519a784ddb8f025", null ],

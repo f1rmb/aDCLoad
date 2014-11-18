@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['displaymode',['DisplayMode',['../a_d_c_load_8h.html#a59b40c5838e0a3d2bfbfa64c85d7ca27',1,'aDCLoad.h']]]
+  ['displaymode_5ft',['DisplayMode_t',['../classa_d_c_settings.html#ab0e1d893691e664545e069c34de55a84',1,'aDCSettings']]]
 ];

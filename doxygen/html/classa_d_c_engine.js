@@ -8,7 +8,7 @@ var classa_d_c_engine =
     [ "_readADC", "classa_d_c_engine.html#ab8c7e1899e9951143346430cb90df792", null ],
     [ "_readInputVoltage", "classa_d_c_engine.html#a50794fe28311b90226616b5c29573329", null ],
     [ "_readMeasuredCurrent", "classa_d_c_engine.html#ab7557a6f8cd0521b9e00a909880bfb0c", null ],
-    [ "_readTemp", "classa_d_c_engine.html#a0ed3c8eb9efa4879cf4108dbdc0dc998", null ],
+    [ "_readTemp", "classa_d_c_engine.html#aaf9e9e99f45f225c016cea2e4fe3bf04", null ],
     [ "_setDAC", "classa_d_c_engine.html#a3af2b0f8e9d600604b8690f788771891", null ],
     [ "_updateFanSpeed", "classa_d_c_engine.html#a9dcf5e9eaa29e367460ac6f097f5b247", null ],
     [ "_updateLoadCurrent", "classa_d_c_engine.html#a2121ae3e74152f2b728e8af6ba928057", null ],

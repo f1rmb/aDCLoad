@@ -10,7 +10,7 @@ var classa_d_c_display =
     [ "setup", "classa_d_c_display.html#a4622e023f968931a0a55d6a258c65df7", null ],
     [ "showBanner", "classa_d_c_display.html#a0e2e29866585363721ace454d7e095c9", null ],
     [ "updateDisplay", "classa_d_c_display.html#aec10668961da3014225f44574a295efe", null ],
-    [ "updateField", "classa_d_c_display.html#a4b783b704a4b0e24eaa1d33f42b9689f", null ],
+    [ "updateField", "classa_d_c_display.html#a4afa7731f772641285305e2bf76f3943", null ],
     [ "m_dimmed", "classa_d_c_display.html#ac5ddd818997246eddfb6bb5c7615ddc7", null ],
     [ "m_dimmerTick", "classa_d_c_display.html#a95be909f701379556b674c0866f2d9b4", null ],
     [ "m_Parent", "classa_d_c_display.html#a285992a92161daa422701242a679d2b9", null ]
