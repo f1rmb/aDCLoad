@@ -28,8 +28,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     \author F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
 */
 
-#define SIMU 1
-#define RESISTANCE 1                                        ///< Define this if you want to display Resistance settings
+//#define SIMU 1
+//#define RESISTANCE 1                                        ///< Define this if you want to display Resistance settings
 
 // Set Constants
 const uint8_t       ADC_CHIPSELECT_PIN          = 8;        ///< set pin 8 as the chip select for the ADC:
@@ -42,25 +42,25 @@ const uint8_t       DAC_CHIPSELECT_PIN          = 9;        ///< set pin 9 as th
 const uint16_t      DAC_CURRENT_CHAN            = 0;        ///< set The DAC channel that sets the constant current.
 const uint16_t      DAC_FAN_CHAN                = 1;        ///< set The DAC channel that sets the fan speed.
 
-const uint8_t       LCD_RS_PIN                  = 13;//10;       ///< LCD RS pin.
+const uint8_t       LCD_RS_PIN                  = 10;       ///< LCD RS pin.
 const uint8_t       LCD_ENABLE_PIN              = 12;       ///< LCD ENABLE pin.
-const uint8_t       LCD_D0_PIN                  = 10;//4;        ///< LCD d0 pin.
-const uint8_t       LCD_D1_PIN                  = 9;//13;       ///< LCD d1 pin.
-const uint8_t       LCD_D2_PIN                  = 8;//6;        ///< LCD d2 pin.
-const uint8_t       LCD_D3_PIN                  = 7;//5;        ///< LCD d3 pin.
+const uint8_t       LCD_D0_PIN                  = 4;        ///< LCD d0 pin.
+const uint8_t       LCD_D1_PIN                  = 13;       ///< LCD d1 pin.
+const uint8_t       LCD_D2_PIN                  = 6;        ///< LCD d2 pin.
+const uint8_t       LCD_D3_PIN                  = 5;        ///< LCD d3 pin.
 const uint8_t       LCD_COLS_NUM                = 20;       ///< LCD columns size
 const uint8_t       LCD_ROWS_NUM                = 4;        ///< LCD rows size
 
-const uint8_t       ENCODER_A_PIN               = 3;//3;        ///< set pin 3 as the channel A for encoder 1, int.0:
-const uint8_t       ENCODER_B_PIN               = 2;//2;        ///< set pin 2 as the channel B for encoder 1, int.1:
+const uint8_t       ENCODER_A_PIN               = 3;        ///< set pin 3 as the channel A for encoder 1, int.0:
+const uint8_t       ENCODER_B_PIN               = 2;        ///< set pin 2 as the channel B for encoder 1, int.1:
 #ifdef SIMU
-const uint8_t       ENCODER_PB_PIN              = 48;//21;       ///< set pin 21 as the push button for encoder 1
+const uint8_t       ENCODER_PB_PIN              = 48;       ///< set pin 48 as the push button for encoder 1
 #else
-const uint8_t       ENCODER_PB_PIN              = 48;//0;        ///< set pin 0 as the push button for encoder 1
+const uint8_t       ENCODER_PB_PIN              = 0;        ///< set pin 0 as the push button for encoder 1
 #endif // SIMU
 const uint8_t       ENCODER_STEPS_PER_NOTCH     = 4;        ///< Depending on the type of your encoder, you can define use the constructors parameter `stepsPerNotch` an set it to either `1`, `2` or `4` steps per notch, with `1` being the default.
 
-const uint8_t       LED_BACKLIGHT_PIN           = 6;//11;       ///< LCD backlight pin.
+const uint8_t       LED_BACKLIGHT_PIN           = 11;       ///< LCD backlight pin.
 
 // Values offsets
 const uint8_t       OFFSET_UNIT                 = 1;        ///< Unit column LCD offset
@@ -102,7 +102,7 @@ const float         RESISTANCE_MAXIMUM          = FLT_MAX;  ///< Maximum resista
 
 // Software version
 const int8_t        SOFTWARE_VERSION_MAJOR      = 2;        ///< Software major version
-const int8_t        SOFTWARE_VERSION_MINOR      = 2;        ///< Software minor version
+const int8_t        SOFTWARE_VERSION_MINOR      = 3;        ///< Software minor version
 
 // Features bitfield (max 16)
 const uint16_t      FEATURE_LOGGING             = 1;        ///< Bitfield logging feature
@@ -153,13 +153,13 @@ class aStepper
         aStepper();
         ~aStepper();
 
-        void                incIncrement();
-        uint8_t             incGetValue();
-        void                incReset();
-        int16_t             incGetMult();
-        int16_t             incGetValueFromMode(uint8_t);
-        bool                incIsSynced();
-        void                incSync();
+        void                Increment();
+        uint8_t             GetValue();
+        void                Reset();
+        int16_t             GetMult();
+        int16_t             GetValueFromMode(uint8_t);
+        bool                IsSynced();
+        void                Sync();
 
     private:
         inline int16_t      _pow(int, int);

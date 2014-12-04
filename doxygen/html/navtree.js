@@ -1,6 +1,8 @@
 var NAVTREE =
 [
   [ "aDCLoad", "index.html", [
+    [ "Arduino Programmable Constant Current Power Resistance Load", "md__home_daniel_src__arduino__arduino_a_d_c_load__r_e_a_d_m_e.html", null ],
+    [ "User interface overview", "gui.html", null ],
     [ "Remote Commands", "remote.html", [
       [ "Current setting getter", "remote.html#curget", null ],
       [ "Current setting setter", "remote.html#curset", null ],
@@ -13,7 +15,6 @@ var NAVTREE =
     [ "Logging data format", "logging.html", [
       [ "CSV logging format", "logging.html#logform", null ]
     ] ],
-    [ "Arduino Programmable Constant Current Power Resistance Load", "md__home_daniel_src__arduino__arduino_a_d_c_load__r_e_a_d_m_e.html", null ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
       [ "Class Index", "classes.html", null ],

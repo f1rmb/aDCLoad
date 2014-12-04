@@ -34,5 +34,6 @@ var searchData=
   ['software_5fversion_5fmajor',['SOFTWARE_VERSION_MAJOR',['../a_d_c_load_8h.html#a6a5d1539e8857f9423d73799516fe3b9',1,'aDCLoad.h']]],
   ['software_5fversion_5fminor',['SOFTWARE_VERSION_MINOR',['../a_d_c_load_8h.html#aa00b28db26db5f4c514cc3d1047a41f4',1,'aDCLoad.h']]],
   ['stream_2ecpp',['Stream.cpp',['../_stream_8cpp.html',1,'']]],
+  ['sync',['Sync',['../classa_stepper.html#a3502d05a2ca7c4e6a2ab274fa16aecf0',1,'aStepper']]],
   ['syncdata',['syncData',['../classa_d_c_settings.html#a31575d5021fec2cb722c095a3bf60758',1,'aDCSettings']]]
 ];

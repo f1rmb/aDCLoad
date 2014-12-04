@@ -21,6 +21,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="mystyle.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,9 +29,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
+   &#160;<span id="projectnumber">2.2</span>
    </div>
+   <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
  </tr>
  </tbody>
@@ -169,7 +173,7 @@ Copyright (C) 2014 F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.hre
  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.<br/>
 <br/>
  You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd><h1><center> BIG FAT WARNING </center></h1>
+<dl class="section warning"><dt>Warning</dt><dd><h1><center> BIG FAT WARNING </center></h1>
 </dd></dl>
 <center>Should be compiled with <b> "-Os" </b> flag.</center> <center>Bootloader <b><span style="text-decoration:underline;color:red;">couldn't</span></b> be flashed, <b>ISP programming ONLY</b></center> <center> -=- use <em>Code::Blocks</em> or the included <em>Makefile</em> to compile -=- </center> <dl class="section author"><dt>Author</dt><dd>Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb'+'.co'+'m.'+'au'; return false;">lee@w<span style="display: none;">.nosp@m.</span>igwe<span style="display: none;">.nosp@m.</span>b.com<span style="display: none;">.nosp@m.</span>.au</a> </dd>
 <dd>
@@ -558,7 +562,7 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a_d_c_load_8cpp.html">aDCLoad.cpp</a></li>
-    <li class="footer">Generated on Tue Nov 18 2014 16:04:26 for aDCLoad by
+    <li class="footer">Generated on Wed Nov 19 2014 00:28:25 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.4 </li>
   </ul>

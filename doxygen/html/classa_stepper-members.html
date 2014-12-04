@@ -21,6 +21,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="mystyle.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,9 +29,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
+   &#160;<span id="projectnumber">2.2</span>
    </div>
+   <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
  </tr>
  </tbody>
@@ -112,23 +116,23 @@ $(document).ready(function(){initNavTree('classa_stepper.html','');});
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="classa_stepper.html#a15f227d117dffbbd09d887f51bd887d2">_pow</a>(int, int)</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
   <tr><td class="entry"><a class="el" href="classa_stepper.html#ad807a96795f77f8e553e086e1be0bd90">aStepper</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classa_stepper.html#a0639ef0c2f385ce68bcbbb3fea4893e2">incGetMult</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classa_stepper.html#a0eca320f70952514f0e78829ad9ccdb2">incGetValue</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classa_stepper.html#a9881df345a7fec6d7d549f44637f3366">incGetValueFromMode</a>(uint8_t)</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classa_stepper.html#aa29a5c2b69418572618307c9bc33f819">incIncrement</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classa_stepper.html#a8d5f11d8a31d370d68c99b7ef2550510">incIsSynced</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classa_stepper.html#af61bf7d57f238d5750a2714ff57e7d5d">incReset</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classa_stepper.html#a582aa75a206c3ff8b90db45ff4f6dcd9">incSync</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classa_stepper.html#acaab0dff25cc34944e972d9131e3c3fd">GetMult</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classa_stepper.html#a858174f4adc6533c1abe28852ba5943d">GetValue</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classa_stepper.html#a19329b21c4e128fc938b72affb0c0523">GetValueFromMode</a>(uint8_t)</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classa_stepper.html#a6198d52ad94d0dcae2178a5e7ca3c8a4">Increment</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classa_stepper.html#a64c2c29dac8686910017c5a29b3acb01">IsSynced</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classa_stepper.html#ab5466f0968259a5895f9496783416f7a">m_inc</a></td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classa_stepper.html#aa6204a14c91347d3f840ffe8baa5571e">m_incPrev</a></td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr><td class="entry"><a class="el" href="classa_stepper.html#ab5c22269335321d72d4deed0b5b6d391">MAX_VALUE</a></td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"><span class="mlabel">private</span><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classa_stepper.html#a6ff743a8a65c64115d617eaffe674361">Reset</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classa_stepper.html#a3502d05a2ca7c4e6a2ab274fa16aecf0">Sync</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classa_stepper.html#aae1768acd5785ca061f6c23caf42bade">~aStepper</a>()</td><td class="entry"><a class="el" href="classa_stepper.html">aStepper</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 18 2014 16:04:26 for aDCLoad by
+    <li class="footer">Generated on Wed Nov 19 2014 00:28:25 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.4 </li>
   </ul>

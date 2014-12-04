@@ -21,6 +21,7 @@
   $(document).ready(function() { searchBox.OnSelectItem(0); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="mystyle.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -28,9 +29,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
+   &#160;<span id="projectnumber">2.2</span>
    </div>
+   <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
  </tr>
  </tbody>
@@ -310,6 +314,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>getFanSpeed()
 : <a class="el" href="classa_d_c_settings.html#ad0b439c61388f692aea1afdd319b357a">aDCSettings</a>
 </li>
+<li>GetMult()
+: <a class="el" href="classa_stepper.html#acaab0dff25cc34944e972d9131e3c3fd">aStepper</a>
+</li>
 <li>getOperationMode()
 : <a class="el" href="classa_d_c_settings.html#a0476518fc92eaf9cc73689d60d1241f4">aDCSettings</a>
 </li>
@@ -328,6 +335,12 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>getTemperature()
 : <a class="el" href="classa_d_c_settings.html#a744609d0eadf89407c92b85eb0d68a64">aDCSettings</a>
 </li>
+<li>GetValue()
+: <a class="el" href="classa_stepper.html#a858174f4adc6533c1abe28852ba5943d">aStepper</a>
+</li>
+<li>GetValueFromMode()
+: <a class="el" href="classa_stepper.html#a19329b21c4e128fc938b72affb0c0523">aStepper</a>
+</li>
 <li>getVoltage()
 : <a class="el" href="classa_d_c_settings.html#a5d2d796d631fd25250606aec171202a6">aDCSettings</a>
 </li>
@@ -338,26 +351,8 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>incEncoderPosition()
 : <a class="el" href="classa_d_c_settings.html#ac2a05efdf566179e1e7104adbb972043">aDCSettings</a>
 </li>
-<li>incGetMult()
-: <a class="el" href="classa_stepper.html#a0639ef0c2f385ce68bcbbb3fea4893e2">aStepper</a>
-</li>
-<li>incGetValue()
-: <a class="el" href="classa_stepper.html#a0eca320f70952514f0e78829ad9ccdb2">aStepper</a>
-</li>
-<li>incGetValueFromMode()
-: <a class="el" href="classa_stepper.html#a9881df345a7fec6d7d549f44637f3366">aStepper</a>
-</li>
-<li>incIncrement()
-: <a class="el" href="classa_stepper.html#aa29a5c2b69418572618307c9bc33f819">aStepper</a>
-</li>
-<li>incIsSynced()
-: <a class="el" href="classa_stepper.html#a8d5f11d8a31d370d68c99b7ef2550510">aStepper</a>
-</li>
-<li>incReset()
-: <a class="el" href="classa_stepper.html#af61bf7d57f238d5750a2714ff57e7d5d">aStepper</a>
-</li>
-<li>incSync()
-: <a class="el" href="classa_stepper.html#a582aa75a206c3ff8b90db45ff4f6dcd9">aStepper</a>
+<li>Increment()
+: <a class="el" href="classa_stepper.html#a6198d52ad94d0dcae2178a5e7ca3c8a4">aStepper</a>
 </li>
 <li>isAutolocked()
 : <a class="el" href="classa_d_c_settings.html#a6f779e797fb6aa8a360a181911ab0a4c">aDCSettings</a>
@@ -370,6 +365,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>isFeatureEnabled()
 : <a class="el" href="classa_d_c_settings.html#ac5398bce9dfacdccfea88b59607b7720">aDCSettings</a>
+</li>
+<li>IsSynced()
+: <a class="el" href="classa_stepper.html#a64c2c29dac8686910017c5a29b3acb01">aStepper</a>
 </li>
 </ul>
 
@@ -504,6 +502,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 
 
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
+<li>Reset()
+: <a class="el" href="classa_stepper.html#a6ff743a8a65c64115d617eaffe674361">aStepper</a>
+</li>
 <li>run()
 : <a class="el" href="classa_d_c_engine.html#aa012a3c6bc647ffc456ad93bf08b269f">aDCEngine</a>
 </li>
@@ -581,6 +582,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>showBanner()
 : <a class="el" href="classa_d_c_display.html#a0e2e29866585363721ace454d7e095c9">aDCDisplay</a>
 </li>
+<li>Sync()
+: <a class="el" href="classa_stepper.html#a3502d05a2ca7c4e6a2ab274fa16aecf0">aStepper</a>
+</li>
 <li>syncData()
 : <a class="el" href="classa_d_c_settings.html#a31575d5021fec2cb722c095a3bf60758">aDCSettings</a>
 </li>
@@ -625,7 +629,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 18 2014 16:04:26 for aDCLoad by
+    <li class="footer">Generated on Wed Nov 19 2014 00:28:25 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.4 </li>
   </ul>

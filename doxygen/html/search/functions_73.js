@@ -20,5 +20,6 @@ var searchData=
   ['setup',['setup',['../classa_d_c_display.html#a4622e023f968931a0a55d6a258c65df7',1,'aDCDisplay::setup()'],['../classa_d_c_engine.html#a59c7629fa3d7762ab9368fa34db5bb4f',1,'aDCEngine::setup()'],['../sketch_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d',1,'setup():&#160;sketch.cpp']]],
   ['setvoltage',['setVoltage',['../classa_d_c_settings.html#a5a383d28100c6cf6d7b7c2e003574b17',1,'aDCSettings']]],
   ['showbanner',['showBanner',['../classa_d_c_display.html#a0e2e29866585363721ace454d7e095c9',1,'aDCDisplay']]],
+  ['sync',['Sync',['../classa_stepper.html#a3502d05a2ca7c4e6a2ab274fa16aecf0',1,'aStepper']]],
   ['syncdata',['syncData',['../classa_d_c_settings.html#a31575d5021fec2cb722c095a3bf60758',1,'aDCSettings']]]
 ];

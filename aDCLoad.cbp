@@ -315,9 +315,9 @@
 				<Option type="1" />
 				<Option compiler="avr-gcc" />
 				<Compiler>
+					<Add option="-Os" />
 					<Add option="-mmcu=$(MCU)" />
 					<Add option="-D__AVR_ATmega328P__" />
-					<Add option="-Os" />
 					<Add option="-DF_CPU=$(CPU_FREQ)" />
 					<Add option="-DCODE_BLOCKS" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
@@ -327,8 +327,8 @@
 					<Add directory="$(SKETCH_DIR)/libraries" />
 				</Compiler>
 				<Linker>
-					<Add option="-mmcu=$(MCU)" />
 					<Add option="-s" />
+					<Add option="-mmcu=$(MCU)" />
 				</Linker>
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
@@ -382,8 +382,8 @@
 					<Variable name="MCU" value="atmega32u4" />
 					<Variable name="PROTOCOL" value="avr109" />
 					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
-					<Variable name="UPLOAD_BAUDRATE" value="57600" />
-					<Variable name="UPLOAD_PORT" value="" />
+					<Variable name="UPLOAD_BAUDRATE" value="9600" />
+					<Variable name="UPLOAD_PORT" value="/dev/ttyACM3" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Uno">
@@ -965,6 +965,15 @@
 			<envvars />
 			<lib_finder disable_auto="1" />
 			<debugger />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output latex="1" />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

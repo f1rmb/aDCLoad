@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 /**
  *
- * \note
+ * \warning
 <h1><center> BIG FAT WARNING </center></h1>
 <center>Should be compiled with  <b> "-Os" </b> flag.</center>
 <center>Bootloader <b><span style="text-decoration:underline;color:red;">couldn't</span></b> be flashed, <b>ISP programming ONLY</b></center>
@@ -43,6 +43,46 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     \author F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
 */
 
+// A bit of user's manual
+/**
+ * \page gui User interface overview
+ *
+ * - The DC load control is done using a simple rotary encoder, which integrates a push button.
+ * There are two modes, <b>values reading</b> and <b>values settings</b>.
+ * When you rotate the encoder, the controler automatically switches to settings mode. You just need to rotate the encoder to set up the desired value.
+ * In both modes, a double click changes the focus (delimited by '[' and ']' symbols) to the next value parameter.
+ * Also, a simple click changes the tuning step. Next to the ']' delimiter symbol, an icon displays the tuning step, as following:
+ *  + x1 : \image html x1.png "" \image latex x1.png ""
+ *  + x10 : \image html x10.png "" \image latex x10.png ""
+ *  + x100 : \image html x100.png "" \image latex x100.png ""
+ *  + x1000 : \image html x1k.png "" \image latex x1k.png ""
+ *
+ * <br>
+ *
+ * - According to the status of the DC Load, some icons may be shown:
+ *  + Logging : \image html Logging.png "" \image latex Logging.png ""
+ *  + Locked : \image html Lock.png "" \image latex Lock.png ""
+ *  + USB remote control : \image html USB.png "" \image latex USB.png ""
+ *
+ * <br>
+ *
+ * - To access to the options, you need to press the button for more than 3 seconds. In this <i>window</i>,
+ * you can enable or disable the <b>backlight's auto-dimmer</b> and the <b>rotary encoder's auto-lock</b> features.
+ * A double click changes the option focus, a simple click changes the option status and a long press exits this <i>window</i>.
+ *
+ * <br>
+ *
+ * - When auto-lock is turned on, and triggered, a double click unlocks the rotary encoder.
+ *
+ * <br>
+ *
+ * - When auto-dimmer is turned on, and triggered, any rotary encoder action will turn the backlight on, without any change to
+ * the defined settings.
+ *
+ * <br>
+ *
+ * - The DC Load can be remotely controlled, see \ref remote
+ */
 
 /**
 *** Implement our serial print function to save ~300ko
@@ -1012,7 +1052,7 @@ aStepper::~aStepper()
  * \return void
  *
  */
-void aStepper::incIncrement()
+void aStepper::Increment()
 {
     if((m_inc + 1) <= MAX_VALUE)
         m_inc++;
@@ -1025,7 +1065,7 @@ void aStepper::incIncrement()
  * \return uint8_t
  *
  */
-uint8_t aStepper::incGetValue()
+uint8_t aStepper::GetValue()
 {
     return m_inc;
 }
@@ -1035,7 +1075,7 @@ uint8_t aStepper::incGetValue()
  * \return void
  *
  */
-void aStepper::incReset()
+void aStepper::Reset()
 {
     m_inc = 0;
 }
@@ -1045,7 +1085,7 @@ void aStepper::incReset()
  * \return int16_t
  *
  */
-int16_t aStepper::incGetMult()
+int16_t aStepper::GetMult()
 {
     return (_pow(10, m_inc));
 }
@@ -1056,13 +1096,13 @@ int16_t aStepper::incGetMult()
  * \return int16_t
  *
  */
-int16_t aStepper::incGetValueFromMode(uint8_t mode)
+int16_t aStepper::GetValueFromMode(uint8_t mode)
 {
     switch (static_cast<aDCSettings::SelectionMode_t>(mode))
     {
         case aDCSettings::SELECTION_MODE_CURRENT:
             {
-                switch (incGetMult())
+                switch (GetMult())
                 {
                     case 10:
                         return 5;
@@ -1084,7 +1124,7 @@ int16_t aStepper::incGetValueFromMode(uint8_t mode)
         case aDCSettings::SELECTION_MODE_RESISTANCE:
 #endif
         case aDCSettings::SELECTION_MODE_POWER:
-            return incGetMult();
+            return GetMult();
             break;
 
         default:
@@ -1099,7 +1139,7 @@ int16_t aStepper::incGetValueFromMode(uint8_t mode)
  * \return bool
  *
  */
-bool aStepper::incIsSynced()
+bool aStepper::IsSynced()
 {
     return (m_inc == m_incPrev);
 }
@@ -1109,7 +1149,7 @@ bool aStepper::incIsSynced()
  * \return void
  *
  */
-void aStepper::incSync()
+void aStepper::Sync()
 {
     m_incPrev = m_inc;
 }
@@ -1582,11 +1622,11 @@ void aDCDisplay::updateDisplay()
             }
 
             // Update Stepper icon
-            if (!d->incIsSynced() || fullRedraw)
+            if (!d->IsSynced() || fullRedraw)
             {
                 aLCD::setCursor(OFFSET_MARKER_RIGHT + 1, static_cast<uint8_t>(d->getSelectionMode()) + 1);
-                aLCD::write(d->incGetValue());
-                d->incSync();
+                aLCD::write(d->GetValue());
+                d->Sync();
             }
 
             // Features icons
@@ -1840,7 +1880,7 @@ aDCEngine::~aDCEngine()
  * See also \ref logging
  *
  * \note Serial port configuration: 57600 8N1
- * \note Commands and arguments are <b>case sensitive</b>, and all in <b>UPCASE</b>
+ * \warning Commands and arguments are <b>case sensitive</b>, and all in <b>UPCASE</b>
  *
  * \section curget Current setting getter
  * <b>:ISET?:</b>
@@ -1955,7 +1995,18 @@ void aDCEngine::_updateLoggingAndRemote()
 
                         serialPrint(':');
 
-                        if (!strcmp((const char *)cmd, "ISET?")) // Get Current Settings
+                        if (!strcmp((const char *)cmd, "*IDN?")) // Get Current Settings
+                        {
+                            char buf[64];
+
+                            snprintf(buf, sizeof(buf), "FW=%d.%d, Built=<%s>@%s, GNU c++=%d.%d.%d",
+                                     SOFTWARE_VERSION_MAJOR, SOFTWARE_VERSION_MINOR, __DATE__, __TIME__,
+                                     __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
+
+                            serialPrint(&buf[0]);
+                            valid = true;
+                        }
+                        else if (!strcmp((const char *)cmd, "ISET?")) // Get Current Settings
                         {
                             serialPrint(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET)) * 1000.000), 0);
                             valid = true;
@@ -2091,8 +2142,11 @@ void aDCEngine::_updateLoggingAndRemote()
 
         // Logging
         unsigned long m = millis();
-        if ((m_Data.isFeatureEnabled(FEATURE_LOGGING) && !(m % 200)) || single)
+        static unsigned long nextLogging = 0;
+
+        if ((m_Data.isFeatureEnabled(FEATURE_LOGGING) && ((m - nextLogging) > 300)) || single)
         {
+            nextLogging = m;
             serialPrint(m / 100);
             serialPrint(',');
             serialPrint(floatRounding(floatRounding(m_Data.getVoltage()) * 1000.000), 0);
@@ -2176,7 +2230,7 @@ void aDCEngine::run()
 
         if ((v != 0) && (!m_Data.isFeatureEnabled(FEATURE_LOCKED)) && (m_Data.getDisplayMode() == aDCSettings::DISPLAY_MODE_VALUES))
         {
-            int16_t mult = m_Data.incGetValueFromMode(m_Data.getSelectionMode());
+            int16_t mult = m_Data.GetValueFromMode(m_Data.getSelectionMode());
 
             m_Data.incEncoderPosition((v * mult));
         }
@@ -2287,7 +2341,7 @@ void aDCEngine::run()
 
             // Increment encoder step (0.001, 0.01, 0.1, 1.0)
             if ((b == ClickEncoder::Clicked) && (m_Data.getDisplayMode() == aDCSettings::DISPLAY_MODE_VALUES))
-                m_Data.incIncrement();
+                m_Data.Increment();
 
             // Change selection mode according to double click.
             _handleButtonEvent(b);
