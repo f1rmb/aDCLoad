@@ -12,7 +12,6 @@ var classa_d_c_settings =
     ] ],
     [ "SelectionMode_t", "classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35", [
       [ "SELECTION_MODE_CURRENT", "classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35a9edf59cc291fdd158c96b2a813f57af8", null ],
-      [ "SELECTION_MODE_RESISTANCE", "classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35ac8c4f8ec0b9890975a6843b3809b6d88", null ],
       [ "SELECTION_MODE_POWER", "classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35a95400c9529da3d197e15ee2c21e19b3d", null ],
       [ "SELECTION_MODE_UNKNOWN", "classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35abf13fab765b0da271af7c7c4e2075a7e", null ]
     ] ],
@@ -38,7 +37,6 @@ var classa_d_c_settings =
     [ "getOperationMode", "classa_d_c_settings.html#a0476518fc92eaf9cc73689d60d1241f4", null ],
     [ "getPower", "classa_d_c_settings.html#a1b9f9fafce9abf998edacd51a9acca12", null ],
     [ "getPrevNextMode", "classa_d_c_settings.html#ad1a5f5653d308d5ada5a627e7c550178", null ],
-    [ "getResistance", "classa_d_c_settings.html#a15d0a02211d47d7da684cf1fef6c685d", null ],
     [ "getSelectionMode", "classa_d_c_settings.html#ab64f835f3a0f288f41d045936aa7e5f6", null ],
     [ "getTemperature", "classa_d_c_settings.html#a744609d0eadf89407c92b85eb0d68a64", null ],
     [ "getVoltage", "classa_d_c_settings.html#a5d2d796d631fd25250606aec171202a6", null ],
@@ -54,7 +52,6 @@ var classa_d_c_settings =
     [ "setFanSpeed", "classa_d_c_settings.html#a31cc9ffe3466374d156b92bfa19509c0", null ],
     [ "setOperationMode", "classa_d_c_settings.html#ad8c96bcd6ed9edc4b161b3bee59b8ac6", null ],
     [ "setPower", "classa_d_c_settings.html#a17469377e0b2f7df3b03b507700aa92b", null ],
-    [ "setResistance", "classa_d_c_settings.html#afe083e0a919c10287881cd8b4b3a2cb0", null ],
     [ "setSelectionMode", "classa_d_c_settings.html#a9af567b4a4cd2473a0014a561b340271", null ],
     [ "setTemperature", "classa_d_c_settings.html#abbbd50bc969628c02bc00780316709e2", null ],
     [ "setVoltage", "classa_d_c_settings.html#a5a383d28100c6cf6d7b7c2e003574b17", null ],
@@ -68,8 +65,6 @@ var classa_d_c_settings =
     [ "DATA_OPERATION", "classa_d_c_settings.html#a1a03cd57eba06b4bf45641d32360e4bf", null ],
     [ "DATA_POWER_READ", "classa_d_c_settings.html#a5026074b06e19de944327dd117613a82", null ],
     [ "DATA_POWER_SETS", "classa_d_c_settings.html#aca3bd63bd2b5e4857308898c3f4015de", null ],
-    [ "DATA_RESISTANCE_READ", "classa_d_c_settings.html#a1af48542f22babd2eea212b85c379bcd", null ],
-    [ "DATA_RESISTANCE_SETS", "classa_d_c_settings.html#af467d4157c443eddfffe7c6aab068aea", null ],
     [ "DATA_SELECTION", "classa_d_c_settings.html#a87b8ec9b903a55b2073b5c1572a4c670", null ],
     [ "DATA_TEMPERATURE", "classa_d_c_settings.html#a4fa84d371d5fe67fe58b3238dce5d30c", null ],
     [ "DATA_VOLTAGE", "classa_d_c_settings.html#ab880e71d031ef8be5e59f36195311361", null ],
@@ -84,10 +79,8 @@ var classa_d_c_settings =
     [ "m_operationTick", "classa_d_c_settings.html#a5e8db9cc2d318e1393d1049aa20843df", null ],
     [ "m_readCurrent", "classa_d_c_settings.html#a52ff092b321102a5c8443bf0b1e9427a", null ],
     [ "m_readPower", "classa_d_c_settings.html#a2d6daca878d695657f4254e7175f88b1", null ],
-    [ "m_readResistance", "classa_d_c_settings.html#abc4446da3936109515ec4aeb46b50135", null ],
     [ "m_readTemperature", "classa_d_c_settings.html#a49a36d5a39b71e6c2c20369f9da46d09", null ],
     [ "m_readVoltage", "classa_d_c_settings.html#ad0f4f408e7dd2a6507d43adedc4b1a53", null ],
     [ "m_setsCurrent", "classa_d_c_settings.html#a631ecdee0a528eed9e5e44ac9c2e4d6b", null ],
-    [ "m_setsPower", "classa_d_c_settings.html#a8eabad0a2cd9f00a64849a762b09216a", null ],
-    [ "m_setsResistance", "classa_d_c_settings.html#a222df6c8652c12d67dbd166a93582799", null ]
+    [ "m_setsPower", "classa_d_c_settings.html#a8eabad0a2cd9f00a64849a762b09216a", null ]
 ];

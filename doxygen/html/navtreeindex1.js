@@ -1,10 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"classa_stepper.html#ab5466f0968259a5895f9496783416f7a":[4,0,4,10],
-"classa_stepper.html#ab5c22269335321d72d4deed0b5b6d391":[4,0,4,12],
-"classa_stepper.html#acaab0dff25cc34944e972d9131e3c3fd":[4,0,4,3],
-"classa_stepper.html#ad807a96795f77f8e553e086e1be0bd90":[4,0,4,0],
-"classes.html":[4,1],
 "files.html":[5,0],
 "functions.html":[4,3,0],
 "functions_enum.html":[4,3,3],
@@ -38,7 +33,7 @@ var NAVTREEINDEX1 =
 "sketch_8cpp.html":[5,0,10],
 "sketch_8cpp.html#a3d333c5a3d38fce478f9b973ab06b294":[5,0,10,0],
 "sketch_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d":[5,0,10,2],
-"sketch_8cpp.html#a9082143401bb265ca07c94969d38d79c":[5,0,10,3],
+"sketch_8cpp.html#a56d2147075c04411671201e003bbb5cd":[5,0,10,3],
 "sketch_8cpp.html#afe461d27b9c48d5921c00d521181f12f":[5,0,10,1],
 "wiring_8c.html":[5,0,15],
 "wiring__analog_8c.html":[5,0,16],

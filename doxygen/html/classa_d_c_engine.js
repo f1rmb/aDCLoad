@@ -1,6 +1,6 @@
 var classa_d_c_engine =
 [
-    [ "aDCEngine", "classa_d_c_engine.html#a0a434100a3a9638155f0bda3eff6bcee", null ],
+    [ "aDCEngine", "classa_d_c_engine.html#a588a1f72c3e0f0648472c81272ef9549", null ],
     [ "~aDCEngine", "classa_d_c_engine.html#a7e348dd923c8ceb2b034de425295d3d8", null ],
     [ "_adjustCurrent", "classa_d_c_engine.html#ab54dedf4bf882ad475d93105920c5727", null ],
     [ "_getSettings", "classa_d_c_engine.html#aee524ec75d3b2f85a0b54f40162c7fd2", null ],
