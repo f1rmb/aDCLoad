@@ -16,7 +16,7 @@ var indexSectionsWithContent =
   6: "dos",
   7: "dos",
   8: "a",
-  9: "s",
+  9: "ms",
   10: "alru"
 };
 

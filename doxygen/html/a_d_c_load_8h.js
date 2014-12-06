@@ -5,6 +5,7 @@ var a_d_c_load_8h =
     [ "aLCD", "classa_l_c_d.html", "classa_l_c_d" ],
     [ "aDCDisplay", "classa_d_c_display.html", "classa_d_c_display" ],
     [ "aDCEngine", "classa_d_c_engine.html", "classa_d_c_engine" ],
+    [ "MAX_POWER", "a_d_c_load_8h.html#a6e5f254e637637d3a3256dfd7a1399c7", null ],
     [ "SIMU", "a_d_c_load_8h.html#a55bc90ce1fe4a4912c37967a33cb7262", null ],
     [ "ISRCallback", "a_d_c_load_8h.html#a398836a1d5ab903d8431c7cf974f4c55", null ],
     [ "ADC_CHIPSELECT_PIN", "a_d_c_load_8h.html#a1a23fb6043d623e2555b778671c32fd5", null ],
