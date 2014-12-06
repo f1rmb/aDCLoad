@@ -1190,12 +1190,16 @@ inline int16_t aStepper::_pow(int base, int exp)
  * \param d1 uint8_t : <b> LCD d1 pin </b>
  * \param d2 uint8_t : <b> LCD d2 pin </b>
  * \param d3 uint8_t : <b> LCD d3 pin </b>
+ * \param d4 uint8_t : <b> LCD d4 pin </b>
+ * \param d5 uint8_t : <b> LCD d5 pin </b>
+ * \param d6 uint8_t : <b> LCD d6 pin </b>
+ * \param d7 uint8_t : <b> LCD d7 pin </b>
  * \param cols uint8_t : <b> LCD columns number </b>
  * \param rows uint8_t : <b> LCD rows number </b>
  *
  */
-aLCD::aLCD(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t cols, uint8_t rows) :
-        LiquidCrystal(rs, enable, d0, d1, d2, d3),
+aLCD::aLCD(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cols, uint8_t rows) :
+        LiquidCrystal(rs, enable, d0, d1, d2, d3, d4, d5, d6, d7),
         m_cols(0), m_rows(0), m_curCol(0), m_curRow(0)
 {
     begin(cols, rows);
@@ -1362,12 +1366,16 @@ void aLCD::clearValue(uint8_t row, int destMinus)
  * \param d1 uint8_t : <b> LCD d1 pin </b>
  * \param d2 uint8_t : <b> LCD d2 pin </b>
  * \param d3 uint8_t : <b> LCD d3 pin </b>
+ * \param d4 uint8_t : <b> LCD d4 pin </b>
+ * \param d5 uint8_t : <b> LCD d5 pin </b>
+ * \param d6 uint8_t : <b> LCD d6 pin </b>
+ * \param d7 uint8_t : <b> LCD d7 pin </b>
  * \param cols uint8_t : <b> LCD columns </b>
  * \param rows uint8_t : <b> LCD rows </b>
  *
  */
-aDCDisplay::aDCDisplay(aDCEngine *parent, uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t cols, uint8_t rows) :
-        aLCD(rs, enable, d0, d1, d2, d3, cols, rows),
+aDCDisplay::aDCDisplay(aDCEngine *parent, uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cols, uint8_t rows) :
+        aLCD(rs, enable, d0, d1, d2, d3, d4, d5, d6, d7, cols, rows),
         m_Parent(parent), m_dimmed(false), m_dimmerTick(0)
 {
 }
@@ -1852,6 +1860,10 @@ bool aDCDisplay::isBacklightDimmed()
  * \param d1 uint8_t : <b> LCD d1 pin </b>
  * \param d2 uint8_t : <b> LCD d2 pin </b>
  * \param d3 uint8_t : <b> LCD d3 pin </b>
+ * \param d4 uint8_t : <b> LCD d4 pin </b>
+ * \param d5 uint8_t : <b> LCD d5 pin </b>
+ * \param d6 uint8_t : <b> LCD d6 pin </b>
+ * \param d7 uint8_t : <b> LCD d7 pin </b>
  * \param cols uint8_t : <b> LCD Columns number </b>
  * \param rows uint8_t : <b> LCD Rows number </b>
  * \param enca uint8_t : <b> Encoder A pin </b>
@@ -1860,9 +1872,10 @@ bool aDCDisplay::isBacklightDimmed()
  * \param encsteps uint8_t : <b> Encoder steps per notch </b>
  *
  */
-aDCEngine::aDCEngine(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t cols, uint8_t rows,
+aDCEngine::aDCEngine(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
+                     uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cols, uint8_t rows,
                      uint8_t enca, uint8_t encb, uint8_t encpb, uint8_t encsteps)
-                     : aDCDisplay(this, rs, enable, d0, d1, d2, d3, cols, rows),
+                     : aDCDisplay(this, rs, enable, d0, d1, d2, d3, d4, d5, d6, d7, cols, rows),
                        m_encoder(new ClickEncoder(enca, encb, encpb, encsteps)),
                        m_RXoffset(0)
 {

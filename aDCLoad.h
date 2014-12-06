@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     \author F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
 */
 
-//#define SIMU 1
+#define SIMU 1
 //#define RESISTANCE 1                                        ///< Define this if you want to display Resistance settings
 
 // Set Constants
@@ -44,20 +44,29 @@ const uint16_t      DAC_FAN_CHAN                = 1;        ///< set The DAC cha
 
 const uint8_t       LCD_RS_PIN                  = 10;       ///< LCD RS pin.
 const uint8_t       LCD_ENABLE_PIN              = 12;       ///< LCD ENABLE pin.
-const uint8_t       LCD_D0_PIN                  = 4;        ///< LCD d0 pin.
-const uint8_t       LCD_D1_PIN                  = 13;       ///< LCD d1 pin.
-const uint8_t       LCD_D2_PIN                  = 6;        ///< LCD d2 pin.
-const uint8_t       LCD_D3_PIN                  = 5;        ///< LCD d3 pin.
+
+#if 0
+const uint8_t       LCD_D4_PIN                  = 4;        ///< LCD d0 pin.
+const uint8_t       LCD_D5_PIN                  = 13;       ///< LCD d1 pin.
+const uint8_t       LCD_D6_PIN                  = 6;        ///< LCD d2 pin.
+const uint8_t       LCD_D7_PIN                  = 5;        ///< LCD d3 pin.
+#else
+const uint8_t       LCD_D0_PIN                  = A0;       ///< LCD d0 pin.
+const uint8_t       LCD_D1_PIN                  = A1;       ///< LCD d1 pin.
+const uint8_t       LCD_D2_PIN                  = A2;       ///< LCD d3 pin.
+const uint8_t       LCD_D3_PIN                  = A3;       ///< LCD d2 pin.
+const uint8_t       LCD_D4_PIN                  = 4;        ///< LCD d4 pin.
+const uint8_t       LCD_D5_PIN                  = 13;       ///< LCD d5 pin.
+const uint8_t       LCD_D6_PIN                  = 6;        ///< LCD d6 pin.
+const uint8_t       LCD_D7_PIN                  = 5;        ///< LCD d7 pin.
+#endif // 0
+
 const uint8_t       LCD_COLS_NUM                = 20;       ///< LCD columns size
 const uint8_t       LCD_ROWS_NUM                = 4;        ///< LCD rows size
 
-const uint8_t       ENCODER_A_PIN               = 3;        ///< set pin 3 as the channel A for encoder 1, int.0:
-const uint8_t       ENCODER_B_PIN               = 2;        ///< set pin 2 as the channel B for encoder 1, int.1:
-#ifdef SIMU
-const uint8_t       ENCODER_PB_PIN              = 48;       ///< set pin 48 as the push button for encoder 1
-#else
-const uint8_t       ENCODER_PB_PIN              = 0;        ///< set pin 0 as the push button for encoder 1
-#endif // SIMU
+const uint8_t       ENCODER_A_PIN               = 3;        ///< Encoder Channel A pin, INT 0
+const uint8_t       ENCODER_B_PIN               = 2;        ///< Encoder Channel B pin, INT 1
+const uint8_t       ENCODER_PB_PIN              = 0;        ///< Encoder push button pin, INT 2
 const uint8_t       ENCODER_STEPS_PER_NOTCH     = 4;        ///< Depending on the type of your encoder, you can define use the constructors parameter `stepsPerNotch` an set it to either `1`, `2` or `4` steps per notch, with `1` being the default.
 
 const uint8_t       LED_BACKLIGHT_PIN           = 11;       ///< LCD backlight pin.
@@ -361,7 +370,7 @@ class aLCD : public LiquidCrystal
         //static const unsigned long SCROLL_DELAY = 300; // Disabled due to memory footprint
 
     public:
-        aLCD(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
+        aLCD(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
         ~aLCD();
 
         void                begin(uint8_t, uint8_t);
@@ -382,7 +391,7 @@ class aDCEngine;
 class aDCDisplay : public aLCD
 {
     public:
-        aDCDisplay(aDCEngine *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
+        aDCDisplay(aDCEngine *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
         ~aDCDisplay();
 
         void                setup();
@@ -411,7 +420,7 @@ class aDCEngine : public aDCDisplay
     friend class aDCDisplay;
 
     public:
-        aDCEngine(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t = 1);
+        aDCEngine(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t = 1);
         ~aDCEngine();
 
         void                setup(ISRCallback);
