@@ -28,7 +28,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     \author F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
 */
 
-#define SIMU 1
+#define SIMU 1                                              ///< Define this if you want to simulate ADC/DAC/whatever (debug mode)
+#define MAX_POWER 1                                         ///< Define this if you want 192W support
 //#define RESISTANCE 1                                        ///< Define this if you want to display Resistance settings
 
 // Set Constants
@@ -97,7 +98,11 @@ const unsigned long BACKLIGHT_TIMEOUT           = 300000;   ///< Backlight dimme
 // Set maximum values.
 const float         VOLTAGE_MAXIMUM             = 24.000;   ///< Maximum handled voltage (V)
 const float         CURRENT_MAXIMUM             = 8.000;    ///< Maximum value of load current (A)
+#ifdef MAX_POWER
+const float         POWER_MAXIMUM               = VOLTAGE_MAXIMUM * CURRENT_MAXIMUM;   ///< Maximum power dissipated (W)
+#else
 const float         POWER_MAXIMUM               = 50.000;   ///< Maximum power dissipated (W)
+#endif // MAX_POWER
 #ifdef RESISTANCE
 const float         RESISTANCE_MAXIMUM          = FLT_MAX;  ///< Maximum resistance value (R)
 #endif

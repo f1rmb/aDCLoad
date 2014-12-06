@@ -1494,6 +1494,11 @@ void aDCDisplay::setup()
 void aDCDisplay::showBanner()
 {
     aLCD::clear();
+#ifdef SIMU
+    aLCD::setCursor(0, 0);
+    aLCD::printCenter("*SIMULATION*");
+#endif // SIMU
+
     aLCD::setCursor(0, 1);
     aLCD::printCenter("DC Electronic Load");
 
