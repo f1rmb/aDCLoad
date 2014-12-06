@@ -132,7 +132,7 @@ void ClickEncoder::service(void)
   static uint8_t doubleClickTicks = 0;
   static unsigned long lastButtonCheck = 0;
 
-  if (pinBTN > 0 // check button only, if a pin has been provided
+  if ((pinBTN != -1) // check button only, if a pin has been provided
       && (now - lastButtonCheck) >= ENC_BUTTONINTERVAL) // checking button is sufficient every 10-30ms
   {
     lastButtonCheck = now;
