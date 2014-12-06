@@ -45,12 +45,6 @@ const uint16_t      DAC_FAN_CHAN                = 1;        ///< set The DAC cha
 const uint8_t       LCD_RS_PIN                  = 10;       ///< LCD RS pin.
 const uint8_t       LCD_ENABLE_PIN              = 12;       ///< LCD ENABLE pin.
 
-#if 0
-const uint8_t       LCD_D4_PIN                  = 4;        ///< LCD d0 pin.
-const uint8_t       LCD_D5_PIN                  = 13;       ///< LCD d1 pin.
-const uint8_t       LCD_D6_PIN                  = 6;        ///< LCD d2 pin.
-const uint8_t       LCD_D7_PIN                  = 5;        ///< LCD d3 pin.
-#else
 const uint8_t       LCD_D0_PIN                  = A0;       ///< LCD d0 pin.
 const uint8_t       LCD_D1_PIN                  = A1;       ///< LCD d1 pin.
 const uint8_t       LCD_D2_PIN                  = A2;       ///< LCD d3 pin.
@@ -59,7 +53,6 @@ const uint8_t       LCD_D4_PIN                  = 4;        ///< LCD d4 pin.
 const uint8_t       LCD_D5_PIN                  = 13;       ///< LCD d5 pin.
 const uint8_t       LCD_D6_PIN                  = 6;        ///< LCD d6 pin.
 const uint8_t       LCD_D7_PIN                  = 5;        ///< LCD d7 pin.
-#endif // 0
 
 const uint8_t       LCD_COLS_NUM                = 20;       ///< LCD columns size
 const uint8_t       LCD_ROWS_NUM                = 4;        ///< LCD rows size
