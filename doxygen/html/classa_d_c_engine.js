@@ -19,6 +19,7 @@ var classa_d_c_engine =
     [ "aDCDisplay", "classa_d_c_engine.html#a6a9dcdceefd92057e7280ac95cc96803", null ],
     [ "m_Data", "classa_d_c_engine.html#a25414c5108fbbc0a07d82e0ff82d93d8", null ],
     [ "m_encoder", "classa_d_c_engine.html#aab05581cd36bf6ebcee9626704cbca93", null ],
-    [ "m_RXbuffer", "classa_d_c_engine.html#a086de697a244121e69b95f82c5d61dd9", null ],
-    [ "m_RXoffset", "classa_d_c_engine.html#a15d3419f187e0f56ffc9d1a832493f72", null ]
+    [ "m_RXbuffer", "classa_d_c_engine.html#aa302ade4d81c22c58f31c46440ac4686", null ],
+    [ "m_RXoffset", "classa_d_c_engine.html#a15d3419f187e0f56ffc9d1a832493f72", null ],
+    [ "RXBUFFER_MAXLEN", "classa_d_c_engine.html#a9efe073abe646fae5a57e086b082ac7e", null ]
 ];

@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.2</span>
+   &#160;<span id="projectnumber">2.6</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -108,6 +108,7 @@ $(document).ready(function(){initNavTree('classa_d_c_settings.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
@@ -126,6 +127,15 @@ $(document).ready(function(){initNavTree('classa_d_c_settings.html','');});
 
 <p>Inherits <a class="el" href="classa_stepper.html">aStepper</a>.</p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniona_d_c_settings_1_1__eeprom_calibration_value__t.html">_eepromCalibrationValue_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Union to manipulate float/uint8_t [] calibration values.  <a href="uniona_d_c_settings_1_1__eeprom_calibration_value__t.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">CalibrationData_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibration values.  <a href="structa_d_c_settings_1_1_calibration_data__t.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:ab0ad0158433b15808e27a3e7551e07e3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#ab0ad0158433b15808e27a3e7551e07e3">OperationMode_t</a> { <a class="el" href="classa_d_c_settings.html#ab0ad0158433b15808e27a3e7551e07e3a69e7938bcc664f11aa82fe51568144c4">OPERATION_MODE_READ</a>, 
@@ -152,6 +162,13 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a493db8c7659fc379940eb2873c77b3f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setting error enumeration.  <a href="classa_d_c_settings.html#a493db8c7659fc379940eb2873c77b3f4">More...</a><br/></td></tr>
 <tr class="separator:a493db8c7659fc379940eb2873c77b3f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac36b040d05f53f0b88baa0bdb18efdc4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4">CalibrationValues_t</a> { <a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4a85f9cf57a01a7ad377217baaa58320ea">CALIBRATION_VOLTAGE</a>, 
+<a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4a519d479a558177bcfc7b5cf263222e5f">CALIBRATION_READ_CURRENT</a>, 
+<a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4ad56dfa703823e602ddf9d0064ee79e3b">CALIBRATION_DAC_CURRENT</a>, 
+<a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4a76f7208c3348d7fc8a50214dc955c71b">CALIBRATION_MAX</a>
+ }</td></tr>
+<tr class="memdesc:ac36b040d05f53f0b88baa0bdb18efdc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibration offset enumeration.  <a href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4">More...</a><br/></td></tr>
+<tr class="separator:ac36b040d05f53f0b88baa0bdb18efdc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -194,6 +211,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad0b439c61388f692aea1afdd319b357a"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#ad0b439c61388f692aea1afdd319b357a">getFanSpeed</a> ()</td></tr>
 <tr class="memdesc:ad0b439c61388f692aea1afdd319b357a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fan speed getter.  <a href="#ad0b439c61388f692aea1afdd319b357a">More...</a><br/></td></tr>
 <tr class="separator:ad0b439c61388f692aea1afdd319b357a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a177f8d395330f36e457678bb5172e611"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a177f8d395330f36e457678bb5172e611">setCurrentDAC</a> (uint16_t)</td></tr>
+<tr class="memdesc:a177f8d395330f36e457678bb5172e611"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current DAC value setter.  <a href="#a177f8d395330f36e457678bb5172e611">More...</a><br/></td></tr>
+<tr class="separator:a177f8d395330f36e457678bb5172e611"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2a9751cbde4521c4a8c297b7116a1cc"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#ae2a9751cbde4521c4a8c297b7116a1cc">getCurrentDAC</a> ()</td></tr>
+<tr class="memdesc:ae2a9751cbde4521c4a8c297b7116a1cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current DAC value getter.  <a href="#ae2a9751cbde4521c4a8c297b7116a1cc">More...</a><br/></td></tr>
+<tr class="separator:ae2a9751cbde4521c4a8c297b7116a1cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9af567b4a4cd2473a0014a561b340271"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a9af567b4a4cd2473a0014a561b340271">setSelectionMode</a> (<a class="el" href="classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35">SelectionMode_t</a>, bool=false)</td></tr>
 <tr class="memdesc:a9af567b4a4cd2473a0014a561b340271"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selection mode setter.  <a href="#a9af567b4a4cd2473a0014a561b340271">More...</a><br/></td></tr>
 <tr class="separator:a9af567b4a4cd2473a0014a561b340271"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -236,6 +259,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6f779e797fb6aa8a360a181911ab0a4c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a6f779e797fb6aa8a360a181911ab0a4c">isAutolocked</a> ()</td></tr>
 <tr class="memdesc:a6f779e797fb6aa8a360a181911ab0a4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if autolock is enabled and performs.  <a href="#a6f779e797fb6aa8a360a181911ab0a4c">More...</a><br/></td></tr>
 <tr class="separator:a6f779e797fb6aa8a360a181911ab0a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af390b82a1ddbeb9a08b4505c4630a367"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#af390b82a1ddbeb9a08b4505c4630a367">setCalibationMode</a> (bool=true)</td></tr>
+<tr class="memdesc:af390b82a1ddbeb9a08b4505c4630a367"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibration mode enability setter.  <a href="#af390b82a1ddbeb9a08b4505c4630a367">More...</a><br/></td></tr>
+<tr class="separator:af390b82a1ddbeb9a08b4505c4630a367"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4876e7869ac961f9f09eff6d1afc1180"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a4876e7869ac961f9f09eff6d1afc1180">getCalibrationMode</a> ()</td></tr>
+<tr class="memdesc:a4876e7869ac961f9f09eff6d1afc1180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibration mode enability getter.  <a href="#a4876e7869ac961f9f09eff6d1afc1180">More...</a><br/></td></tr>
+<tr class="separator:a4876e7869ac961f9f09eff6d1afc1180"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f9a501b45f6e6b7c2a86f0d6f4fa159"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a5f9a501b45f6e6b7c2a86f0d6f4fa159">getCalibrationValues</a> (<a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4">CalibrationValues_t</a>, <a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">CalibrationData_t</a> &amp;)</td></tr>
+<tr class="memdesc:a5f9a501b45f6e6b7c2a86f0d6f4fa159"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibration data getter, according to <em>calsection</em> argument.  <a href="#a5f9a501b45f6e6b7c2a86f0d6f4fa159">More...</a><br/></td></tr>
+<tr class="separator:a5f9a501b45f6e6b7c2a86f0d6f4fa159"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a579c47dd4fac621be0a4229f5c62aa5e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a579c47dd4fac621be0a4229f5c62aa5e">setCalibrationValues</a> (<a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4">CalibrationValues_t</a>, <a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">CalibrationData_t</a>)</td></tr>
+<tr class="memdesc:a579c47dd4fac621be0a4229f5c62aa5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibration data setter, according to <em>calsection</em> argument.  <a href="#a579c47dd4fac621be0a4229f5c62aa5e">More...</a><br/></td></tr>
+<tr class="separator:a579c47dd4fac621be0a4229f5c62aa5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a175085bf5766f19e26fbba5a6dd10922"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a175085bf5766f19e26fbba5a6dd10922">backupCalibration</a> ()</td></tr>
+<tr class="memdesc:a175085bf5766f19e26fbba5a6dd10922"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backup calibration data into EEPROM.  <a href="#a175085bf5766f19e26fbba5a6dd10922">More...</a><br/></td></tr>
+<tr class="separator:a175085bf5766f19e26fbba5a6dd10922"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa921d468939b80d57c2726f935975612"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#aa921d468939b80d57c2726f935975612">restoreCalibration</a> ()</td></tr>
+<tr class="memdesc:aa921d468939b80d57c2726f935975612"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore calibration data from EEPROM.  <a href="#aa921d468939b80d57c2726f935975612">More...</a><br/></td></tr>
+<tr class="separator:aa921d468939b80d57c2726f935975612"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ece600ded8bd29a72d096e8f8ea97b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a1ece600ded8bd29a72d096e8f8ea97b3">enableFeature</a> (uint16_t, bool=true)</td></tr>
 <tr class="memdesc:a1ece600ded8bd29a72d096e8f8ea97b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to manage bit-field features.  <a href="#a1ece600ded8bd29a72d096e8f8ea97b3">More...</a><br/></td></tr>
 <tr class="separator:a1ece600ded8bd29a72d096e8f8ea97b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,27 +296,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aae1768acd5785ca061f6c23caf42bade inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#aae1768acd5785ca061f6c23caf42bade">~aStepper</a> ()</td></tr>
 <tr class="memdesc:aae1768acd5785ca061f6c23caf42bade inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#aae1768acd5785ca061f6c23caf42bade">More...</a><br/></td></tr>
 <tr class="separator:aae1768acd5785ca061f6c23caf42bade inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6198d52ad94d0dcae2178a5e7ca3c8a4 inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a6198d52ad94d0dcae2178a5e7ca3c8a4">Increment</a> ()</td></tr>
-<tr class="memdesc:a6198d52ad94d0dcae2178a5e7ca3c8a4 inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment value, check for boundaries.  <a href="#a6198d52ad94d0dcae2178a5e7ca3c8a4">More...</a><br/></td></tr>
-<tr class="separator:a6198d52ad94d0dcae2178a5e7ca3c8a4 inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a858174f4adc6533c1abe28852ba5943d inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a858174f4adc6533c1abe28852ba5943d">GetValue</a> ()</td></tr>
-<tr class="memdesc:a858174f4adc6533c1abe28852ba5943d inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value getter.  <a href="#a858174f4adc6533c1abe28852ba5943d">More...</a><br/></td></tr>
-<tr class="separator:a858174f4adc6533c1abe28852ba5943d inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ff743a8a65c64115d617eaffe674361 inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a6ff743a8a65c64115d617eaffe674361">Reset</a> ()</td></tr>
-<tr class="memdesc:a6ff743a8a65c64115d617eaffe674361 inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset value.  <a href="#a6ff743a8a65c64115d617eaffe674361">More...</a><br/></td></tr>
-<tr class="separator:a6ff743a8a65c64115d617eaffe674361 inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaab0dff25cc34944e972d9131e3c3fd inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#acaab0dff25cc34944e972d9131e3c3fd">GetMult</a> ()</td></tr>
-<tr class="memdesc:acaab0dff25cc34944e972d9131e3c3fd inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value getter, according to multiple.  <a href="#acaab0dff25cc34944e972d9131e3c3fd">More...</a><br/></td></tr>
-<tr class="separator:acaab0dff25cc34944e972d9131e3c3fd inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19329b21c4e128fc938b72affb0c0523 inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a19329b21c4e128fc938b72affb0c0523">GetValueFromMode</a> (uint8_t)</td></tr>
-<tr class="memdesc:a19329b21c4e128fc938b72affb0c0523 inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value according to selection mode.  <a href="#a19329b21c4e128fc938b72affb0c0523">More...</a><br/></td></tr>
-<tr class="separator:a19329b21c4e128fc938b72affb0c0523 inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64c2c29dac8686910017c5a29b3acb01 inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a64c2c29dac8686910017c5a29b3acb01">IsSynced</a> ()</td></tr>
-<tr class="memdesc:a64c2c29dac8686910017c5a29b3acb01 inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronize value.  <a href="#a64c2c29dac8686910017c5a29b3acb01">More...</a><br/></td></tr>
-<tr class="separator:a64c2c29dac8686910017c5a29b3acb01 inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3502d05a2ca7c4e6a2ab274fa16aecf0 inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a3502d05a2ca7c4e6a2ab274fa16aecf0">Sync</a> ()</td></tr>
-<tr class="memdesc:a3502d05a2ca7c4e6a2ab274fa16aecf0 inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if value is synchronized.  <a href="#a3502d05a2ca7c4e6a2ab274fa16aecf0">More...</a><br/></td></tr>
-<tr class="separator:a3502d05a2ca7c4e6a2ab274fa16aecf0 inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d4d3800639fec2fd18843a59a0f05ff inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a3d4d3800639fec2fd18843a59a0f05ff">increment</a> ()</td></tr>
+<tr class="memdesc:a3d4d3800639fec2fd18843a59a0f05ff inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment value, check for boundaries.  <a href="#a3d4d3800639fec2fd18843a59a0f05ff">More...</a><br/></td></tr>
+<tr class="separator:a3d4d3800639fec2fd18843a59a0f05ff inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57fd4ddfc440558cb9ffc0e4c9fa8cfb inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a57fd4ddfc440558cb9ffc0e4c9fa8cfb">getValue</a> ()</td></tr>
+<tr class="memdesc:a57fd4ddfc440558cb9ffc0e4c9fa8cfb inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value getter.  <a href="#a57fd4ddfc440558cb9ffc0e4c9fa8cfb">More...</a><br/></td></tr>
+<tr class="separator:a57fd4ddfc440558cb9ffc0e4c9fa8cfb inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a663cdec3d569a9ce99ba261e47bb0b8e inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a663cdec3d569a9ce99ba261e47bb0b8e">reset</a> ()</td></tr>
+<tr class="memdesc:a663cdec3d569a9ce99ba261e47bb0b8e inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset value.  <a href="#a663cdec3d569a9ce99ba261e47bb0b8e">More...</a><br/></td></tr>
+<tr class="separator:a663cdec3d569a9ce99ba261e47bb0b8e inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a926da7aa54e63f355cae926b6d161a57 inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a926da7aa54e63f355cae926b6d161a57">getMult</a> ()</td></tr>
+<tr class="memdesc:a926da7aa54e63f355cae926b6d161a57 inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value getter, according to multiple.  <a href="#a926da7aa54e63f355cae926b6d161a57">More...</a><br/></td></tr>
+<tr class="separator:a926da7aa54e63f355cae926b6d161a57 inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f740d356b3dbe3f5f5ab74697c2214d inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a6f740d356b3dbe3f5f5ab74697c2214d">getValueFromMode</a> (uint8_t)</td></tr>
+<tr class="memdesc:a6f740d356b3dbe3f5f5ab74697c2214d inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value according to selection mode.  <a href="#a6f740d356b3dbe3f5f5ab74697c2214d">More...</a><br/></td></tr>
+<tr class="separator:a6f740d356b3dbe3f5f5ab74697c2214d inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f2dceb1ac4337dee4cc0d3789f4e1c8 inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a1f2dceb1ac4337dee4cc0d3789f4e1c8">isSynced</a> ()</td></tr>
+<tr class="memdesc:a1f2dceb1ac4337dee4cc0d3789f4e1c8 inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronize value.  <a href="#a1f2dceb1ac4337dee4cc0d3789f4e1c8">More...</a><br/></td></tr>
+<tr class="separator:a1f2dceb1ac4337dee4cc0d3789f4e1c8 inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ba9b4f97fddd3ee38aef860f7b67d74 inherit pub_methods_classa_stepper"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_stepper.html#a4ba9b4f97fddd3ee38aef860f7b67d74">sync</a> ()</td></tr>
+<tr class="memdesc:a4ba9b4f97fddd3ee38aef860f7b67d74 inherit pub_methods_classa_stepper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if value is synchronized.  <a href="#a4ba9b4f97fddd3ee38aef860f7b67d74">More...</a><br/></td></tr>
+<tr class="separator:a4ba9b4f97fddd3ee38aef860f7b67d74 inherit pub_methods_classa_stepper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -309,15 +350,27 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a1a03cd57eba06b4bf45641d32360e4bf"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a1a03cd57eba06b4bf45641d32360e4bf">DATA_OPERATION</a> = 1 &lt;&lt; 11</td></tr>
 <tr class="memdesc:a1a03cd57eba06b4bf45641d32360e4bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">bit-field storage: Operation mode sets  <a href="#a1a03cd57eba06b4bf45641d32360e4bf">More...</a><br/></td></tr>
 <tr class="separator:a1a03cd57eba06b4bf45641d32360e4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad725fae7eb730a5c0dbe96cd08ca7ac7"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#ad725fae7eb730a5c0dbe96cd08ca7ac7">DATA_IN_CALIBRATION</a> = 1 &lt;&lt; 12</td></tr>
+<tr class="memdesc:ad725fae7eb730a5c0dbe96cd08ca7ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">bit-field storage: In calibration mode  <a href="#ad725fae7eb730a5c0dbe96cd08ca7ac7">More...</a><br/></td></tr>
+<tr class="separator:ad725fae7eb730a5c0dbe96cd08ca7ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a6c8529324c6f366d1a7e4ea23a2de899"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a6c8529324c6f366d1a7e4ea23a2de899">_eepromCheckMagic</a> ()</td></tr>
-<tr class="memdesc:a6c8529324c6f366d1a7e4ea23a2de899"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for EEPROM magic numbers.  <a href="#a6c8529324c6f366d1a7e4ea23a2de899">More...</a><br/></td></tr>
-<tr class="separator:a6c8529324c6f366d1a7e4ea23a2de899"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92c9862a96c30d25ceb5bc5e70106ee3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a92c9862a96c30d25ceb5bc5e70106ee3">_eepromWriteMagic</a> ()</td></tr>
-<tr class="memdesc:a92c9862a96c30d25ceb5bc5e70106ee3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write magic numbers into EEPROM.  <a href="#a92c9862a96c30d25ceb5bc5e70106ee3">More...</a><br/></td></tr>
-<tr class="separator:a92c9862a96c30d25ceb5bc5e70106ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b1d0e1535f62599c88e683a03863892"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a8b1d0e1535f62599c88e683a03863892">_crc8</a> (const uint8_t *, uint8_t)</td></tr>
+<tr class="memdesc:a8b1d0e1535f62599c88e683a03863892"><td class="mdescLeft">&#160;</td><td class="mdescRight">CRC8 computation.  <a href="#a8b1d0e1535f62599c88e683a03863892">More...</a><br/></td></tr>
+<tr class="separator:a8b1d0e1535f62599c88e683a03863892"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3990c62a8d7f058b84cb00bc49789d3b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a3990c62a8d7f058b84cb00bc49789d3b">_eepromCalibrationRestore</a> (int16_t, <a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">CalibrationData_t</a> &amp;)</td></tr>
+<tr class="memdesc:a3990c62a8d7f058b84cb00bc49789d3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read data from EEPROM, used to restore calibration data.  <a href="#a3990c62a8d7f058b84cb00bc49789d3b">More...</a><br/></td></tr>
+<tr class="separator:a3990c62a8d7f058b84cb00bc49789d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb4c3e52df5036d1194ce62ce2de5a22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#abb4c3e52df5036d1194ce62ce2de5a22">_eepromCalibrationBackup</a> (int16_t, <a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">CalibrationData_t</a>)</td></tr>
+<tr class="memdesc:abb4c3e52df5036d1194ce62ce2de5a22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save data to EEPROM, used to restore calibration data.  <a href="#abb4c3e52df5036d1194ce62ce2de5a22">More...</a><br/></td></tr>
+<tr class="separator:abb4c3e52df5036d1194ce62ce2de5a22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20b39a5345fb69a894db77f4ae0da581"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a20b39a5345fb69a894db77f4ae0da581">_eepromCheckForMagicNumbers</a> ()</td></tr>
+<tr class="memdesc:a20b39a5345fb69a894db77f4ae0da581"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for EEPROM magic numbers.  <a href="#a20b39a5345fb69a894db77f4ae0da581">More...</a><br/></td></tr>
+<tr class="separator:a20b39a5345fb69a894db77f4ae0da581"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ace51e0fde63a546c1aa201a47927b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a0ace51e0fde63a546c1aa201a47927b2">_eepromWriteMagicNumbers</a> ()</td></tr>
+<tr class="memdesc:a0ace51e0fde63a546c1aa201a47927b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write magic numbers into EEPROM.  <a href="#a0ace51e0fde63a546c1aa201a47927b2">More...</a><br/></td></tr>
+<tr class="separator:a0ace51e0fde63a546c1aa201a47927b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a963c34042edfed7f02f46306210499b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a963c34042edfed7f02f46306210499b4">_eepromReset</a> ()</td></tr>
 <tr class="memdesc:a963c34042edfed7f02f46306210499b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset all stored parameters into EEPROM.  <a href="#a963c34042edfed7f02f46306210499b4">More...</a><br/></td></tr>
 <tr class="separator:a963c34042edfed7f02f46306210499b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -332,6 +385,7 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:a0f567103e60a6fbb863f81a20a977686"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99db07a56e78706c9bb7568161a18fa7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a99db07a56e78706c9bb7568161a18fa7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classa_d_c_settings.html#a493db8c7659fc379940eb2873c77b3f4">SettingError_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a99db07a56e78706c9bb7568161a18fa7">_setValue</a> (<a class="el" href="classa_d_c_settings.html#ab0ad0158433b15808e27a3e7551e07e3">OperationMode_t</a> mode, uint16_t bit, T value, T &amp;sets, T &amp;read, float maximum)</td></tr>
+<tr class="memdesc:a99db07a56e78706c9bb7568161a18fa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value setter.  <a href="#a99db07a56e78706c9bb7568161a18fa7">More...</a><br/></td></tr>
 <tr class="separator:a99db07a56e78706c9bb7568161a18fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
@@ -355,6 +409,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a622dc89404cf9a3bd44b5af12dbac537"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a622dc89404cf9a3bd44b5af12dbac537">m_fanSpeed</a></td></tr>
 <tr class="memdesc:a622dc89404cf9a3bd44b5af12dbac537"><td class="mdescLeft">&#160;</td><td class="mdescRight">fan speed storage  <a href="#a622dc89404cf9a3bd44b5af12dbac537">More...</a><br/></td></tr>
 <tr class="separator:a622dc89404cf9a3bd44b5af12dbac537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84a60b83510189a73d8c267166bbd140"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a84a60b83510189a73d8c267166bbd140">m_currentDAC</a></td></tr>
+<tr class="memdesc:a84a60b83510189a73d8c267166bbd140"><td class="mdescLeft">&#160;</td><td class="mdescRight">current DAC value  <a href="#a84a60b83510189a73d8c267166bbd140">More...</a><br/></td></tr>
+<tr class="separator:a84a60b83510189a73d8c267166bbd140"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e9a79d70084e611063fbe34c7e5945c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classa_d_c_settings.html#ab0ad0158433b15808e27a3e7551e07e3">OperationMode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a7e9a79d70084e611063fbe34c7e5945c">m_operationMode</a></td></tr>
 <tr class="memdesc:a7e9a79d70084e611063fbe34c7e5945c"><td class="mdescLeft">&#160;</td><td class="mdescRight">operation mode  <a href="#a7e9a79d70084e611063fbe34c7e5945c">More...</a><br/></td></tr>
 <tr class="separator:a7e9a79d70084e611063fbe34c7e5945c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -379,10 +436,42 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a209e9ada974b1372542dbb87b93f4b74"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a209e9ada974b1372542dbb87b93f4b74">m_datas</a></td></tr>
 <tr class="memdesc:a209e9ada974b1372542dbb87b93f4b74"><td class="mdescLeft">&#160;</td><td class="mdescRight">boolean displayes data storage  <a href="#a209e9ada974b1372542dbb87b93f4b74">More...</a><br/></td></tr>
 <tr class="separator:a209e9ada974b1372542dbb87b93f4b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1be6dead4a441599565f7968d8e80531"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">CalibrationData_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a1be6dead4a441599565f7968d8e80531">m_calibrationValues</a> [<a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4a76f7208c3348d7fc8a50214dc955c71b">CALIBRATION_MAX</a>]</td></tr>
+<tr class="memdesc:a1be6dead4a441599565f7968d8e80531"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibration datas, restored from EEPROM.  <a href="#a1be6dead4a441599565f7968d8e80531">More...</a><br/></td></tr>
+<tr class="separator:a1be6dead4a441599565f7968d8e80531"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that handle settings. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="ac36b040d05f53f0b88baa0bdb18efdc4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4">aDCSettings::CalibrationValues_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calibration offset enumeration. </p>
+<p>Used to get/set calibration values </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="ac36b040d05f53f0b88baa0bdb18efdc4a85f9cf57a01a7ad377217baaa58320ea"></a>CALIBRATION_VOLTAGE</em>&#160;</td><td class="fielddoc">
+<p>Voltage calibration offset value. </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="ac36b040d05f53f0b88baa0bdb18efdc4a519d479a558177bcfc7b5cf263222e5f"></a>CALIBRATION_READ_CURRENT</em>&#160;</td><td class="fielddoc">
+<p>Readed Current calibration offset value. </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="ac36b040d05f53f0b88baa0bdb18efdc4ad56dfa703823e602ddf9d0064ee79e3b"></a>CALIBRATION_DAC_CURRENT</em>&#160;</td><td class="fielddoc">
+<p>DAC Current calibration offset value. </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="ac36b040d05f53f0b88baa0bdb18efdc4a76f7208c3348d7fc8a50214dc955c71b"></a>CALIBRATION_MAX</em>&#160;</td><td class="fielddoc">
+<p>Maximum offset in calibration array. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a class="anchor" id="ab0e1d893691e664545e069c34de55a84"></a>
 <div class="memitem">
 <div class="memproto">
@@ -519,7 +608,7 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a6c8529324c6f366d1a7e4ea23a2de899"></a>
+<a class="anchor" id="a8b1d0e1535f62599c88e683a03863892"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -527,7 +616,140 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool aDCSettings::_eepromCheckMagic </td>
+          <td class="memname">uint8_t aDCSettings::_crc8 </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CRC8 computation. </p>
+<p>Code took from <a href="http://www.pjrc.com/teensy/td_libs_OneWire.html">http://www.pjrc.com/teensy/td_libs_OneWire.html</a></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>const uint8_t* : <b> Data source </b> </td></tr>
+    <tr><td class="paramname">len</td><td>uint8_t : <b> Data source length </b> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t : <b> CRC </b> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="abb4c3e52df5036d1194ce62ce2de5a22"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void aDCSettings::_eepromCalibrationBackup </td>
+          <td>(</td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">CalibrationData_t</a>&#160;</td>
+          <td class="paramname"><em>cal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Save data to EEPROM, used to restore calibration data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>int16_t : <b> start address location </b> </td></tr>
+    <tr><td class="paramname">cal</td><td><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html" title="Calibration values. ">CalibrationData_t</a>&amp; : <b> destination </b> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3990c62a8d7f058b84cb00bc49789d3b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void aDCSettings::_eepromCalibrationRestore </td>
+          <td>(</td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">CalibrationData_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>cal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read data from EEPROM, used to restore calibration data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>int16_t : <b> start address location </b> </td></tr>
+    <tr><td class="paramname">cal</td><td><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html" title="Calibration values. ">CalibrationData_t</a>&amp; : <b> destination </b> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a20b39a5345fb69a894db77f4ae0da581"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool aDCSettings::_eepromCheckForMagicNumbers </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -541,7 +763,6 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Check for EEPROM magic numbers. </p>
-<p>EEPROM functions</p>
 <dl class="section return"><dt>Returns</dt><dd>bool</dd></dl>
 <p>Used to check if some data has already been wrote in the EEPROM. </p>
 
@@ -599,7 +820,7 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a92c9862a96c30d25ceb5bc5e70106ee3"></a>
+<a class="anchor" id="a0ace51e0fde63a546c1aa201a47927b2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -607,7 +828,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void aDCSettings::_eepromWriteMagic </td>
+          <td class="memname">void aDCSettings::_eepromWriteMagicNumbers </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -772,6 +993,38 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Value setter. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>OperationMode_t : <b> Operation mode (SET/READ) </b> </td></tr>
+    <tr><td class="paramname">bit</td><td>uint16_t : <b> DATA_* bit to set </b> </td></tr>
+    <tr><td class="paramname">value</td><td>T : <b> value to store </b> </td></tr>
+    <tr><td class="paramname">sets</td><td>T&amp; : <b> destination variable for OPERATION_SET </b> </td></tr>
+    <tr><td class="paramname">read</td><td>T&amp; : <b> destination variable for OPERTION_READ </b> </td></tr>
+    <tr><td class="paramname">maximum</td><td>float : <b> maximum value, used for boundaries checking </b> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>template&lt;typename T&gt; SettingError_t : <b> validity result </b> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a175085bf5766f19e26fbba5a6dd10922"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void aDCSettings::backupCalibration </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Backup calibration data into EEPROM. </p>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="a1ece600ded8bd29a72d096e8f8ea97b3"></a>
@@ -810,6 +1063,60 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a4876e7869ac961f9f09eff6d1afc1180"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool aDCSettings::getCalibrationMode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calibration mode enability getter. </p>
+<dl class="section return"><dt>Returns</dt><dd>bool : <b> enability </b> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5f9a501b45f6e6b7c2a86f0d6f4fa159"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void aDCSettings::getCalibrationValues </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4">CalibrationValues_t</a>&#160;</td>
+          <td class="paramname"><em>calsection</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">CalibrationData_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calibration data getter, according to <em>calsection</em> argument. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">calsection</td><td>CalibrationValues_t : <b> calibration parameter </b> </td></tr>
+    <tr><td class="paramname">data</td><td><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html" title="Calibration values. ">CalibrationData_t</a>&amp; : <b> calibration data </b> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a93718b8b4536130a1b926d4610f67725"></a>
 <div class="memitem">
 <div class="memproto">
@@ -831,7 +1138,25 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>float : <b> Current </b> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>float : <b> current </b> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae2a9751cbde4521c4a8c297b7116a1cc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t aDCSettings::getCurrentDAC </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Current DAC value getter. </p>
+<dl class="section return"><dt>Returns</dt><dd>uint16_t : <b> current DAC value </b> </dd></dl>
 
 </div>
 </div>
@@ -928,7 +1253,7 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>float : <b> Power </b> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>float : <b> power </b> </dd></dl>
 
 </div>
 </div>
@@ -1000,7 +1325,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Temperature readed getter. </p>
-<dl class="section return"><dt>Returns</dt><dd>uint16_t : <b> Temperature </b> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>uint16_t : <b> temperature </b> </dd></dl>
 
 </div>
 </div>
@@ -1151,6 +1476,85 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="aa921d468939b80d57c2726f935975612"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void aDCSettings::restoreCalibration </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Restore calibration data from EEPROM. </p>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af390b82a1ddbeb9a08b4505c4630a367"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void aDCSettings::setCalibationMode </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calibration mode enability setter. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>bool : <b> enability </b> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a579c47dd4fac621be0a4229f5c62aa5e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void aDCSettings::setCalibrationValues </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4">CalibrationValues_t</a>&#160;</td>
+          <td class="paramname"><em>calsection</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">CalibrationData_t</a>&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calibration data setter, according to <em>calsection</em> argument. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">calsection</td><td>CalibrationValues_t : <b> calibration parameter </b> </td></tr>
+    <tr><td class="paramname">data</td><td><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html" title="Calibration values. ">CalibrationData_t</a>&amp; : <b> calibration data </b> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="af529e3c77d9dfcb40435d784bce4a44c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1178,12 +1582,37 @@ template&lt;typename T &gt; </div>
 <p>Current setter. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">v</td><td>float : <b> Current </b> </td></tr>
+    <tr><td class="paramname">v</td><td>float : <b> current </b> </td></tr>
     <tr><td class="paramname">mode</td><td>OperationMode_t : <b> READ/SET mode storage access </b> </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classa_d_c_settings.html#a493db8c7659fc379940eb2873c77b3f4" title="Setting error enumeration. ">aDCSettings::SettingError_t</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a177f8d395330f36e457678bb5172e611"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void aDCSettings::setCurrentDAC </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>dac</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Current DAC value setter. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dac</td><td>uint16_t : <b> current DAC value </b> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -1314,7 +1743,7 @@ template&lt;typename T &gt; </div>
 <p>Power setter. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">v</td><td>float : <b> Power </b> </td></tr>
+    <tr><td class="paramname">v</td><td>float : <b> power </b> </td></tr>
     <tr><td class="paramname">mode</td><td>OperationMode_t : <b> READ/SET mode storage access </b> </td></tr>
   </table>
   </dd>
@@ -1376,7 +1805,7 @@ template&lt;typename T &gt; </div>
 <p>Temperature readed setter. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">v</td><td>uint16_t : <b> Temperature </b> </td></tr>
+    <tr><td class="paramname">v</td><td>uint16_t : <b> temperature </b> </td></tr>
   </table>
   </dd>
 </dl>
@@ -1577,6 +2006,28 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="ad725fae7eb730a5c0dbe96cd08ca7ac7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint16_t aDCSettings::DATA_IN_CALIBRATION = 1 &lt;&lt; 12</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>bit-field storage: In calibration mode </p>
+
+</div>
+</div>
 <a class="anchor" id="a1a03cd57eba06b4bf45641d32360e4bf"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1706,6 +2157,50 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>bit-field storage: Voltage readed </p>
+
+</div>
+</div>
+<a class="anchor" id="a1be6dead4a441599565f7968d8e80531"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">CalibrationData_t</a> aDCSettings::m_calibrationValues[<a class="el" href="classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4a76f7208c3348d7fc8a50214dc955c71b">CALIBRATION_MAX</a>]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calibration datas, restored from EEPROM. </p>
+
+</div>
+</div>
+<a class="anchor" id="a84a60b83510189a73d8c267166bbd140"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t aDCSettings::m_currentDAC</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>current DAC value </p>
 
 </div>
 </div>
@@ -2048,7 +2543,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classa_d_c_settings.html">aDCSettings</a></li>
-    <li class="footer">Generated on Sat Dec 6 2014 09:38:45 for aDCLoad by
+    <li class="footer">Generated on Sun Dec 21 2014 17:58:39 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

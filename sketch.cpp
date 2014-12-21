@@ -1,7 +1,7 @@
 /*
 
-  Copyright (C) 2014  Lee Wiggins <lee@wigweb.com.au>
-                      F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
+  Copyright (C) 2014-2015  F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
+  Copyright (C) 2014       Lee Wiggins <lee@wigweb.com.au>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License

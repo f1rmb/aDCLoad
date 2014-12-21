@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.2</span>
+   &#160;<span id="projectnumber">2.6</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -117,6 +117,7 @@ $(document).ready(function(){initNavTree('a_d_c_load_8h.html','');});
 <div class="textblock"><code>#include &lt;float.h&gt;</code><br/>
 <code>#include &lt;LiquidCrystal.h&gt;</code><br/>
 <code>#include &lt;ClickEncoder.h&gt;</code><br/>
+<code>#include &lt;EEPROM.h&gt;</code><br/>
 </div>
 <p><a href="a_d_c_load_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -127,6 +128,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html">aDCSettings</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class that handle settings.  <a href="classa_d_c_settings.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html">aDCSettings::CalibrationData_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibration values.  <a href="structa_d_c_settings_1_1_calibration_data__t.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniona_d_c_settings_1_1__eeprom_calibration_value__t.html">aDCSettings::_eepromCalibrationValue_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Union to manipulate float/uint8_t [] calibration values.  <a href="uniona_d_c_settings_1_1__eeprom_calibration_value__t.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_l_c_d.html">aLCD</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">LiquidDisplay extension class.  <a href="classa_l_c_d.html#details">More...</a><br/></td></tr>
@@ -140,11 +147,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a55bc90ce1fe4a4912c37967a33cb7262"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a55bc90ce1fe4a4912c37967a33cb7262">SIMU</a>&#160;&#160;&#160;1</td></tr>
-<tr class="memdesc:a55bc90ce1fe4a4912c37967a33cb7262"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define this if you want to simulate ADC/DAC/whatever (debug mode)  <a href="#a55bc90ce1fe4a4912c37967a33cb7262">More...</a><br/></td></tr>
-<tr class="separator:a55bc90ce1fe4a4912c37967a33cb7262"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e5f254e637637d3a3256dfd7a1399c7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a6e5f254e637637d3a3256dfd7a1399c7">MAX_POWER</a>&#160;&#160;&#160;1</td></tr>
-<tr class="memdesc:a6e5f254e637637d3a3256dfd7a1399c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define this if you want 192W support.  <a href="#a6e5f254e637637d3a3256dfd7a1399c7">More...</a><br/></td></tr>
+<tr class="memdesc:a6e5f254e637637d3a3256dfd7a1399c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define this if you want 192W support (otherwise 50W)  <a href="#a6e5f254e637637d3a3256dfd7a1399c7">More...</a><br/></td></tr>
 <tr class="separator:a6e5f254e637637d3a3256dfd7a1399c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -155,244 +159,258 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a1a23fb6043d623e2555b778671c32fd5"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a1a23fb6043d623e2555b778671c32fd5">ADC_CHIPSELECT_PIN</a> = 8</td></tr>
+<tr class="memitem:a1a23fb6043d623e2555b778671c32fd5"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a1a23fb6043d623e2555b778671c32fd5">ADC_CHIPSELECT_PIN</a> = 8</td></tr>
 <tr class="memdesc:a1a23fb6043d623e2555b778671c32fd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">set pin 8 as the chip select for the ADC:  <a href="#a1a23fb6043d623e2555b778671c32fd5">More...</a><br/></td></tr>
 <tr class="separator:a1a23fb6043d623e2555b778671c32fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac382ee5538e7af5d2c1376416069323b"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ac382ee5538e7af5d2c1376416069323b">ADC_INPUTVOLTAGE_CHAN</a> = 0</td></tr>
+<tr class="memitem:ac382ee5538e7af5d2c1376416069323b"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ac382ee5538e7af5d2c1376416069323b">ADC_INPUTVOLTAGE_CHAN</a> = 0</td></tr>
 <tr class="memdesc:ac382ee5538e7af5d2c1376416069323b"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the ADC channel that reads the input voltage.  <a href="#ac382ee5538e7af5d2c1376416069323b">More...</a><br/></td></tr>
 <tr class="separator:ac382ee5538e7af5d2c1376416069323b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ee78b6b8ad9ac750519a784ddb8f025"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a4ee78b6b8ad9ac750519a784ddb8f025">ADC_MEASUREDCURRENT_CHAN</a> = 1</td></tr>
+<tr class="memitem:a4ee78b6b8ad9ac750519a784ddb8f025"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a4ee78b6b8ad9ac750519a784ddb8f025">ADC_MEASUREDCURRENT_CHAN</a> = 1</td></tr>
 <tr class="memdesc:a4ee78b6b8ad9ac750519a784ddb8f025"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the ADC channel that reads the input current by measuring the voltage on the input side of the sense resistors.  <a href="#a4ee78b6b8ad9ac750519a784ddb8f025">More...</a><br/></td></tr>
 <tr class="separator:a4ee78b6b8ad9ac750519a784ddb8f025"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33b7965dc0d8579f53317b31b6a5522b"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a33b7965dc0d8579f53317b31b6a5522b">ADC_TEMPSENSE1_CHAN</a> = 2</td></tr>
+<tr class="memitem:a33b7965dc0d8579f53317b31b6a5522b"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a33b7965dc0d8579f53317b31b6a5522b">ADC_TEMPSENSE1_CHAN</a> = 2</td></tr>
 <tr class="memdesc:a33b7965dc0d8579f53317b31b6a5522b"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the ADC channel that reads the temperature sensor 1 under the heatsink.  <a href="#a33b7965dc0d8579f53317b31b6a5522b">More...</a><br/></td></tr>
 <tr class="separator:a33b7965dc0d8579f53317b31b6a5522b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f7cc8766879e6ce94bfaf5555b7e31d"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a7f7cc8766879e6ce94bfaf5555b7e31d">ADC_TEMPSENSE2_CHAN</a> = 3</td></tr>
+<tr class="memitem:a7f7cc8766879e6ce94bfaf5555b7e31d"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a7f7cc8766879e6ce94bfaf5555b7e31d">ADC_TEMPSENSE2_CHAN</a> = 3</td></tr>
 <tr class="memdesc:a7f7cc8766879e6ce94bfaf5555b7e31d"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the ADC channel that reads the temperature sensor 2 under the heatsink.  <a href="#a7f7cc8766879e6ce94bfaf5555b7e31d">More...</a><br/></td></tr>
 <tr class="separator:a7f7cc8766879e6ce94bfaf5555b7e31d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ade5003d4eadb680b47f082bdd586c2"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a9ade5003d4eadb680b47f082bdd586c2">DAC_CHIPSELECT_PIN</a> = 9</td></tr>
+<tr class="memitem:a9ade5003d4eadb680b47f082bdd586c2"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a9ade5003d4eadb680b47f082bdd586c2">DAC_CHIPSELECT_PIN</a> = 9</td></tr>
 <tr class="memdesc:a9ade5003d4eadb680b47f082bdd586c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">set pin 9 as the chip select for the DAC:  <a href="#a9ade5003d4eadb680b47f082bdd586c2">More...</a><br/></td></tr>
 <tr class="separator:a9ade5003d4eadb680b47f082bdd586c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac96099667e9f2b1890566fa9f917dcf3"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ac96099667e9f2b1890566fa9f917dcf3">DAC_CURRENT_CHAN</a> = 0</td></tr>
-<tr class="memdesc:ac96099667e9f2b1890566fa9f917dcf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">set The DAC channel that sets the constant current.  <a href="#ac96099667e9f2b1890566fa9f917dcf3">More...</a><br/></td></tr>
-<tr class="separator:ac96099667e9f2b1890566fa9f917dcf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfaece870f6766865b08af30851f4faa"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#acfaece870f6766865b08af30851f4faa">DAC_FAN_CHAN</a> = 1</td></tr>
-<tr class="memdesc:acfaece870f6766865b08af30851f4faa"><td class="mdescLeft">&#160;</td><td class="mdescRight">set The DAC channel that sets the fan speed.  <a href="#acfaece870f6766865b08af30851f4faa">More...</a><br/></td></tr>
-<tr class="separator:acfaece870f6766865b08af30851f4faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d95cffc7304fe82f627a0256b51ce00"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a6d95cffc7304fe82f627a0256b51ce00">LCD_RS_PIN</a> = 10</td></tr>
+<tr class="memitem:ada76d1dc31841541aafc748f88ebd226"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ada76d1dc31841541aafc748f88ebd226">DAC_CURRENT_CHAN</a> = 0</td></tr>
+<tr class="memdesc:ada76d1dc31841541aafc748f88ebd226"><td class="mdescLeft">&#160;</td><td class="mdescRight">set The DAC channel that sets the constant current.  <a href="#ada76d1dc31841541aafc748f88ebd226">More...</a><br/></td></tr>
+<tr class="separator:ada76d1dc31841541aafc748f88ebd226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaa771905cd34ea0cb7dca2b1bb78653"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aaaa771905cd34ea0cb7dca2b1bb78653">DAC_FAN_CHAN</a> = 1</td></tr>
+<tr class="memdesc:aaaa771905cd34ea0cb7dca2b1bb78653"><td class="mdescLeft">&#160;</td><td class="mdescRight">set The DAC channel that sets the fan speed.  <a href="#aaaa771905cd34ea0cb7dca2b1bb78653">More...</a><br/></td></tr>
+<tr class="separator:aaaa771905cd34ea0cb7dca2b1bb78653"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d95cffc7304fe82f627a0256b51ce00"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a6d95cffc7304fe82f627a0256b51ce00">LCD_RS_PIN</a> = 10</td></tr>
 <tr class="memdesc:a6d95cffc7304fe82f627a0256b51ce00"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD RS pin.  <a href="#a6d95cffc7304fe82f627a0256b51ce00">More...</a><br/></td></tr>
 <tr class="separator:a6d95cffc7304fe82f627a0256b51ce00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5798651429642ced4296e55010099e4a"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a5798651429642ced4296e55010099e4a">LCD_ENABLE_PIN</a> = 12</td></tr>
+<tr class="memitem:a5798651429642ced4296e55010099e4a"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a5798651429642ced4296e55010099e4a">LCD_ENABLE_PIN</a> = 12</td></tr>
 <tr class="memdesc:a5798651429642ced4296e55010099e4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD ENABLE pin.  <a href="#a5798651429642ced4296e55010099e4a">More...</a><br/></td></tr>
 <tr class="separator:a5798651429642ced4296e55010099e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f2a9b8e6d3d417e24b775033615de18"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a5f2a9b8e6d3d417e24b775033615de18">LCD_D0_PIN</a> = A0</td></tr>
+<tr class="memitem:a5f2a9b8e6d3d417e24b775033615de18"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a5f2a9b8e6d3d417e24b775033615de18">LCD_D0_PIN</a> = A0</td></tr>
 <tr class="memdesc:a5f2a9b8e6d3d417e24b775033615de18"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD d0 pin.  <a href="#a5f2a9b8e6d3d417e24b775033615de18">More...</a><br/></td></tr>
 <tr class="separator:a5f2a9b8e6d3d417e24b775033615de18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dbe781f0d4106bc944e7c295726ee67"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a6dbe781f0d4106bc944e7c295726ee67">LCD_D1_PIN</a> = A1</td></tr>
+<tr class="memitem:a6dbe781f0d4106bc944e7c295726ee67"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a6dbe781f0d4106bc944e7c295726ee67">LCD_D1_PIN</a> = A1</td></tr>
 <tr class="memdesc:a6dbe781f0d4106bc944e7c295726ee67"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD d1 pin.  <a href="#a6dbe781f0d4106bc944e7c295726ee67">More...</a><br/></td></tr>
 <tr class="separator:a6dbe781f0d4106bc944e7c295726ee67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a697779e830c40af2f99159e20d122a39"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a697779e830c40af2f99159e20d122a39">LCD_D2_PIN</a> = A2</td></tr>
+<tr class="memitem:a697779e830c40af2f99159e20d122a39"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a697779e830c40af2f99159e20d122a39">LCD_D2_PIN</a> = A2</td></tr>
 <tr class="memdesc:a697779e830c40af2f99159e20d122a39"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD d3 pin.  <a href="#a697779e830c40af2f99159e20d122a39">More...</a><br/></td></tr>
 <tr class="separator:a697779e830c40af2f99159e20d122a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9f3e38d7c79aff9ffbf6afa52e03ea8"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ae9f3e38d7c79aff9ffbf6afa52e03ea8">LCD_D3_PIN</a> = A3</td></tr>
+<tr class="memitem:ae9f3e38d7c79aff9ffbf6afa52e03ea8"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ae9f3e38d7c79aff9ffbf6afa52e03ea8">LCD_D3_PIN</a> = A3</td></tr>
 <tr class="memdesc:ae9f3e38d7c79aff9ffbf6afa52e03ea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD d2 pin.  <a href="#ae9f3e38d7c79aff9ffbf6afa52e03ea8">More...</a><br/></td></tr>
 <tr class="separator:ae9f3e38d7c79aff9ffbf6afa52e03ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac625a031f5582c0b6892030ae9d65b9d"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ac625a031f5582c0b6892030ae9d65b9d">LCD_D4_PIN</a> = 4</td></tr>
+<tr class="memitem:ac625a031f5582c0b6892030ae9d65b9d"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ac625a031f5582c0b6892030ae9d65b9d">LCD_D4_PIN</a> = 4</td></tr>
 <tr class="memdesc:ac625a031f5582c0b6892030ae9d65b9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD d4 pin.  <a href="#ac625a031f5582c0b6892030ae9d65b9d">More...</a><br/></td></tr>
 <tr class="separator:ac625a031f5582c0b6892030ae9d65b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae4ca2d664747d2f633623e6c4c52c0c"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aae4ca2d664747d2f633623e6c4c52c0c">LCD_D5_PIN</a> = 13</td></tr>
+<tr class="memitem:aae4ca2d664747d2f633623e6c4c52c0c"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aae4ca2d664747d2f633623e6c4c52c0c">LCD_D5_PIN</a> = 13</td></tr>
 <tr class="memdesc:aae4ca2d664747d2f633623e6c4c52c0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD d5 pin.  <a href="#aae4ca2d664747d2f633623e6c4c52c0c">More...</a><br/></td></tr>
 <tr class="separator:aae4ca2d664747d2f633623e6c4c52c0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a533cfc8d6a12f1bd8cda99e8b594c5d9"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a533cfc8d6a12f1bd8cda99e8b594c5d9">LCD_D6_PIN</a> = 6</td></tr>
+<tr class="memitem:a533cfc8d6a12f1bd8cda99e8b594c5d9"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a533cfc8d6a12f1bd8cda99e8b594c5d9">LCD_D6_PIN</a> = 6</td></tr>
 <tr class="memdesc:a533cfc8d6a12f1bd8cda99e8b594c5d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD d6 pin.  <a href="#a533cfc8d6a12f1bd8cda99e8b594c5d9">More...</a><br/></td></tr>
 <tr class="separator:a533cfc8d6a12f1bd8cda99e8b594c5d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec14c2435d01088e32d819a1250fa5bd"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aec14c2435d01088e32d819a1250fa5bd">LCD_D7_PIN</a> = 5</td></tr>
+<tr class="memitem:aec14c2435d01088e32d819a1250fa5bd"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aec14c2435d01088e32d819a1250fa5bd">LCD_D7_PIN</a> = 5</td></tr>
 <tr class="memdesc:aec14c2435d01088e32d819a1250fa5bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD d7 pin.  <a href="#aec14c2435d01088e32d819a1250fa5bd">More...</a><br/></td></tr>
 <tr class="separator:aec14c2435d01088e32d819a1250fa5bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea58e4f5bc71beb485c1bfee30b00519"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aea58e4f5bc71beb485c1bfee30b00519">LCD_COLS_NUM</a> = 20</td></tr>
+<tr class="memitem:aea58e4f5bc71beb485c1bfee30b00519"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aea58e4f5bc71beb485c1bfee30b00519">LCD_COLS_NUM</a> = 20</td></tr>
 <tr class="memdesc:aea58e4f5bc71beb485c1bfee30b00519"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD columns size.  <a href="#aea58e4f5bc71beb485c1bfee30b00519">More...</a><br/></td></tr>
 <tr class="separator:aea58e4f5bc71beb485c1bfee30b00519"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac19c425594c29b0dfd0c1229a19e1fdf"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ac19c425594c29b0dfd0c1229a19e1fdf">LCD_ROWS_NUM</a> = 4</td></tr>
+<tr class="memitem:ac19c425594c29b0dfd0c1229a19e1fdf"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ac19c425594c29b0dfd0c1229a19e1fdf">LCD_ROWS_NUM</a> = 4</td></tr>
 <tr class="memdesc:ac19c425594c29b0dfd0c1229a19e1fdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD rows size.  <a href="#ac19c425594c29b0dfd0c1229a19e1fdf">More...</a><br/></td></tr>
 <tr class="separator:ac19c425594c29b0dfd0c1229a19e1fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2724fced0205dea4ce23bd7f621df79"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ae2724fced0205dea4ce23bd7f621df79">ENCODER_A_PIN</a> = 3</td></tr>
+<tr class="memitem:ae2724fced0205dea4ce23bd7f621df79"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ae2724fced0205dea4ce23bd7f621df79">ENCODER_A_PIN</a> = 3</td></tr>
 <tr class="memdesc:ae2724fced0205dea4ce23bd7f621df79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder Channel A pin, INT 0.  <a href="#ae2724fced0205dea4ce23bd7f621df79">More...</a><br/></td></tr>
 <tr class="separator:ae2724fced0205dea4ce23bd7f621df79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7078f04e43b456434bcae72831fdb76b"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a7078f04e43b456434bcae72831fdb76b">ENCODER_B_PIN</a> = 2</td></tr>
+<tr class="memitem:a7078f04e43b456434bcae72831fdb76b"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a7078f04e43b456434bcae72831fdb76b">ENCODER_B_PIN</a> = 2</td></tr>
 <tr class="memdesc:a7078f04e43b456434bcae72831fdb76b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder Channel B pin, INT 1.  <a href="#a7078f04e43b456434bcae72831fdb76b">More...</a><br/></td></tr>
 <tr class="separator:a7078f04e43b456434bcae72831fdb76b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a596dd89a2ecd8483861abf0eee2949c9"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a596dd89a2ecd8483861abf0eee2949c9">ENCODER_PB_PIN</a> = 0</td></tr>
+<tr class="memitem:a596dd89a2ecd8483861abf0eee2949c9"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a596dd89a2ecd8483861abf0eee2949c9">ENCODER_PB_PIN</a> = 0</td></tr>
 <tr class="memdesc:a596dd89a2ecd8483861abf0eee2949c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder push button pin, INT 2.  <a href="#a596dd89a2ecd8483861abf0eee2949c9">More...</a><br/></td></tr>
 <tr class="separator:a596dd89a2ecd8483861abf0eee2949c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adacecc57bec8f7f1b5f16f13adc7b4b5"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#adacecc57bec8f7f1b5f16f13adc7b4b5">ENCODER_STEPS_PER_NOTCH</a> = 4</td></tr>
+<tr class="memitem:adacecc57bec8f7f1b5f16f13adc7b4b5"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#adacecc57bec8f7f1b5f16f13adc7b4b5">ENCODER_STEPS_PER_NOTCH</a> = 4</td></tr>
 <tr class="memdesc:adacecc57bec8f7f1b5f16f13adc7b4b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Depending on the type of your encoder, you can define use the constructors parameter <code>stepsPerNotch</code> an set it to either <code>1</code>, <code>2</code> or <code>4</code> steps per notch, with <code>1</code> being the default.  <a href="#adacecc57bec8f7f1b5f16f13adc7b4b5">More...</a><br/></td></tr>
 <tr class="separator:adacecc57bec8f7f1b5f16f13adc7b4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84816e7d4008616ea67182f853947c2c"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a84816e7d4008616ea67182f853947c2c">LED_BACKLIGHT_PIN</a> = 11</td></tr>
+<tr class="memitem:a84816e7d4008616ea67182f853947c2c"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a84816e7d4008616ea67182f853947c2c">LED_BACKLIGHT_PIN</a> = 11</td></tr>
 <tr class="memdesc:a84816e7d4008616ea67182f853947c2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD backlight pin.  <a href="#a84816e7d4008616ea67182f853947c2c">More...</a><br/></td></tr>
 <tr class="separator:a84816e7d4008616ea67182f853947c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1743be346f52dac718bfcfe50f1d137e"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a1743be346f52dac718bfcfe50f1d137e">OFFSET_UNIT</a> = 1</td></tr>
+<tr class="memitem:a1743be346f52dac718bfcfe50f1d137e"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a1743be346f52dac718bfcfe50f1d137e">OFFSET_UNIT</a> = 1</td></tr>
 <tr class="memdesc:a1743be346f52dac718bfcfe50f1d137e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unit column LCD offset.  <a href="#a1743be346f52dac718bfcfe50f1d137e">More...</a><br/></td></tr>
 <tr class="separator:a1743be346f52dac718bfcfe50f1d137e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82c8b4fc35607ca726bd9832b426ad0c"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a82c8b4fc35607ca726bd9832b426ad0c">OFFSET_VALUE</a> = 4</td></tr>
+<tr class="memitem:a82c8b4fc35607ca726bd9832b426ad0c"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a82c8b4fc35607ca726bd9832b426ad0c">OFFSET_VALUE</a> = 4</td></tr>
 <tr class="memdesc:a82c8b4fc35607ca726bd9832b426ad0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value column LCD offset.  <a href="#a82c8b4fc35607ca726bd9832b426ad0c">More...</a><br/></td></tr>
 <tr class="separator:a82c8b4fc35607ca726bd9832b426ad0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7488e46bbe40b6658f05b624338387ab"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a7488e46bbe40b6658f05b624338387ab">OFFSET_TEMP</a> = 12</td></tr>
+<tr class="memitem:a7488e46bbe40b6658f05b624338387ab"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a7488e46bbe40b6658f05b624338387ab">OFFSET_TEMP</a> = 12</td></tr>
 <tr class="memdesc:a7488e46bbe40b6658f05b624338387ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature column LCD offset.  <a href="#a7488e46bbe40b6658f05b624338387ab">More...</a><br/></td></tr>
 <tr class="separator:a7488e46bbe40b6658f05b624338387ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17a7fc0311486ae256e6615163f70984"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a17a7fc0311486ae256e6615163f70984">OFFSET_MARKER_LEFT</a> = 0</td></tr>
+<tr class="memitem:a17a7fc0311486ae256e6615163f70984"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a17a7fc0311486ae256e6615163f70984">OFFSET_MARKER_LEFT</a> = 0</td></tr>
 <tr class="memdesc:a17a7fc0311486ae256e6615163f70984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column LCD offset for left marker '['.  <a href="#a17a7fc0311486ae256e6615163f70984">More...</a><br/></td></tr>
 <tr class="separator:a17a7fc0311486ae256e6615163f70984"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3212622bd6f3c519042a97fcbfa30a6"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ae3212622bd6f3c519042a97fcbfa30a6">OFFSET_MARKER_RIGHT</a> = 14</td></tr>
+<tr class="memitem:ae3212622bd6f3c519042a97fcbfa30a6"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ae3212622bd6f3c519042a97fcbfa30a6">OFFSET_MARKER_RIGHT</a> = 14</td></tr>
 <tr class="memdesc:ae3212622bd6f3c519042a97fcbfa30a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column LCD offset for right marker ']'.  <a href="#ae3212622bd6f3c519042a97fcbfa30a6">More...</a><br/></td></tr>
 <tr class="separator:ae3212622bd6f3c519042a97fcbfa30a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad626c8aa41b9b1d6fc394bfd2baa370e"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ad626c8aa41b9b1d6fc394bfd2baa370e">OFFSET_SETUP_MARKER_LEFT</a> = 1</td></tr>
+<tr class="memitem:ad626c8aa41b9b1d6fc394bfd2baa370e"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ad626c8aa41b9b1d6fc394bfd2baa370e">OFFSET_SETUP_MARKER_LEFT</a> = 1</td></tr>
 <tr class="memdesc:ad626c8aa41b9b1d6fc394bfd2baa370e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column LCD offset for left marker '[' in setup mode.  <a href="#ad626c8aa41b9b1d6fc394bfd2baa370e">More...</a><br/></td></tr>
 <tr class="separator:ad626c8aa41b9b1d6fc394bfd2baa370e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2dcc22cd86402b30b1651d5ce74712e"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ab2dcc22cd86402b30b1651d5ce74712e">OFFSET_SETUP_MARKER_RIGHT</a> = 18</td></tr>
+<tr class="memitem:ab2dcc22cd86402b30b1651d5ce74712e"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ab2dcc22cd86402b30b1651d5ce74712e">OFFSET_SETUP_MARKER_RIGHT</a> = 18</td></tr>
 <tr class="memdesc:ab2dcc22cd86402b30b1651d5ce74712e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column LCD offset for right marker ']' in setup mode.  <a href="#ab2dcc22cd86402b30b1651d5ce74712e">More...</a><br/></td></tr>
 <tr class="separator:ab2dcc22cd86402b30b1651d5ce74712e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dcce18d44603bac087afb134a0a9c20"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a9dcce18d44603bac087afb134a0a9c20">LOGGING_ICON_X_COORD</a> = 17</td></tr>
+<tr class="memitem:a9dcce18d44603bac087afb134a0a9c20"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a9dcce18d44603bac087afb134a0a9c20">LOGGING_ICON_X_COORD</a> = 17</td></tr>
 <tr class="memdesc:a9dcce18d44603bac087afb134a0a9c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logging icon LCD X coord.  <a href="#a9dcce18d44603bac087afb134a0a9c20">More...</a><br/></td></tr>
 <tr class="separator:a9dcce18d44603bac087afb134a0a9c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2e70aa506de0f5154095a6f5a76c2dd"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ad2e70aa506de0f5154095a6f5a76c2dd">LOGGING_ICON_Y_COORD</a> = 3</td></tr>
+<tr class="memitem:ad2e70aa506de0f5154095a6f5a76c2dd"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ad2e70aa506de0f5154095a6f5a76c2dd">LOGGING_ICON_Y_COORD</a> = 3</td></tr>
 <tr class="memdesc:ad2e70aa506de0f5154095a6f5a76c2dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logging icon LCD Y coord.  <a href="#ad2e70aa506de0f5154095a6f5a76c2dd">More...</a><br/></td></tr>
 <tr class="separator:ad2e70aa506de0f5154095a6f5a76c2dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b7470682e0247570486aa6f4a27e3e7"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a8b7470682e0247570486aa6f4a27e3e7">USB_ICON_X_COORD</a> = 18</td></tr>
+<tr class="memitem:a8b7470682e0247570486aa6f4a27e3e7"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a8b7470682e0247570486aa6f4a27e3e7">USB_ICON_X_COORD</a> = 18</td></tr>
 <tr class="memdesc:a8b7470682e0247570486aa6f4a27e3e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB icon LCD X coord.  <a href="#a8b7470682e0247570486aa6f4a27e3e7">More...</a><br/></td></tr>
 <tr class="separator:a8b7470682e0247570486aa6f4a27e3e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac743c77386eab1c8cae03d0a5e7247ed"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ac743c77386eab1c8cae03d0a5e7247ed">USB_ICON_Y_COORD</a> = 3</td></tr>
+<tr class="memitem:ac743c77386eab1c8cae03d0a5e7247ed"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ac743c77386eab1c8cae03d0a5e7247ed">USB_ICON_Y_COORD</a> = 3</td></tr>
 <tr class="memdesc:ac743c77386eab1c8cae03d0a5e7247ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB icon LCD Y coord.  <a href="#ac743c77386eab1c8cae03d0a5e7247ed">More...</a><br/></td></tr>
 <tr class="separator:ac743c77386eab1c8cae03d0a5e7247ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb70b23943ec8bd257a8314c84ba27eb"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aeb70b23943ec8bd257a8314c84ba27eb">LOCK_ICON_X_COORD</a> = 19</td></tr>
+<tr class="memitem:aeb70b23943ec8bd257a8314c84ba27eb"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aeb70b23943ec8bd257a8314c84ba27eb">LOCK_ICON_X_COORD</a> = 19</td></tr>
 <tr class="memdesc:aeb70b23943ec8bd257a8314c84ba27eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">LOCK icon LCD X coord.  <a href="#aeb70b23943ec8bd257a8314c84ba27eb">More...</a><br/></td></tr>
 <tr class="separator:aeb70b23943ec8bd257a8314c84ba27eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fa43270a52818feedf0b67f5ff84493"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a9fa43270a52818feedf0b67f5ff84493">LOCK_ICON_Y_COORD</a> = 3</td></tr>
+<tr class="memitem:a9fa43270a52818feedf0b67f5ff84493"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a9fa43270a52818feedf0b67f5ff84493">LOCK_ICON_Y_COORD</a> = 3</td></tr>
 <tr class="memdesc:a9fa43270a52818feedf0b67f5ff84493"><td class="mdescLeft">&#160;</td><td class="mdescRight">LOCK icon LCD Y coord.  <a href="#a9fa43270a52818feedf0b67f5ff84493">More...</a><br/></td></tr>
 <tr class="separator:a9fa43270a52818feedf0b67f5ff84493"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1fe80edb2524a87643542c5791b9e68"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aa1fe80edb2524a87643542c5791b9e68">ALARM_OV_X_COORD</a> = 18</td></tr>
+<tr class="memitem:aa1fe80edb2524a87643542c5791b9e68"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aa1fe80edb2524a87643542c5791b9e68">ALARM_OV_X_COORD</a> = 18</td></tr>
 <tr class="memdesc:aa1fe80edb2524a87643542c5791b9e68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overvoltage 'OV' text LCD X coord.  <a href="#aa1fe80edb2524a87643542c5791b9e68">More...</a><br/></td></tr>
 <tr class="separator:aa1fe80edb2524a87643542c5791b9e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb973a32313bf0bc278ae6d86f87e523"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aeb973a32313bf0bc278ae6d86f87e523">ALARM_OV_Y_COORD</a> = 1</td></tr>
+<tr class="memitem:aeb973a32313bf0bc278ae6d86f87e523"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aeb973a32313bf0bc278ae6d86f87e523">ALARM_OV_Y_COORD</a> = 1</td></tr>
 <tr class="memdesc:aeb973a32313bf0bc278ae6d86f87e523"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overvoltage 'OV' text LCD Y coord.  <a href="#aeb973a32313bf0bc278ae6d86f87e523">More...</a><br/></td></tr>
 <tr class="separator:aeb973a32313bf0bc278ae6d86f87e523"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cecb6615f39b597624131a19d1de9ed"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a8cecb6615f39b597624131a19d1de9ed">ALARM_OC_X_COORD</a> = 18</td></tr>
+<tr class="memitem:a8cecb6615f39b597624131a19d1de9ed"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a8cecb6615f39b597624131a19d1de9ed">ALARM_OC_X_COORD</a> = 18</td></tr>
 <tr class="memdesc:a8cecb6615f39b597624131a19d1de9ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overcurrent 'OC' text LCD X coord.  <a href="#a8cecb6615f39b597624131a19d1de9ed">More...</a><br/></td></tr>
 <tr class="separator:a8cecb6615f39b597624131a19d1de9ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a194176bb87c555c30a4e36c37b088f90"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a194176bb87c555c30a4e36c37b088f90">ALARM_OC_Y_COORD</a> = 2</td></tr>
+<tr class="memitem:a194176bb87c555c30a4e36c37b088f90"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a194176bb87c555c30a4e36c37b088f90">ALARM_OC_Y_COORD</a> = 2</td></tr>
 <tr class="memdesc:a194176bb87c555c30a4e36c37b088f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overcurrent 'OC' text LCD Y coord.  <a href="#a194176bb87c555c30a4e36c37b088f90">More...</a><br/></td></tr>
 <tr class="separator:a194176bb87c555c30a4e36c37b088f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad673a91da7f627db3cb380ac64c3bbc"><td class="memItemLeft" align="right" valign="top">const unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aad673a91da7f627db3cb380ac64c3bbc">AUTOLOCK_TIMEOUT</a> = 60000</td></tr>
+<tr class="memitem:aad673a91da7f627db3cb380ac64c3bbc"><td class="memItemLeft" align="right" valign="top">static const unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aad673a91da7f627db3cb380ac64c3bbc">AUTOLOCK_TIMEOUT</a> = 60000</td></tr>
 <tr class="memdesc:aad673a91da7f627db3cb380ac64c3bbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Autolock timeout value (60 seconds)  <a href="#aad673a91da7f627db3cb380ac64c3bbc">More...</a><br/></td></tr>
 <tr class="separator:aad673a91da7f627db3cb380ac64c3bbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b46e6ece7c27e4680f541544b4373cc"><td class="memItemLeft" align="right" valign="top">const unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a8b46e6ece7c27e4680f541544b4373cc">OPERATION_SET_TIMEOUT</a> = 3000</td></tr>
+<tr class="memitem:a8b46e6ece7c27e4680f541544b4373cc"><td class="memItemLeft" align="right" valign="top">static const unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a8b46e6ece7c27e4680f541544b4373cc">OPERATION_SET_TIMEOUT</a> = 3000</td></tr>
 <tr class="memdesc:a8b46e6ece7c27e4680f541544b4373cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatic toggle settings-&gt;reading timeout (3 seconds)  <a href="#a8b46e6ece7c27e4680f541544b4373cc">More...</a><br/></td></tr>
 <tr class="separator:a8b46e6ece7c27e4680f541544b4373cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60cd8cb9e38bdbe1856db5d57ed69c87"><td class="memItemLeft" align="right" valign="top">const unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a60cd8cb9e38bdbe1856db5d57ed69c87">BACKLIGHT_TIMEOUT</a> = 300000</td></tr>
-<tr class="memdesc:a60cd8cb9e38bdbe1856db5d57ed69c87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backlight dimmer timeout (5 minutes)  <a href="#a60cd8cb9e38bdbe1856db5d57ed69c87">More...</a><br/></td></tr>
+<tr class="memitem:a60cd8cb9e38bdbe1856db5d57ed69c87"><td class="memItemLeft" align="right" valign="top">static const unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a60cd8cb9e38bdbe1856db5d57ed69c87">BACKLIGHT_TIMEOUT</a> = 600000</td></tr>
+<tr class="memdesc:a60cd8cb9e38bdbe1856db5d57ed69c87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backlight dimmer timeout (10 minutes)  <a href="#a60cd8cb9e38bdbe1856db5d57ed69c87">More...</a><br/></td></tr>
 <tr class="separator:a60cd8cb9e38bdbe1856db5d57ed69c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87ae2eaebf8ff5a513cf9b71b07640a7"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a87ae2eaebf8ff5a513cf9b71b07640a7">VOLTAGE_MAXIMUM</a> = 24.000</td></tr>
+<tr class="memitem:a400f951b439c14f0561a9a8833dfaa99"><td class="memItemLeft" align="right" valign="top">static const unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a400f951b439c14f0561a9a8833dfaa99">LOGGING_TIMEOUT</a> = 100</td></tr>
+<tr class="memdesc:a400f951b439c14f0561a9a8833dfaa99"><td class="mdescLeft">&#160;</td><td class="mdescRight">CSV data-logging rate (ms)  <a href="#a400f951b439c14f0561a9a8833dfaa99">More...</a><br/></td></tr>
+<tr class="separator:a400f951b439c14f0561a9a8833dfaa99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87ae2eaebf8ff5a513cf9b71b07640a7"><td class="memItemLeft" align="right" valign="top">static const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a87ae2eaebf8ff5a513cf9b71b07640a7">VOLTAGE_MAXIMUM</a> = 24.000</td></tr>
 <tr class="memdesc:a87ae2eaebf8ff5a513cf9b71b07640a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum handled voltage (V)  <a href="#a87ae2eaebf8ff5a513cf9b71b07640a7">More...</a><br/></td></tr>
 <tr class="separator:a87ae2eaebf8ff5a513cf9b71b07640a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fedf00f7a232198f2a6bce0d0411bbd"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a3fedf00f7a232198f2a6bce0d0411bbd">CURRENT_MAXIMUM</a> = 8.000</td></tr>
+<tr class="memitem:a3fedf00f7a232198f2a6bce0d0411bbd"><td class="memItemLeft" align="right" valign="top">static const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a3fedf00f7a232198f2a6bce0d0411bbd">CURRENT_MAXIMUM</a> = 7.825</td></tr>
 <tr class="memdesc:a3fedf00f7a232198f2a6bce0d0411bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum value of load current (A)  <a href="#a3fedf00f7a232198f2a6bce0d0411bbd">More...</a><br/></td></tr>
 <tr class="separator:a3fedf00f7a232198f2a6bce0d0411bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa803e6a1498ec1596f662dfbb303955a"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aa803e6a1498ec1596f662dfbb303955a">POWER_MAXIMUM</a> = <a class="el" href="a_d_c_load_8h.html#a87ae2eaebf8ff5a513cf9b71b07640a7">VOLTAGE_MAXIMUM</a> * <a class="el" href="a_d_c_load_8h.html#a3fedf00f7a232198f2a6bce0d0411bbd">CURRENT_MAXIMUM</a></td></tr>
+<tr class="memitem:aa803e6a1498ec1596f662dfbb303955a"><td class="memItemLeft" align="right" valign="top">static const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aa803e6a1498ec1596f662dfbb303955a">POWER_MAXIMUM</a> = <a class="el" href="a_d_c_load_8h.html#a87ae2eaebf8ff5a513cf9b71b07640a7">VOLTAGE_MAXIMUM</a> * <a class="el" href="a_d_c_load_8h.html#a3fedf00f7a232198f2a6bce0d0411bbd">CURRENT_MAXIMUM</a></td></tr>
 <tr class="memdesc:aa803e6a1498ec1596f662dfbb303955a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum power dissipated (W)  <a href="#aa803e6a1498ec1596f662dfbb303955a">More...</a><br/></td></tr>
 <tr class="separator:aa803e6a1498ec1596f662dfbb303955a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a5d1539e8857f9423d73799516fe3b9"><td class="memItemLeft" align="right" valign="top">const int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a6a5d1539e8857f9423d73799516fe3b9">SOFTWARE_VERSION_MAJOR</a> = 2</td></tr>
+<tr class="memitem:a6a5d1539e8857f9423d73799516fe3b9"><td class="memItemLeft" align="right" valign="top">static const int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a6a5d1539e8857f9423d73799516fe3b9">SOFTWARE_VERSION_MAJOR</a> = 2</td></tr>
 <tr class="memdesc:a6a5d1539e8857f9423d73799516fe3b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Software major version.  <a href="#a6a5d1539e8857f9423d73799516fe3b9">More...</a><br/></td></tr>
 <tr class="separator:a6a5d1539e8857f9423d73799516fe3b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa00b28db26db5f4c514cc3d1047a41f4"><td class="memItemLeft" align="right" valign="top">const int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aa00b28db26db5f4c514cc3d1047a41f4">SOFTWARE_VERSION_MINOR</a> = 3</td></tr>
+<tr class="memitem:aa00b28db26db5f4c514cc3d1047a41f4"><td class="memItemLeft" align="right" valign="top">static const int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aa00b28db26db5f4c514cc3d1047a41f4">SOFTWARE_VERSION_MINOR</a> = 6</td></tr>
 <tr class="memdesc:aa00b28db26db5f4c514cc3d1047a41f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Software minor version.  <a href="#aa00b28db26db5f4c514cc3d1047a41f4">More...</a><br/></td></tr>
 <tr class="separator:aa00b28db26db5f4c514cc3d1047a41f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a539fc1cca66a2f0f864300312cdc77d1"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a539fc1cca66a2f0f864300312cdc77d1">FEATURE_LOGGING</a> = 1</td></tr>
+<tr class="memitem:a539fc1cca66a2f0f864300312cdc77d1"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a539fc1cca66a2f0f864300312cdc77d1">FEATURE_LOGGING</a> = 1</td></tr>
 <tr class="memdesc:a539fc1cca66a2f0f864300312cdc77d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield logging feature.  <a href="#a539fc1cca66a2f0f864300312cdc77d1">More...</a><br/></td></tr>
 <tr class="separator:a539fc1cca66a2f0f864300312cdc77d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af71f2c691724ba8e03c4020ce0a6ee04"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#af71f2c691724ba8e03c4020ce0a6ee04">FEATURE_LOGGING_VISIBLE</a> = 1 &lt;&lt; 1</td></tr>
+<tr class="memitem:af71f2c691724ba8e03c4020ce0a6ee04"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#af71f2c691724ba8e03c4020ce0a6ee04">FEATURE_LOGGING_VISIBLE</a> = 1 &lt;&lt; 1</td></tr>
 <tr class="memdesc:af71f2c691724ba8e03c4020ce0a6ee04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield logging icon feature.  <a href="#af71f2c691724ba8e03c4020ce0a6ee04">More...</a><br/></td></tr>
 <tr class="separator:af71f2c691724ba8e03c4020ce0a6ee04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a761cce28d18fbfc113cd527de6a7f5ce"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a761cce28d18fbfc113cd527de6a7f5ce">FEATURE_USB</a> = 1 &lt;&lt; 2</td></tr>
+<tr class="memitem:a761cce28d18fbfc113cd527de6a7f5ce"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a761cce28d18fbfc113cd527de6a7f5ce">FEATURE_USB</a> = 1 &lt;&lt; 2</td></tr>
 <tr class="memdesc:a761cce28d18fbfc113cd527de6a7f5ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield USB feature.  <a href="#a761cce28d18fbfc113cd527de6a7f5ce">More...</a><br/></td></tr>
 <tr class="separator:a761cce28d18fbfc113cd527de6a7f5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76062cbb46fb64fc6f51a3a621058c5e"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a76062cbb46fb64fc6f51a3a621058c5e">FEATURE_USB_VISIBLE</a> = 1 &lt;&lt; 3</td></tr>
+<tr class="memitem:a76062cbb46fb64fc6f51a3a621058c5e"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a76062cbb46fb64fc6f51a3a621058c5e">FEATURE_USB_VISIBLE</a> = 1 &lt;&lt; 3</td></tr>
 <tr class="memdesc:a76062cbb46fb64fc6f51a3a621058c5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield USB icon feature.  <a href="#a76062cbb46fb64fc6f51a3a621058c5e">More...</a><br/></td></tr>
 <tr class="separator:a76062cbb46fb64fc6f51a3a621058c5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff2c4fe1785d844d9788d02f85aa2155"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aff2c4fe1785d844d9788d02f85aa2155">FEATURE_LOCKED</a> = 1 &lt;&lt; 4</td></tr>
+<tr class="memitem:aff2c4fe1785d844d9788d02f85aa2155"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aff2c4fe1785d844d9788d02f85aa2155">FEATURE_LOCKED</a> = 1 &lt;&lt; 4</td></tr>
 <tr class="memdesc:aff2c4fe1785d844d9788d02f85aa2155"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield locking feature.  <a href="#aff2c4fe1785d844d9788d02f85aa2155">More...</a><br/></td></tr>
 <tr class="separator:aff2c4fe1785d844d9788d02f85aa2155"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51920321b70edb02d4e46b08bceeed09"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a51920321b70edb02d4e46b08bceeed09">FEATURE_LOCKED_VISIBLE</a> = 1 &lt;&lt; 5</td></tr>
+<tr class="memitem:a51920321b70edb02d4e46b08bceeed09"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a51920321b70edb02d4e46b08bceeed09">FEATURE_LOCKED_VISIBLE</a> = 1 &lt;&lt; 5</td></tr>
 <tr class="memdesc:a51920321b70edb02d4e46b08bceeed09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield locking icon feature.  <a href="#a51920321b70edb02d4e46b08bceeed09">More...</a><br/></td></tr>
 <tr class="separator:a51920321b70edb02d4e46b08bceeed09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d99b8dfbeb520e2529dba4958110ec2"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a3d99b8dfbeb520e2529dba4958110ec2">FEATURE_AUTOLOCK</a> = 1 &lt;&lt; 6</td></tr>
+<tr class="memitem:a3d99b8dfbeb520e2529dba4958110ec2"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a3d99b8dfbeb520e2529dba4958110ec2">FEATURE_AUTOLOCK</a> = 1 &lt;&lt; 6</td></tr>
 <tr class="memdesc:a3d99b8dfbeb520e2529dba4958110ec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield autolock setting feature.  <a href="#a3d99b8dfbeb520e2529dba4958110ec2">More...</a><br/></td></tr>
 <tr class="separator:a3d99b8dfbeb520e2529dba4958110ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a116dc4802192239e9ca3abf5bd22b76d"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a116dc4802192239e9ca3abf5bd22b76d">FEATURE_AUTOLOCK_VISIBLE</a> = 1 &lt;&lt; 7</td></tr>
+<tr class="memitem:a116dc4802192239e9ca3abf5bd22b76d"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a116dc4802192239e9ca3abf5bd22b76d">FEATURE_AUTOLOCK_VISIBLE</a> = 1 &lt;&lt; 7</td></tr>
 <tr class="memdesc:a116dc4802192239e9ca3abf5bd22b76d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield autolock setting icon feature.  <a href="#a116dc4802192239e9ca3abf5bd22b76d">More...</a><br/></td></tr>
 <tr class="separator:a116dc4802192239e9ca3abf5bd22b76d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6087a8a8c1fecb4e1cd8ace71281918f"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a6087a8a8c1fecb4e1cd8ace71281918f">FEATURE_AUTODIM</a> = 1 &lt;&lt; 8</td></tr>
+<tr class="memitem:a6087a8a8c1fecb4e1cd8ace71281918f"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a6087a8a8c1fecb4e1cd8ace71281918f">FEATURE_AUTODIM</a> = 1 &lt;&lt; 8</td></tr>
 <tr class="memdesc:a6087a8a8c1fecb4e1cd8ace71281918f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield autodimmer setting feature.  <a href="#a6087a8a8c1fecb4e1cd8ace71281918f">More...</a><br/></td></tr>
 <tr class="separator:a6087a8a8c1fecb4e1cd8ace71281918f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af366d28cc87bc051d9e964adb17d607e"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#af366d28cc87bc051d9e964adb17d607e">FEATURE_AUTODIM_VISIBLE</a> = 1 &lt;&lt; 9</td></tr>
+<tr class="memitem:af366d28cc87bc051d9e964adb17d607e"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#af366d28cc87bc051d9e964adb17d607e">FEATURE_AUTODIM_VISIBLE</a> = 1 &lt;&lt; 9</td></tr>
 <tr class="memdesc:af366d28cc87bc051d9e964adb17d607e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield autodimmer setting icon feature.  <a href="#af366d28cc87bc051d9e964adb17d607e">More...</a><br/></td></tr>
 <tr class="separator:af366d28cc87bc051d9e964adb17d607e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfd3d3de9de8ef54de988a662bbe9d4d"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#acfd3d3de9de8ef54de988a662bbe9d4d">FEATURE_OVP</a> = 1 &lt;&lt; 10</td></tr>
+<tr class="memitem:acfd3d3de9de8ef54de988a662bbe9d4d"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#acfd3d3de9de8ef54de988a662bbe9d4d">FEATURE_OVP</a> = 1 &lt;&lt; 10</td></tr>
 <tr class="memdesc:acfd3d3de9de8ef54de988a662bbe9d4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield overvoltage protection feature.  <a href="#acfd3d3de9de8ef54de988a662bbe9d4d">More...</a><br/></td></tr>
 <tr class="separator:acfd3d3de9de8ef54de988a662bbe9d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad769978a587e4878dcb0cf83b10691c5"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ad769978a587e4878dcb0cf83b10691c5">FEATURE_OVP_VISIBLE</a> = 1 &lt;&lt; 11</td></tr>
+<tr class="memitem:ad769978a587e4878dcb0cf83b10691c5"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ad769978a587e4878dcb0cf83b10691c5">FEATURE_OVP_VISIBLE</a> = 1 &lt;&lt; 11</td></tr>
 <tr class="memdesc:ad769978a587e4878dcb0cf83b10691c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield overvoltage protection icon feature.  <a href="#ad769978a587e4878dcb0cf83b10691c5">More...</a><br/></td></tr>
 <tr class="separator:ad769978a587e4878dcb0cf83b10691c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6548ecd9562576033eb6957535455ec1"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a6548ecd9562576033eb6957535455ec1">FEATURE_OCP</a> = 1 &lt;&lt; 12</td></tr>
+<tr class="memitem:a6548ecd9562576033eb6957535455ec1"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a6548ecd9562576033eb6957535455ec1">FEATURE_OCP</a> = 1 &lt;&lt; 12</td></tr>
 <tr class="memdesc:a6548ecd9562576033eb6957535455ec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield overcurrent protection feature.  <a href="#a6548ecd9562576033eb6957535455ec1">More...</a><br/></td></tr>
 <tr class="separator:a6548ecd9562576033eb6957535455ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ecb5bdb772ff9f35ea89d2813c859a4"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a8ecb5bdb772ff9f35ea89d2813c859a4">FEATURE_OCP_VISIBLE</a> = 1 &lt;&lt; 13</td></tr>
+<tr class="memitem:a8ecb5bdb772ff9f35ea89d2813c859a4"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a8ecb5bdb772ff9f35ea89d2813c859a4">FEATURE_OCP_VISIBLE</a> = 1 &lt;&lt; 13</td></tr>
 <tr class="memdesc:a8ecb5bdb772ff9f35ea89d2813c859a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitfield overcurrent protection icon feature.  <a href="#a8ecb5bdb772ff9f35ea89d2813c859a4">More...</a><br/></td></tr>
 <tr class="separator:a8ecb5bdb772ff9f35ea89d2813c859a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e984ada9ddb7f6aad0985aa56f306a8"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a8e984ada9ddb7f6aad0985aa56f306a8">GLYPH_X1</a> = 0</td></tr>
+<tr class="memitem:a8e984ada9ddb7f6aad0985aa56f306a8"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a8e984ada9ddb7f6aad0985aa56f306a8">GLYPH_X1</a> = 0</td></tr>
 <tr class="memdesc:a8e984ada9ddb7f6aad0985aa56f306a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of *1 icon in LCD HD44780 controller memory.  <a href="#a8e984ada9ddb7f6aad0985aa56f306a8">More...</a><br/></td></tr>
 <tr class="separator:a8e984ada9ddb7f6aad0985aa56f306a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c7b93d6018a4ebab7694d741edf6e85"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a0c7b93d6018a4ebab7694d741edf6e85">GLYPH_X10</a> = 1</td></tr>
+<tr class="memitem:a0c7b93d6018a4ebab7694d741edf6e85"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a0c7b93d6018a4ebab7694d741edf6e85">GLYPH_X10</a> = 1</td></tr>
 <tr class="memdesc:a0c7b93d6018a4ebab7694d741edf6e85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of *10 icon in LCD HD44780 controller memory.  <a href="#a0c7b93d6018a4ebab7694d741edf6e85">More...</a><br/></td></tr>
 <tr class="separator:a0c7b93d6018a4ebab7694d741edf6e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17d437a4990d1f5e8ec4b875ee866766"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a17d437a4990d1f5e8ec4b875ee866766">GLYPH_X100</a> = 2</td></tr>
+<tr class="memitem:a17d437a4990d1f5e8ec4b875ee866766"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a17d437a4990d1f5e8ec4b875ee866766">GLYPH_X100</a> = 2</td></tr>
 <tr class="memdesc:a17d437a4990d1f5e8ec4b875ee866766"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of *100 icon in LCD HD44780 controller memory.  <a href="#a17d437a4990d1f5e8ec4b875ee866766">More...</a><br/></td></tr>
 <tr class="separator:a17d437a4990d1f5e8ec4b875ee866766"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf883f09c57b01a885ff412f04a311c1"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aaf883f09c57b01a885ff412f04a311c1">GLYPH_X1000</a> = 3</td></tr>
+<tr class="memitem:aaf883f09c57b01a885ff412f04a311c1"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#aaf883f09c57b01a885ff412f04a311c1">GLYPH_X1000</a> = 3</td></tr>
 <tr class="memdesc:aaf883f09c57b01a885ff412f04a311c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of *1000 icon in LCD HD44780 controller memory.  <a href="#aaf883f09c57b01a885ff412f04a311c1">More...</a><br/></td></tr>
 <tr class="separator:aaf883f09c57b01a885ff412f04a311c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91e555b68fe82710c79ac6b7b391601f"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a91e555b68fe82710c79ac6b7b391601f">GLYPH_USB</a> = 4</td></tr>
+<tr class="memitem:a91e555b68fe82710c79ac6b7b391601f"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a91e555b68fe82710c79ac6b7b391601f">GLYPH_USB</a> = 4</td></tr>
 <tr class="memdesc:a91e555b68fe82710c79ac6b7b391601f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of USB icon in LCD HD44780 controller memory.  <a href="#a91e555b68fe82710c79ac6b7b391601f">More...</a><br/></td></tr>
 <tr class="separator:a91e555b68fe82710c79ac6b7b391601f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9615ff6b4544520c18873e1344737374"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a9615ff6b4544520c18873e1344737374">GLYPH_LOCK</a> = 5</td></tr>
+<tr class="memitem:a9615ff6b4544520c18873e1344737374"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a9615ff6b4544520c18873e1344737374">GLYPH_LOCK</a> = 5</td></tr>
 <tr class="memdesc:a9615ff6b4544520c18873e1344737374"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of LOCK icon in LCD HD44780 controller memory.  <a href="#a9615ff6b4544520c18873e1344737374">More...</a><br/></td></tr>
 <tr class="separator:a9615ff6b4544520c18873e1344737374"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7a5a0ac463cfa32b55c0d1198e19768"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ae7a5a0ac463cfa32b55c0d1198e19768">GLYPH_CHECKBOX_UNTICKED</a> = 6</td></tr>
+<tr class="memitem:ae7a5a0ac463cfa32b55c0d1198e19768"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ae7a5a0ac463cfa32b55c0d1198e19768">GLYPH_CHECKBOX_UNTICKED</a> = 6</td></tr>
 <tr class="memdesc:ae7a5a0ac463cfa32b55c0d1198e19768"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of unticked checkbox icon in LCD HD44780 controller memory.  <a href="#ae7a5a0ac463cfa32b55c0d1198e19768">More...</a><br/></td></tr>
 <tr class="separator:ae7a5a0ac463cfa32b55c0d1198e19768"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fb1d393f01e174b6e390569f44d92a4"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a5fb1d393f01e174b6e390569f44d92a4">GLYPH_CHECKBOX_TICKED</a> = 7</td></tr>
+<tr class="memitem:a5fb1d393f01e174b6e390569f44d92a4"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a5fb1d393f01e174b6e390569f44d92a4">GLYPH_CHECKBOX_TICKED</a> = 7</td></tr>
 <tr class="memdesc:a5fb1d393f01e174b6e390569f44d92a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of ticked checkbox icon in LCD HD44780 controller memory.  <a href="#a5fb1d393f01e174b6e390569f44d92a4">More...</a><br/></td></tr>
 <tr class="separator:a5fb1d393f01e174b6e390569f44d92a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac59c3105124881fecfb2ebcbbf7158c1"><td class="memItemLeft" align="right" valign="top">const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ac59c3105124881fecfb2ebcbbf7158c1">EEPROM_ADDR_MAGIC</a> = 0</td></tr>
+<tr class="memitem:ac59c3105124881fecfb2ebcbbf7158c1"><td class="memItemLeft" align="right" valign="top">static const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#ac59c3105124881fecfb2ebcbbf7158c1">EEPROM_ADDR_MAGIC</a> = 0</td></tr>
 <tr class="memdesc:ac59c3105124881fecfb2ebcbbf7158c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">EEPROM start offset to magic numbers (0xDEAD)  <a href="#ac59c3105124881fecfb2ebcbbf7158c1">More...</a><br/></td></tr>
 <tr class="separator:ac59c3105124881fecfb2ebcbbf7158c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63e78ec51b94dae8169c41b964bb4c44"><td class="memItemLeft" align="right" valign="top">const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a63e78ec51b94dae8169c41b964bb4c44">EEPROM_ADDR_AUTODIM</a> = 4</td></tr>
+<tr class="memitem:a63e78ec51b94dae8169c41b964bb4c44"><td class="memItemLeft" align="right" valign="top">static const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a63e78ec51b94dae8169c41b964bb4c44">EEPROM_ADDR_AUTODIM</a> = 4</td></tr>
 <tr class="memdesc:a63e78ec51b94dae8169c41b964bb4c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">EEPROM start offset for autodimming setting.  <a href="#a63e78ec51b94dae8169c41b964bb4c44">More...</a><br/></td></tr>
 <tr class="separator:a63e78ec51b94dae8169c41b964bb4c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a590f65997d9b95252e068b11443a75c0"><td class="memItemLeft" align="right" valign="top">const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a590f65997d9b95252e068b11443a75c0">EEPROM_ADDR_AUTOLOCK</a> = 5</td></tr>
+<tr class="memitem:a590f65997d9b95252e068b11443a75c0"><td class="memItemLeft" align="right" valign="top">static const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a590f65997d9b95252e068b11443a75c0">EEPROM_ADDR_AUTOLOCK</a> = 5</td></tr>
 <tr class="memdesc:a590f65997d9b95252e068b11443a75c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">EEPROM start offset for autolocking setting.  <a href="#a590f65997d9b95252e068b11443a75c0">More...</a><br/></td></tr>
 <tr class="separator:a590f65997d9b95252e068b11443a75c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dbaf3d60ad434088462ff2ffd20fadf"><td class="memItemLeft" align="right" valign="top">static const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a7dbaf3d60ad434088462ff2ffd20fadf">EEPROM_CALIBRATION_SIZE</a> = (sizeof(float) * 2) + sizeof(uint8_t)</td></tr>
+<tr class="separator:a7dbaf3d60ad434088462ff2ffd20fadf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a520712340d780df1acde1a36a5b234f0"><td class="memItemLeft" align="right" valign="top">static const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a520712340d780df1acde1a36a5b234f0">EEPROM_ADDR_CALIBRATION_VOLTAGE</a> = <a class="el" href="a_d_c_load_8h.html#a590f65997d9b95252e068b11443a75c0">EEPROM_ADDR_AUTOLOCK</a> + 1</td></tr>
+<tr class="memdesc:a520712340d780df1acde1a36a5b234f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">EEPROM start offset for voltage calibration values.  <a href="#a520712340d780df1acde1a36a5b234f0">More...</a><br/></td></tr>
+<tr class="separator:a520712340d780df1acde1a36a5b234f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27f45843429372bd737b5afd7a686cb0"><td class="memItemLeft" align="right" valign="top">static const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a27f45843429372bd737b5afd7a686cb0">EEPROM_ADDR_CALIBRATION_READ_CURRENT</a> = <a class="el" href="a_d_c_load_8h.html#a520712340d780df1acde1a36a5b234f0">EEPROM_ADDR_CALIBRATION_VOLTAGE</a> + <a class="el" href="a_d_c_load_8h.html#a7dbaf3d60ad434088462ff2ffd20fadf">EEPROM_CALIBRATION_SIZE</a></td></tr>
+<tr class="memdesc:a27f45843429372bd737b5afd7a686cb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">EEPROM start offset for current calibration values.  <a href="#a27f45843429372bd737b5afd7a686cb0">More...</a><br/></td></tr>
+<tr class="separator:a27f45843429372bd737b5afd7a686cb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a656d9d9fda8378e5411ea2ce356d1fc8"><td class="memItemLeft" align="right" valign="top">static const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a656d9d9fda8378e5411ea2ce356d1fc8">EEPROM_ADDR_CALIBRATION_DAC_CURRENT</a> = <a class="el" href="a_d_c_load_8h.html#a27f45843429372bd737b5afd7a686cb0">EEPROM_ADDR_CALIBRATION_READ_CURRENT</a> + <a class="el" href="a_d_c_load_8h.html#a7dbaf3d60ad434088462ff2ffd20fadf">EEPROM_CALIBRATION_SIZE</a></td></tr>
+<tr class="memdesc:a656d9d9fda8378e5411ea2ce356d1fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">EEPROM start offset for DAC calibration values.  <a href="#a656d9d9fda8378e5411ea2ce356d1fc8">More...</a><br/></td></tr>
+<tr class="separator:a656d9d9fda8378e5411ea2ce356d1fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2014 Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb'+'.co'+'m.'+'au'; return false;">lee@w<span style="display: none;">.nosp@m.</span>igwe<span style="display: none;">.nosp@m.</span>b.com<span style="display: none;">.nosp@m.</span>.au</a> </dd>
+<div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2014-2015 F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r'+'mb'+'.da'+'ni'+'el@'+'gm'+'ail'+'.c'+'om'; return false;">f1rmb<span style="display: none;">.nosp@m.</span>.dan<span style="display: none;">.nosp@m.</span>iel@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a> </dd>
 <dd>
-Copyright (C) 2014 F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r'+'mb'+'.da'+'ni'+'el@'+'gm'+'ail'+'.c'+'om'; return false;">f1rmb<span style="display: none;">.nosp@m.</span>.dan<span style="display: none;">.nosp@m.</span>iel@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a></dd></dl>
+Copyright (C) 2014 Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb'+'.co'+'m.'+'au'; return false;">lee@w<span style="display: none;">.nosp@m.</span>igwe<span style="display: none;">.nosp@m.</span>b.com<span style="display: none;">.nosp@m.</span>.au</a></dd></dl>
 <dl class="section user"><dt>License:</dt><dd>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.<br/>
 <br/>
  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.<br/>
 <br/>
  You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb'+'.co'+'m.'+'au'; return false;">lee@w<span style="display: none;">.nosp@m.</span>igwe<span style="display: none;">.nosp@m.</span>b.com<span style="display: none;">.nosp@m.</span>.au</a> </dd>
+<dl class="section author"><dt>Author</dt><dd>F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r'+'mb'+'.da'+'ni'+'el@'+'gm'+'ail'+'.c'+'om'; return false;">f1rmb<span style="display: none;">.nosp@m.</span>.dan<span style="display: none;">.nosp@m.</span>iel@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a> </dd>
 <dd>
-F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r'+'mb'+'.da'+'ni'+'el@'+'gm'+'ail'+'.c'+'om'; return false;">f1rmb<span style="display: none;">.nosp@m.</span>.dan<span style="display: none;">.nosp@m.</span>iel@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a> </dd></dl>
+Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb'+'.co'+'m.'+'au'; return false;">lee@w<span style="display: none;">.nosp@m.</span>igwe<span style="display: none;">.nosp@m.</span>b.com<span style="display: none;">.nosp@m.</span>.au</a> </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="a6e5f254e637637d3a3256dfd7a1399c7"></a>
 <div class="memitem">
@@ -404,21 +422,7 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
       </table>
 </div><div class="memdoc">
 
-<p>Define this if you want 192W support. </p>
-
-</div>
-</div>
-<a class="anchor" id="a55bc90ce1fe4a4912c37967a33cb7262"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIMU&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Define this if you want to simulate ADC/DAC/whatever (debug mode) </p>
+<p>Define this if you want 192W support (otherwise 50W) </p>
 
 </div>
 </div>
@@ -441,11 +445,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a1a23fb6043d623e2555b778671c32fd5"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ADC_CHIPSELECT_PIN = 8</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>set pin 8 as the chip select for the ADC: </p>
@@ -455,11 +467,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="ac382ee5538e7af5d2c1376416069323b"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ADC_INPUTVOLTAGE_CHAN = 0</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>set the ADC channel that reads the input voltage. </p>
@@ -469,11 +489,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a4ee78b6b8ad9ac750519a784ddb8f025"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ADC_MEASUREDCURRENT_CHAN = 1</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>set the ADC channel that reads the input current by measuring the voltage on the input side of the sense resistors. </p>
@@ -483,11 +511,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a33b7965dc0d8579f53317b31b6a5522b"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ADC_TEMPSENSE1_CHAN = 2</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>set the ADC channel that reads the temperature sensor 1 under the heatsink. </p>
@@ -497,11 +533,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a7f7cc8766879e6ce94bfaf5555b7e31d"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ADC_TEMPSENSE2_CHAN = 3</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>set the ADC channel that reads the temperature sensor 2 under the heatsink. </p>
@@ -511,11 +555,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a8cecb6615f39b597624131a19d1de9ed"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ALARM_OC_X_COORD = 18</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Overcurrent 'OC' text LCD X coord. </p>
@@ -525,11 +577,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a194176bb87c555c30a4e36c37b088f90"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ALARM_OC_Y_COORD = 2</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Overcurrent 'OC' text LCD Y coord. </p>
@@ -539,11 +599,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="aa1fe80edb2524a87643542c5791b9e68"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ALARM_OV_X_COORD = 18</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Overvoltage 'OV' text LCD X coord. </p>
@@ -553,11 +621,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="aeb973a32313bf0bc278ae6d86f87e523"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ALARM_OV_Y_COORD = 1</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Overvoltage 'OV' text LCD Y coord. </p>
@@ -567,11 +643,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="aad673a91da7f627db3cb380ac64c3bbc"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const unsigned long AUTOLOCK_TIMEOUT = 60000</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Autolock timeout value (60 seconds) </p>
@@ -581,25 +665,41 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a60cd8cb9e38bdbe1856db5d57ed69c87"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const unsigned long BACKLIGHT_TIMEOUT = 300000</td>
+          <td class="memname">const unsigned long BACKLIGHT_TIMEOUT = 600000</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Backlight dimmer timeout (5 minutes) </p>
+<p>Backlight dimmer timeout (10 minutes) </p>
 
 </div>
 </div>
 <a class="anchor" id="a3fedf00f7a232198f2a6bce0d0411bbd"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const float CURRENT_MAXIMUM = 8.000</td>
+          <td class="memname">const float CURRENT_MAXIMUM = 7.825</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Maximum value of load current (A) </p>
@@ -609,39 +709,63 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a9ade5003d4eadb680b47f082bdd586c2"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t DAC_CHIPSELECT_PIN = 9</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>set pin 9 as the chip select for the DAC: </p>
 
 </div>
 </div>
-<a class="anchor" id="ac96099667e9f2b1890566fa9f917dcf3"></a>
+<a class="anchor" id="ada76d1dc31841541aafc748f88ebd226"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint16_t DAC_CURRENT_CHAN = 0</td>
+          <td class="memname">const uint8_t DAC_CURRENT_CHAN = 0</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>set The DAC channel that sets the constant current. </p>
 
 </div>
 </div>
-<a class="anchor" id="acfaece870f6766865b08af30851f4faa"></a>
+<a class="anchor" id="aaaa771905cd34ea0cb7dca2b1bb78653"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint16_t DAC_FAN_CHAN = 1</td>
+          <td class="memname">const uint8_t DAC_FAN_CHAN = 1</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>set The DAC channel that sets the fan speed. </p>
@@ -651,11 +775,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a63e78ec51b94dae8169c41b964bb4c44"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const int16_t EEPROM_ADDR_AUTODIM = 4</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>EEPROM start offset for autodimming setting. </p>
@@ -665,39 +797,149 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a590f65997d9b95252e068b11443a75c0"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const int16_t EEPROM_ADDR_AUTOLOCK = 5</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>EEPROM start offset for autolocking setting. </p>
 
 </div>
 </div>
+<a class="anchor" id="a656d9d9fda8378e5411ea2ce356d1fc8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int16_t EEPROM_ADDR_CALIBRATION_DAC_CURRENT = <a class="el" href="a_d_c_load_8h.html#a27f45843429372bd737b5afd7a686cb0">EEPROM_ADDR_CALIBRATION_READ_CURRENT</a> + <a class="el" href="a_d_c_load_8h.html#a7dbaf3d60ad434088462ff2ffd20fadf">EEPROM_CALIBRATION_SIZE</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>EEPROM start offset for DAC calibration values. </p>
+
+</div>
+</div>
+<a class="anchor" id="a27f45843429372bd737b5afd7a686cb0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int16_t EEPROM_ADDR_CALIBRATION_READ_CURRENT = <a class="el" href="a_d_c_load_8h.html#a520712340d780df1acde1a36a5b234f0">EEPROM_ADDR_CALIBRATION_VOLTAGE</a> + <a class="el" href="a_d_c_load_8h.html#a7dbaf3d60ad434088462ff2ffd20fadf">EEPROM_CALIBRATION_SIZE</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>EEPROM start offset for current calibration values. </p>
+
+</div>
+</div>
+<a class="anchor" id="a520712340d780df1acde1a36a5b234f0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int16_t EEPROM_ADDR_CALIBRATION_VOLTAGE = <a class="el" href="a_d_c_load_8h.html#a590f65997d9b95252e068b11443a75c0">EEPROM_ADDR_AUTOLOCK</a> + 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>EEPROM start offset for voltage calibration values. </p>
+
+</div>
+</div>
 <a class="anchor" id="ac59c3105124881fecfb2ebcbbf7158c1"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const int16_t EEPROM_ADDR_MAGIC = 0</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>EEPROM start offset to magic numbers (0xDEAD) </p>
 
 </div>
 </div>
+<a class="anchor" id="a7dbaf3d60ad434088462ff2ffd20fadf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int16_t EEPROM_CALIBRATION_SIZE = (sizeof(float) * 2) + sizeof(uint8_t)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="ae2724fced0205dea4ce23bd7f621df79"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ENCODER_A_PIN = 3</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Encoder Channel A pin, INT 0. </p>
@@ -707,11 +949,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a7078f04e43b456434bcae72831fdb76b"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ENCODER_B_PIN = 2</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Encoder Channel B pin, INT 1. </p>
@@ -721,11 +971,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a596dd89a2ecd8483861abf0eee2949c9"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ENCODER_PB_PIN = 0</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Encoder push button pin, INT 2. </p>
@@ -735,11 +993,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="adacecc57bec8f7f1b5f16f13adc7b4b5"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t ENCODER_STEPS_PER_NOTCH = 4</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Depending on the type of your encoder, you can define use the constructors parameter <code>stepsPerNotch</code> an set it to either <code>1</code>, <code>2</code> or <code>4</code> steps per notch, with <code>1</code> being the default. </p>
@@ -749,11 +1015,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a6087a8a8c1fecb4e1cd8ace71281918f"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_AUTODIM = 1 &lt;&lt; 8</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield autodimmer setting feature. </p>
@@ -763,11 +1037,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="af366d28cc87bc051d9e964adb17d607e"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_AUTODIM_VISIBLE = 1 &lt;&lt; 9</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield autodimmer setting icon feature. </p>
@@ -777,11 +1059,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a3d99b8dfbeb520e2529dba4958110ec2"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_AUTOLOCK = 1 &lt;&lt; 6</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield autolock setting feature. </p>
@@ -791,11 +1081,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a116dc4802192239e9ca3abf5bd22b76d"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_AUTOLOCK_VISIBLE = 1 &lt;&lt; 7</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield autolock setting icon feature. </p>
@@ -805,11 +1103,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="aff2c4fe1785d844d9788d02f85aa2155"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_LOCKED = 1 &lt;&lt; 4</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield locking feature. </p>
@@ -819,11 +1125,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a51920321b70edb02d4e46b08bceeed09"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_LOCKED_VISIBLE = 1 &lt;&lt; 5</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield locking icon feature. </p>
@@ -833,11 +1147,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a539fc1cca66a2f0f864300312cdc77d1"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_LOGGING = 1</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield logging feature. </p>
@@ -847,11 +1169,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="af71f2c691724ba8e03c4020ce0a6ee04"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_LOGGING_VISIBLE = 1 &lt;&lt; 1</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield logging icon feature. </p>
@@ -861,11 +1191,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a6548ecd9562576033eb6957535455ec1"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_OCP = 1 &lt;&lt; 12</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield overcurrent protection feature. </p>
@@ -875,11 +1213,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a8ecb5bdb772ff9f35ea89d2813c859a4"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_OCP_VISIBLE = 1 &lt;&lt; 13</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield overcurrent protection icon feature. </p>
@@ -889,11 +1235,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="acfd3d3de9de8ef54de988a662bbe9d4d"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_OVP = 1 &lt;&lt; 10</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield overvoltage protection feature. </p>
@@ -903,11 +1257,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="ad769978a587e4878dcb0cf83b10691c5"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_OVP_VISIBLE = 1 &lt;&lt; 11</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield overvoltage protection icon feature. </p>
@@ -917,11 +1279,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a761cce28d18fbfc113cd527de6a7f5ce"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_USB = 1 &lt;&lt; 2</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield USB feature. </p>
@@ -931,11 +1301,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a76062cbb46fb64fc6f51a3a621058c5e"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint16_t FEATURE_USB_VISIBLE = 1 &lt;&lt; 3</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Bitfield USB icon feature. </p>
@@ -945,11 +1323,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a5fb1d393f01e174b6e390569f44d92a4"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t GLYPH_CHECKBOX_TICKED = 7</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Offset of ticked checkbox icon in LCD HD44780 controller memory. </p>
@@ -959,11 +1345,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="ae7a5a0ac463cfa32b55c0d1198e19768"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t GLYPH_CHECKBOX_UNTICKED = 6</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Offset of unticked checkbox icon in LCD HD44780 controller memory. </p>
@@ -973,11 +1367,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a9615ff6b4544520c18873e1344737374"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t GLYPH_LOCK = 5</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Offset of LOCK icon in LCD HD44780 controller memory. </p>
@@ -987,11 +1389,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a91e555b68fe82710c79ac6b7b391601f"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t GLYPH_USB = 4</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Offset of USB icon in LCD HD44780 controller memory. </p>
@@ -1001,11 +1411,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a8e984ada9ddb7f6aad0985aa56f306a8"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t GLYPH_X1 = 0</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Offset of *1 icon in LCD HD44780 controller memory. </p>
@@ -1015,11 +1433,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a0c7b93d6018a4ebab7694d741edf6e85"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t GLYPH_X10 = 1</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Offset of *10 icon in LCD HD44780 controller memory. </p>
@@ -1029,11 +1455,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a17d437a4990d1f5e8ec4b875ee866766"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t GLYPH_X100 = 2</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Offset of *100 icon in LCD HD44780 controller memory. </p>
@@ -1043,11 +1477,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="aaf883f09c57b01a885ff412f04a311c1"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t GLYPH_X1000 = 3</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Offset of *1000 icon in LCD HD44780 controller memory. </p>
@@ -1057,11 +1499,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="aea58e4f5bc71beb485c1bfee30b00519"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_COLS_NUM = 20</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD columns size. </p>
@@ -1071,11 +1521,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a5f2a9b8e6d3d417e24b775033615de18"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_D0_PIN = A0</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD d0 pin. </p>
@@ -1085,11 +1543,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a6dbe781f0d4106bc944e7c295726ee67"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_D1_PIN = A1</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD d1 pin. </p>
@@ -1099,11 +1565,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a697779e830c40af2f99159e20d122a39"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_D2_PIN = A2</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD d3 pin. </p>
@@ -1113,11 +1587,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="ae9f3e38d7c79aff9ffbf6afa52e03ea8"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_D3_PIN = A3</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD d2 pin. </p>
@@ -1127,11 +1609,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="ac625a031f5582c0b6892030ae9d65b9d"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_D4_PIN = 4</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD d4 pin. </p>
@@ -1141,11 +1631,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="aae4ca2d664747d2f633623e6c4c52c0c"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_D5_PIN = 13</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD d5 pin. </p>
@@ -1155,11 +1653,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a533cfc8d6a12f1bd8cda99e8b594c5d9"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_D6_PIN = 6</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD d6 pin. </p>
@@ -1169,11 +1675,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="aec14c2435d01088e32d819a1250fa5bd"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_D7_PIN = 5</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD d7 pin. </p>
@@ -1183,11 +1697,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a5798651429642ced4296e55010099e4a"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_ENABLE_PIN = 12</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD ENABLE pin. </p>
@@ -1197,11 +1719,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="ac19c425594c29b0dfd0c1229a19e1fdf"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_ROWS_NUM = 4</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD rows size. </p>
@@ -1211,11 +1741,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a6d95cffc7304fe82f627a0256b51ce00"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LCD_RS_PIN = 10</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD RS pin. </p>
@@ -1225,11 +1763,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a84816e7d4008616ea67182f853947c2c"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LED_BACKLIGHT_PIN = 11</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LCD backlight pin. </p>
@@ -1239,11 +1785,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="aeb70b23943ec8bd257a8314c84ba27eb"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LOCK_ICON_X_COORD = 19</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LOCK icon LCD X coord. </p>
@@ -1253,11 +1807,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a9fa43270a52818feedf0b67f5ff84493"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LOCK_ICON_Y_COORD = 3</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>LOCK icon LCD Y coord. </p>
@@ -1267,11 +1829,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a9dcce18d44603bac087afb134a0a9c20"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LOGGING_ICON_X_COORD = 17</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Logging icon LCD X coord. </p>
@@ -1281,25 +1851,63 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="ad2e70aa506de0f5154095a6f5a76c2dd"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t LOGGING_ICON_Y_COORD = 3</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Logging icon LCD Y coord. </p>
 
 </div>
 </div>
+<a class="anchor" id="a400f951b439c14f0561a9a8833dfaa99"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const unsigned long LOGGING_TIMEOUT = 100</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CSV data-logging rate (ms) </p>
+
+</div>
+</div>
 <a class="anchor" id="a17a7fc0311486ae256e6615163f70984"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t OFFSET_MARKER_LEFT = 0</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Column LCD offset for left marker '['. </p>
@@ -1309,11 +1917,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="ae3212622bd6f3c519042a97fcbfa30a6"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t OFFSET_MARKER_RIGHT = 14</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Column LCD offset for right marker ']'. </p>
@@ -1323,11 +1939,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="ad626c8aa41b9b1d6fc394bfd2baa370e"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t OFFSET_SETUP_MARKER_LEFT = 1</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Column LCD offset for left marker '[' in setup mode. </p>
@@ -1337,11 +1961,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="ab2dcc22cd86402b30b1651d5ce74712e"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t OFFSET_SETUP_MARKER_RIGHT = 18</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Column LCD offset for right marker ']' in setup mode. </p>
@@ -1351,11 +1983,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a7488e46bbe40b6658f05b624338387ab"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t OFFSET_TEMP = 12</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Temperature column LCD offset. </p>
@@ -1365,11 +2005,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a1743be346f52dac718bfcfe50f1d137e"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t OFFSET_UNIT = 1</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Unit column LCD offset. </p>
@@ -1379,11 +2027,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a82c8b4fc35607ca726bd9832b426ad0c"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t OFFSET_VALUE = 4</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Value column LCD offset. </p>
@@ -1393,11 +2049,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a8b46e6ece7c27e4680f541544b4373cc"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const unsigned long OPERATION_SET_TIMEOUT = 3000</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Automatic toggle settings-&gt;reading timeout (3 seconds) </p>
@@ -1407,11 +2071,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="aa803e6a1498ec1596f662dfbb303955a"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const float POWER_MAXIMUM = <a class="el" href="a_d_c_load_8h.html#a87ae2eaebf8ff5a513cf9b71b07640a7">VOLTAGE_MAXIMUM</a> * <a class="el" href="a_d_c_load_8h.html#a3fedf00f7a232198f2a6bce0d0411bbd">CURRENT_MAXIMUM</a></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Maximum power dissipated (W) </p>
@@ -1421,11 +2093,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a6a5d1539e8857f9423d73799516fe3b9"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const int8_t SOFTWARE_VERSION_MAJOR = 2</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Software major version. </p>
@@ -1435,11 +2115,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="aa00b28db26db5f4c514cc3d1047a41f4"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const int8_t SOFTWARE_VERSION_MINOR = 3</td>
+          <td class="memname">const int8_t SOFTWARE_VERSION_MINOR = 6</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Software minor version. </p>
@@ -1449,11 +2137,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a8b7470682e0247570486aa6f4a27e3e7"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t USB_ICON_X_COORD = 18</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>USB icon LCD X coord. </p>
@@ -1463,11 +2159,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="ac743c77386eab1c8cae03d0a5e7247ed"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const uint8_t USB_ICON_Y_COORD = 3</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>USB icon LCD Y coord. </p>
@@ -1477,11 +2181,19 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <a class="anchor" id="a87ae2eaebf8ff5a513cf9b71b07640a7"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const float VOLTAGE_MAXIMUM = 24.000</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Maximum handled voltage (V) </p>
@@ -1494,7 +2206,7 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a_d_c_load_8h.html">aDCLoad.h</a></li>
-    <li class="footer">Generated on Sat Dec 6 2014 09:38:45 for aDCLoad by
+    <li class="footer">Generated on Sun Dec 21 2014 17:58:39 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.2</span>
+   &#160;<span id="projectnumber">2.6</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('remote.html','');});
 <div class="contents">
 <div class="textblock"><p>See also <a class="el" href="logging.html">Logging data format</a></p>
 <dl class="section note"><dt>Note</dt><dd>Serial port configuration: 57600 8N1 </dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>Commands and arguments are <b>case sensitive</b>, and all in <b>UPCASE</b></dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Commands and arguments are <b>case sensitive</b>, <em><b>all</b></em> in <b>UPCASE</b></dd></dl>
 <h1><a class="anchor" id="curget"></a>
 Current setting getter</h1>
 <p><b>:ISET?:</b> Returns current setting .<br/>
@@ -114,6 +114,18 @@ Current setting getter</h1>
 Current setting setter</h1>
 <p><b>:ISET:<em>value</em></b> Set current <b><em>value</em></b> (in mA) .<br/>
  See <a class="el" href="remote.html#retval">Return value</a>.</p>
+<h1><a class="anchor" id="cal"></a>
+Calibration</h1>
+<p><b>:CAL:<em>toggle</em></b> Turns <b><em>ON</em></b> or <b><em>OFF</em></b> the logging feature.<br/>
+ <b>:CAL:<em>section</em>:<em>slope</em>,<em>offset</em></b> <em>section</em> could be <b>V</b>, <b>C</b> or <b>D</b>, standing for <b>V</b>oltage, <b>C</b>urrent, <b>D</b>AC. <em>slope</em> and <em>offset</em> are floating point values, with US decimal '.' separator. These values could be calculated using the <em>LibreOffice</em>'s spreadsheet file: <b>aDCLoadCalibration.ods</b>. <br/>
+<b>:CAL:SAVE</b> Backup calibation datas into EEPROM. .<br/>
+ See <a class="el" href="remote.html#retval">Return value</a> .<br/>
+ See <a class="el" href="calibration.html">Calibration Process</a></p>
+<h1><a class="anchor" id="dac"></a>
+DAC value setter (calibration purpose)</h1>
+<p><b>:DAC:<em>value</em></b> Set DAC value (from 0 to 4095). This command has no effect outside calibration mode .<br/>
+ See <a class="el" href="remote.html#cal">Calibration</a> .<br/>
+ See <a class="el" href="calibration.html">Calibration Process</a></p>
 <h1><a class="anchor" id="curread"></a>
 Current readed getter</h1>
 <p><b>:I?:</b> Returns current readed from the load .<br/>
@@ -124,11 +136,11 @@ Voltage readed getter</h1>
  See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="logsingle"></a>
 Logging enability</h1>
-<p><b>:L?:</b> Printout if logging is ON or OFF. .<br/>
+<p><b>:LOG?:</b> Printout if logging is ON or OFF. .<br/>
  See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="logrun"></a>
 Logging enability</h1>
-<p><b>:L:<em>toggle</em></b> Turns <b><em>ON</em></b> or <b><em>OFF</em></b> the logging feature.<br/>
+<p><b>:LOG:<em>toggle</em></b> Turns <b><em>ON</em></b> or <b><em>OFF</em></b> the logging feature.<br/>
  If <b><em>toggle</em></b> value is not specified, a single logging line is returned. .<br/>
  See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="retval"></a>
@@ -146,7 +158,7 @@ Return value</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Dec 6 2014 09:38:45 for aDCLoad by
+    <li class="footer">Generated on Sun Dec 21 2014 17:58:39 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

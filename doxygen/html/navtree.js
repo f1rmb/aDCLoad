@@ -6,6 +6,8 @@ var NAVTREE =
     [ "Remote Commands", "remote.html", [
       [ "Current setting getter", "remote.html#curget", null ],
       [ "Current setting setter", "remote.html#curset", null ],
+      [ "Calibration", "remote.html#cal", null ],
+      [ "DAC value setter (calibration purpose)", "remote.html#dac", null ],
       [ "Current readed getter", "remote.html#curread", null ],
       [ "Voltage readed getter", "remote.html#volread", null ],
       [ "Logging enability", "remote.html#logsingle", null ],
@@ -15,6 +17,7 @@ var NAVTREE =
     [ "Logging data format", "logging.html", [
       [ "CSV logging format", "logging.html#logform", null ]
     ] ],
+    [ "Calibration Process", "calibration.html", null ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
       [ "Class Index", "classes.html", null ],
@@ -44,7 +47,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_c_d_c_8cpp.html",
-"classes.html"
+"classa_l_c_d.html#a0df2ee1d5e08b06672ca51aa1399d2f8"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

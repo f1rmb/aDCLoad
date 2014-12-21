@@ -12,6 +12,6 @@ var a_d_c_load_8cpp =
     [ "serialPrintln", "a_d_c_load_8cpp.html#a21977fc8d234cbf69cd8503215c70823", null ],
     [ "serialPrintln", "a_d_c_load_8cpp.html#a3d22457e196ce3b715717db16b613767", null ],
     [ "serialPrintln", "a_d_c_load_8cpp.html#a620e9b70ab07b89618b3577ea5a2f82d", null ],
-    [ "serialRead", "a_d_c_load_8cpp.html#a6c0d516c80fc1dfb5b93bbb24e517160", null ],
+    [ "serialRead", "a_d_c_load_8cpp.html#a59f0e20bde84102af723e44163b7a592", null ],
     [ "serialWrite", "a_d_c_load_8cpp.html#aa1d0c8f870edae14a5ca85154b24a1e1", null ]
 ];

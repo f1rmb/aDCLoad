@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.2</span>
+   &#160;<span id="projectnumber">2.6</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -111,6 +111,7 @@ $(document).ready(function(){initNavTree('classa_d_c_engine.html','');});
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classa_d_c_engine-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -207,7 +208,7 @@ Private Member Functions</h2></td></tr>
 <tr class="memdesc:aaf9e9e99f45f225c016cea2e4fe3bf04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that read temperature from ADC channels.  <a href="#aaf9e9e99f45f225c016cea2e4fe3bf04">More...</a><br/></td></tr>
 <tr class="separator:aaf9e9e99f45f225c016cea2e4fe3bf04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dcf5e9eaa29e367460ac6f097f5b247"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_engine.html#a9dcf5e9eaa29e367460ac6f097f5b247">_updateFanSpeed</a> ()</td></tr>
-<tr class="memdesc:a9dcf5e9eaa29e367460ac6f097f5b247"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to set the fan speed depending on the heatsink temperature.  <a href="#a9dcf5e9eaa29e367460ac6f097f5b247">More...</a><br/></td></tr>
+<tr class="memdesc:a9dcf5e9eaa29e367460ac6f097f5b247"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to set the fan speed depending on the temperature sensors value.  <a href="#a9dcf5e9eaa29e367460ac6f097f5b247">More...</a><br/></td></tr>
 <tr class="separator:a9dcf5e9eaa29e367460ac6f097f5b247"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7557a6f8cd0521b9e00a909880bfb0c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_engine.html#ab7557a6f8cd0521b9e00a909880bfb0c">_readMeasuredCurrent</a> ()</td></tr>
 <tr class="memdesc:ab7557a6f8cd0521b9e00a909880bfb0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to measure the actual load current.  <a href="#ab7557a6f8cd0521b9e00a909880bfb0c">More...</a><br/></td></tr>
@@ -233,12 +234,17 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:aab05581cd36bf6ebcee9626704cbca93"><td class="memItemLeft" align="right" valign="top">ClickEncoder *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_engine.html#aab05581cd36bf6ebcee9626704cbca93">m_encoder</a></td></tr>
 <tr class="memdesc:aab05581cd36bf6ebcee9626704cbca93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encoder object.  <a href="#aab05581cd36bf6ebcee9626704cbca93">More...</a><br/></td></tr>
 <tr class="separator:aab05581cd36bf6ebcee9626704cbca93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a086de697a244121e69b95f82c5d61dd9"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_engine.html#a086de697a244121e69b95f82c5d61dd9">m_RXbuffer</a> [63+1]</td></tr>
-<tr class="memdesc:a086de697a244121e69b95f82c5d61dd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB rx buffer.  <a href="#a086de697a244121e69b95f82c5d61dd9">More...</a><br/></td></tr>
-<tr class="separator:a086de697a244121e69b95f82c5d61dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa302ade4d81c22c58f31c46440ac4686"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_engine.html#aa302ade4d81c22c58f31c46440ac4686">m_RXbuffer</a> [<a class="el" href="classa_d_c_engine.html#a9efe073abe646fae5a57e086b082ac7e">RXBUFFER_MAXLEN</a>]</td></tr>
+<tr class="memdesc:aa302ade4d81c22c58f31c46440ac4686"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB rx buffer.  <a href="#aa302ade4d81c22c58f31c46440ac4686">More...</a><br/></td></tr>
+<tr class="separator:aa302ade4d81c22c58f31c46440ac4686"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15d3419f187e0f56ffc9d1a832493f72"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_engine.html#a15d3419f187e0f56ffc9d1a832493f72">m_RXoffset</a></td></tr>
 <tr class="memdesc:a15d3419f187e0f56ffc9d1a832493f72"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB rx buffer offset counter.  <a href="#a15d3419f187e0f56ffc9d1a832493f72">More...</a><br/></td></tr>
 <tr class="separator:a15d3419f187e0f56ffc9d1a832493f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a9efe073abe646fae5a57e086b082ac7e"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_engine.html#a9efe073abe646fae5a57e086b082ac7e">RXBUFFER_MAXLEN</a> = 64</td></tr>
+<tr class="separator:a9efe073abe646fae5a57e086b082ac7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -659,7 +665,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Function to set the fan speed depending on the heatsink temperature. </p>
+<p>Function to set the fan speed depending on the temperature sensors value. </p>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
@@ -769,7 +775,7 @@ Friends</h2></td></tr>
 <p>Setup function, should be called before any other member. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">isr</td><td>ISRCallback : <b> callback function pointer that may call <a class="el" href="classa_d_c_engine.html#a5069574e77de5efa72c8e5fb8f24c688" title="Caller callback function that manages encoder clicking and so on. ">service()</a> </b> </td></tr>
+    <tr><td class="paramname">isr</td><td>ISRCallback : <b> pointer to callback function that may call <a class="el" href="classa_d_c_engine.html#a5069574e77de5efa72c8e5fb8f24c688" title="Caller callback function that manages encoder clicking and so on. ">service()</a> </b> </td></tr>
   </table>
   </dd>
 </dl>
@@ -843,7 +849,7 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a086de697a244121e69b95f82c5d61dd9"></a>
+<a class="anchor" id="aa302ade4d81c22c58f31c46440ac4686"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -851,7 +857,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t aDCEngine::m_RXbuffer[63+1]</td>
+          <td class="memname">uint8_t aDCEngine::m_RXbuffer[<a class="el" href="classa_d_c_engine.html#a9efe073abe646fae5a57e086b082ac7e">RXBUFFER_MAXLEN</a>]</td>
         </tr>
       </table>
   </td>
@@ -887,6 +893,26 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a9efe073abe646fae5a57e086b082ac7e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t aDCEngine::RXBUFFER_MAXLEN = 64</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="a_d_c_load_8h_source.html">aDCLoad.h</a></li>
 <li><a class="el" href="a_d_c_load_8cpp.html">aDCLoad.cpp</a></li>
@@ -897,7 +923,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classa_d_c_engine.html">aDCEngine</a></li>
-    <li class="footer">Generated on Sat Dec 6 2014 09:38:45 for aDCLoad by
+    <li class="footer">Generated on Sun Dec 21 2014 17:58:39 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

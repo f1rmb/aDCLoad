@@ -1,7 +1,7 @@
 /**
  *
- * \copyright Copyright (C) 2014  Lee Wiggins <lee@wigweb.com.au>
- *  \copyright Copyright (C) 2014  F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
+ * \copyright Copyright (C) 2014-2015  F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
+ * \copyright Copyright (C) 2014       Lee Wiggins <lee@wigweb.com.au>
  *
  * \license
 This program is free software; you can redistribute it and/or
@@ -39,8 +39,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "aDCLoad.h"
 
 /** \file aDCLoad.cpp
-    \author Lee Wiggins <lee@wigweb.com.au>
     \author F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
+    \author Lee Wiggins <lee@wigweb.com.au>
 */
 
 // A bit of user's manual
@@ -169,6 +169,11 @@ void serialPrint(int n, int16_t base = DEC)
    serialPrint((unsigned long) n, base);
 }
 
+/** \brief Flush serial buffer (TX)
+ *
+ * \return void
+ *
+ */
 void serialFlush()
 {
     Serial.flush();
@@ -263,12 +268,12 @@ int16_t serialAvailable()
 
 /** \brief Reads incoming serial data
  *
- * \return int16_t
+ * \return uint8_t
  *
  */
-int16_t serialRead()
+uint8_t serialRead()
 {
-    return Serial.read();
+    return static_cast<uint8_t>(Serial.read());
 }
 #endif
 
@@ -289,6 +294,7 @@ int8_t getNumericalLength(uint16_t n)
     return (static_cast<int8_t>(snprintf(buf, sizeof(buf) - 1, "%u", n)));
 }
 #endif
+
 /**
 *** Our float to string format function
 **/
@@ -297,7 +303,7 @@ int8_t getNumericalLength(uint16_t n)
  *
  * \param n float : <b> Float number to analyse </b>
  * \param len uint8_t : <b> decimal max length (3 as default) </b>
- * \return int8_t
+ * \return int8_t : <b> numeric value length </b>
  *
  */
 int8_t getNumericalLength(float n, uint8_t len = 3)
@@ -318,31 +324,13 @@ int8_t getNumericalLength(float n, uint8_t len = 3)
  * We just get rid of +4 decimal values
  *
  * \param f float : <b> Float to rounding </b>
- * \return float
+ * \return float : <b> rounded value </b>
  *
  */
 float floatRounding(float f)
 {
 	return ((f / 1000.000) * 1000.000);
 }
-
-#if 0
-/** \brief Macro used for checking "value" boundaries, using "type"_MAXIMUM constant. Returns SETTING_UNDERSIZED or SETTING_OVERSIZED if "value" is out of boundaries.
- *
- * Macro used in aDCSettings class setters (some of them)
- *
- * \param type : <b> CURRENT, VOLTAGE or POWER </b>
- * \param value : <b> value to check </b>
- *
- */
-#define RETURN_IF_INVALID(type, value)\
-    do {\
-        if (value < 0)\
-            return SETTING_ERROR_UNDERSIZED;\
-        else if (value > type ## _MAXIMUM)\
-            return SETTING_ERROR_OVERSIZED;\
-    } while(0)
-#endif
 
 /** \brief Constructor
  */
@@ -362,7 +350,8 @@ aDCSettings::aDCSettings() :
 #else
                     m_readTemperature(0),
 #endif
-                    m_fanSpeed(1),
+                    m_fanSpeed(0xFF),
+                    m_currentDAC(0xFF),
                     m_operationMode(OPERATION_MODE_READ),
                     m_mode(SELECTION_MODE_CURRENT),
                     m_encoderPos(0),
@@ -371,7 +360,15 @@ aDCSettings::aDCSettings() :
                     m_features(0x0),
                     m_datas(0xFFFF)
 {
+    // Calibration zeroing
+    for (uint8_t i = 0; i < CALIBRATION_MAX; i++)
+    {
+        m_calibrationValues[i].slope = 1.0;
+        m_calibrationValues[i].offset = 0.0;
+    }
+
     _eepromRestore();
+    syncData(DATA_IN_CALIBRATION); // Reset Calibration Bit (all bits are set to 1 on startup)
 }
 
 /** \brief Destructor
@@ -405,7 +402,7 @@ float aDCSettings::getVoltage()
 // Current
 /** \brief Current setter
  *
- * \param v float : <b> Current </b>
+ * \param v float : <b> current </b>
  * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
  * \return aDCSettings::SettingError_t
  *
@@ -418,7 +415,7 @@ aDCSettings::SettingError_t aDCSettings::setCurrent(float v, OperationMode_t mod
 /** \brief Current getter
  *
  * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
- * \return float : <b> Current </b>
+ * \return float : <b> current </b>
  *
  */
 float aDCSettings::getCurrent(OperationMode_t mode)
@@ -431,7 +428,7 @@ float aDCSettings::getCurrent(OperationMode_t mode)
 #ifdef RESISTANCE
 /** \brief Resistance setter
  *
- * \param v float : <b> Resistance </b>
+ * \param v float : <b> resistance </b>
  * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
  * \return aDCSettings::SettingError_t
  *
@@ -445,7 +442,7 @@ aDCSettings::SettingError_t aDCSettings::setResistance(float v, OperationMode_t 
 /** \brief Resistance getter
  *
  * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
- * \return float : <b> Resistance </b>
+ * \return float : <b> resistance </b>
  *
  */
 float aDCSettings::getResistance(OperationMode_t mode)
@@ -458,7 +455,7 @@ float aDCSettings::getResistance(OperationMode_t mode)
 // Power
 /** \brief Power setter
  *
- * \param v float : <b> Power </b>
+ * \param v float : <b> power </b>
  * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
  * \return aDCSettings::SettingError_t
  *
@@ -472,7 +469,7 @@ aDCSettings::SettingError_t aDCSettings::setPower(float v, OperationMode_t mode)
 /** \brief Power getter
  *
  * \param mode OperationMode_t : <b> READ/SET mode storage access </b>
- * \return float : <b> Power </b>
+ * \return float : <b> power </b>
  *
  */
 float aDCSettings::getPower(OperationMode_t mode)
@@ -593,17 +590,14 @@ void aDCSettings::updateValuesFromMode(float v, SelectionMode_t mode)
 #endif
 
         case SELECTION_MODE_POWER:
-            if (voltage == 0.0)
-            {
-                setEncoderPosition(0);
-                break;
-            }
+            if ((voltage == 0.0) && (v > 0.0))
+                v = 0.0;
 
             switch (setPower(v, aDCSettings::OPERATION_MODE_SET))
             {
                 case aDCSettings::SETTING_ERROR_OVERSIZED:
                     setPower(POWER_MAXIMUM, aDCSettings::OPERATION_MODE_SET);
-                    setCurrent(floatRounding(floatRounding(getPower(aDCSettings::OPERATION_MODE_SET)) / floatRounding(voltage)), aDCSettings::OPERATION_MODE_SET);
+                    setCurrent((voltage > 0.0) ? floatRounding(floatRounding(getPower(aDCSettings::OPERATION_MODE_SET)) / floatRounding(voltage)) : 0.0, aDCSettings::OPERATION_MODE_SET);
 #ifdef RESISTANCE
                     currentSets = getCurrent(aDCSettings::OPERATION_MODE_SET);
                     setResistance((currentSets > 0.0) ? floatRounding(floatRounding(POWER_MAXIMUM) / floatRounding(floatRounding(currentSets) * floatRounding(currentSets))) : 0, aDCSettings::OPERATION_MODE_SET);
@@ -616,7 +610,7 @@ void aDCSettings::updateValuesFromMode(float v, SelectionMode_t mode)
                     setEncoderPosition(0);
 
                 default:
-                    setCurrent(floatRounding(floatRounding(getPower(aDCSettings::OPERATION_MODE_SET)) / floatRounding(voltage)), aDCSettings::OPERATION_MODE_SET);
+                    setCurrent((voltage > 0.0) ? floatRounding(floatRounding(getPower(aDCSettings::OPERATION_MODE_SET)) / floatRounding(voltage)) : 0.0, aDCSettings::OPERATION_MODE_SET);
 #ifdef RESISTANCE
                     currentSets = getCurrent(aDCSettings::OPERATION_MODE_SET);
                     setResistance((currentSets > 0.0) ? floatRounding(floatRounding(voltage) / floatRounding(currentSets)) : 0.0, aDCSettings::OPERATION_MODE_SET);
@@ -633,7 +627,7 @@ void aDCSettings::updateValuesFromMode(float v, SelectionMode_t mode)
 // Temperature
 /** \brief Temperature readed setter
  *
- * \param v uint16_t : <b> Temperature </b>
+ * \param v uint16_t : <b> temperature </b>
  * \return void
  *
  */
@@ -647,7 +641,7 @@ void aDCSettings::setTemperature(uint16_t v)
 
 /** \brief Temperature readed getter
  *
- * \return uint16_t : <b> Temperature </b>
+ * \return uint16_t : <b> temperature </b>
  *
  */
 uint16_t aDCSettings::getTemperature()
@@ -675,6 +669,28 @@ void aDCSettings::setFanSpeed(uint16_t v)
 uint16_t aDCSettings::getFanSpeed()
 {
     return m_fanSpeed;
+}
+
+// DAC (current)
+/** \brief Current DAC value setter
+ *
+ * \param dac uint16_t : <b> current DAC value </b>
+ * \return void
+ *
+ */
+void aDCSettings::setCurrentDAC(uint16_t dac)
+{
+    m_currentDAC = dac;
+}
+
+/** \brief Current DAC value getter
+ *
+ * \return uint16_t : <b> current DAC value </b>
+ *
+ */
+uint16_t aDCSettings::getCurrentDAC()
+{
+    return m_currentDAC;
 }
 
 // Selection Mode
@@ -881,6 +897,78 @@ bool aDCSettings::isAutolocked()
     return (m_features & FEATURE_LOCKED);
 }
 
+// Calibation
+/** \brief Calibration mode enability setter
+ *
+ * \param enable bool : <b> enability </b>
+ * \return void
+ *
+ */
+void aDCSettings::setCalibationMode(bool enable)
+{
+    _enableData(DATA_IN_CALIBRATION, enable);
+}
+
+/** \brief Calibration mode enability getter
+ *
+ * \return bool : <b> enability </b>
+ *
+ */
+bool aDCSettings::getCalibrationMode()
+{
+    return isDataEnabled(DATA_IN_CALIBRATION);
+}
+
+/** \brief Calibration data getter, according to <i>calsection</i> argument.
+ *
+ * \param calsection CalibrationValues_t : <b> calibration parameter </b>
+ * \param data CalibrationData_t& : <b> calibration data </b>
+ * \return void
+ *
+ */
+void aDCSettings::getCalibrationValues(CalibrationValues_t calsection, CalibrationData_t &data)
+{
+    data.slope = m_calibrationValues[calsection].slope;
+    data.offset = m_calibrationValues[calsection].offset;
+}
+
+/** \brief Calibration data setter, according to <i>calsection</i> argument
+ *
+ * \param calsection CalibrationValues_t : <b> calibration parameter </b>
+ * \param data CalibrationData_t& : <b> calibration data </b>
+ * \return void
+ *
+ */
+void aDCSettings::setCalibrationValues(CalibrationValues_t calsection, CalibrationData_t data)
+{
+    m_calibrationValues[calsection].slope = data.slope;
+    m_calibrationValues[calsection].offset = data.offset;
+}
+
+/** \brief Backup calibration data into EEPROM
+ *
+ * \return void
+ *
+ */
+void aDCSettings::backupCalibration()
+{
+    _eepromCalibrationBackup(EEPROM_ADDR_CALIBRATION_VOLTAGE, m_calibrationValues[CALIBRATION_VOLTAGE]);
+    _eepromCalibrationBackup(EEPROM_ADDR_CALIBRATION_READ_CURRENT, m_calibrationValues[CALIBRATION_READ_CURRENT]);
+    _eepromCalibrationBackup(EEPROM_ADDR_CALIBRATION_DAC_CURRENT, m_calibrationValues[CALIBRATION_DAC_CURRENT]);
+}
+
+/** \brief Restore calibration data from EEPROM
+ *
+ * \return void
+ *
+ */
+void aDCSettings::restoreCalibration()
+{
+    _eepromCalibrationRestore(EEPROM_ADDR_CALIBRATION_VOLTAGE, m_calibrationValues[CALIBRATION_VOLTAGE]);
+    _eepromCalibrationRestore(EEPROM_ADDR_CALIBRATION_READ_CURRENT, m_calibrationValues[CALIBRATION_READ_CURRENT]);
+    _eepromCalibrationRestore(EEPROM_ADDR_CALIBRATION_DAC_CURRENT, m_calibrationValues[CALIBRATION_DAC_CURRENT]);
+}
+
 // Features bitfield
 /** \brief Helper function to manage bit-field features
  *
@@ -912,42 +1000,33 @@ bool aDCSettings::isFeatureEnabled(uint16_t feature)
     return (m_features & feature);
 }
 
-/**
-*** EEPROM functions
-**/
-//
-// Check magic numbers in EEPROM
-//
+// EEPROM functions
 /** \brief Check for EEPROM magic numbers
  *
  * \return bool
  *
  * Used to check if some data has already been wrote in the EEPROM.
  */
-bool aDCSettings::_eepromCheckMagic()
+bool aDCSettings::_eepromCheckForMagicNumbers()
 {
-    return ((EEPROM.read(EEPROM_ADDR_MAGIC) == 0xD) && (EEPROM.read(EEPROM_ADDR_MAGIC + 1) == 0xE) &&
-            (EEPROM.read(EEPROM_ADDR_MAGIC + 2) == 0xA) && (EEPROM.read(EEPROM_ADDR_MAGIC + 3) == 0xD));
+    return ((EEPROM.read(EEPROM_ADDR_MAGIC) == 0xF) && (EEPROM.read(EEPROM_ADDR_MAGIC + 1) == 0xE) &&
+            (EEPROM.read(EEPROM_ADDR_MAGIC + 2) == 0xE) && (EEPROM.read(EEPROM_ADDR_MAGIC + 3) == 0xD));
 }
-//
-// Write magic numbers in EEPROM
-//
+
 /** \brief Write magic numbers into EEPROM
  *
  * \return void
  *
  */
-void aDCSettings::_eepromWriteMagic()
+void aDCSettings::_eepromWriteMagicNumbers()
 {
     // Magic numbers
-    EEPROM.write(EEPROM_ADDR_MAGIC,     0xD);
+    EEPROM.write(EEPROM_ADDR_MAGIC,     0xF);
     EEPROM.write(EEPROM_ADDR_MAGIC + 1, 0xE);
-    EEPROM.write(EEPROM_ADDR_MAGIC + 2, 0xA);
+    EEPROM.write(EEPROM_ADDR_MAGIC + 2, 0xE);
     EEPROM.write(EEPROM_ADDR_MAGIC + 3, 0xD);
 }
-//
-// Reset config into EEPROM
-//
+
 /** \brief Reset all stored parameters into EEPROM
  *
  * \return void
@@ -955,14 +1034,14 @@ void aDCSettings::_eepromWriteMagic()
  */
 void aDCSettings::_eepromReset()
 {
-    _eepromWriteMagic();
+    _eepromWriteMagicNumbers();
 
     EEPROM.write(EEPROM_ADDR_AUTODIM, 1);
     EEPROM.write(EEPROM_ADDR_AUTOLOCK, 1);
+
+    backupCalibration();
 }
-//
-// Restore config from EEPROM
-//
+
 /** \brief Restore value from EEPROM
  *
  * \return void
@@ -970,11 +1049,12 @@ void aDCSettings::_eepromReset()
  */
 void aDCSettings::_eepromRestore()
 {
-    if (!_eepromCheckMagic())
+    if (!_eepromCheckForMagicNumbers())
         _eepromReset();
 
     enableFeature(FEATURE_AUTODIM, (EEPROM.read(EEPROM_ADDR_AUTODIM) == 1));
     enableFeature(FEATURE_AUTOLOCK, (EEPROM.read(EEPROM_ADDR_AUTOLOCK) == 1));
+    restoreCalibration();
 }
 
 /** \brief Enable a bit in the m_datas bit-field storage
@@ -1035,6 +1115,109 @@ void aDCSettings::syncData(uint16_t bit)
     _enableData(bit, false);
 }
 
+//! \brief CRC8 computation
+//!
+//! Code took from http://www.pjrc.com/teensy/td_libs_OneWire.html
+//!
+//! \param addr const uint8_t* : <b> Data source </b>
+//! \param len uint8_t : <b> Data source length </b>
+//! \return uint8_t : <b> CRC </b>
+//!
+//!
+uint8_t aDCSettings::_crc8(const uint8_t *addr, uint8_t len)
+{
+	uint8_t crc = 0;
+
+	while (len--)
+    {
+		uint8_t inbyte = *addr++;
+
+		for (uint8_t i = 8; i; i--)
+        {
+			uint8_t mix = (crc ^ inbyte) & 0x01;
+			crc >>= 1;
+
+			if (mix)
+                crc ^= 0x8C;
+
+			inbyte >>= 1;
+		}
+	}
+
+	return crc;
+}
+
+/** \brief Read data from EEPROM, used to restore calibration data
+ *
+ * \param addr int16_t : <b> start address location </b>
+ * \param cal CalibrationData_t& : <b> destination </b>
+ * \return void
+ *
+ */
+void aDCSettings::_eepromCalibrationRestore(int16_t addr, CalibrationData_t &cal)
+{
+    int16_t                     start = addr;
+    _eepromCalibrationValue_t   sl, off;
+    uint8_t                     crc;
+    uint8_t                     crcData[sizeof(float) * 2];
+    uint8_t                     crcOffset = 0;
+
+    for (uint8_t i = 0; i < sizeof(float); i++)
+    {
+        sl.c[i] = EEPROM.read(start++);
+        crcData[crcOffset++] = sl.c[i];
+    }
+
+    for (uint8_t i = 0; i < sizeof(float); i++)
+    {
+        off.c[i] = EEPROM.read(start++);
+        crcData[crcOffset++] = off.c[i];
+    }
+
+    crc = EEPROM.read(start++);
+
+    if (crc == _crc8(crcData, crcOffset))
+    {
+        cal.slope = sl.v;
+        cal.offset = off.v;
+    }
+}
+
+/** \brief Save data to EEPROM, used to restore calibration data
+ *
+ * \param addr int16_t : <b> start address location </b>
+ * \param cal CalibrationData_t& : <b> destination </b>
+ * \return void
+ *
+ */
+void aDCSettings::_eepromCalibrationBackup(int16_t addr, CalibrationData_t cal)
+{
+    int16_t                     start = addr;
+    _eepromCalibrationValue_t   sl, off;
+    uint8_t                     crcData[sizeof(float) * 2];
+    uint8_t                     crcOffset = 0;
+
+    sl.v = cal.slope;
+    off.v = cal.offset;
+
+    if (!_eepromCheckForMagicNumbers())
+        return;
+
+    for (uint8_t i = 0; i < sizeof(float); i++)
+    {
+        EEPROM.write(start++, sl.c[i]);
+        crcData[crcOffset++] = sl.c[i];
+    }
+
+    for (uint8_t i = 0; i < sizeof(float); i++)
+    {
+        EEPROM.write(start++, off.c[i]);
+        crcData[crcOffset++] = off.c[i];
+    }
+
+    EEPROM.write(start++, (_crc8(crcData, crcOffset)));
+}
+
 /** \brief Constructor
  */
 aStepper::aStepper() : m_inc(0), m_incPrev(255)
@@ -1052,7 +1235,7 @@ aStepper::~aStepper()
  * \return void
  *
  */
-void aStepper::Increment()
+void aStepper::increment()
 {
     if((m_inc + 1) <= MAX_VALUE)
         m_inc++;
@@ -1065,7 +1248,7 @@ void aStepper::Increment()
  * \return uint8_t
  *
  */
-uint8_t aStepper::GetValue()
+uint8_t aStepper::getValue()
 {
     return m_inc;
 }
@@ -1075,7 +1258,7 @@ uint8_t aStepper::GetValue()
  * \return void
  *
  */
-void aStepper::Reset()
+void aStepper::reset()
 {
     m_inc = 0;
 }
@@ -1085,7 +1268,7 @@ void aStepper::Reset()
  * \return int16_t
  *
  */
-int16_t aStepper::GetMult()
+int16_t aStepper::getMult()
 {
     return (_pow(10, m_inc));
 }
@@ -1096,13 +1279,13 @@ int16_t aStepper::GetMult()
  * \return int16_t
  *
  */
-int16_t aStepper::GetValueFromMode(uint8_t mode)
+int16_t aStepper::getValueFromMode(uint8_t mode)
 {
     switch (static_cast<aDCSettings::SelectionMode_t>(mode))
     {
         case aDCSettings::SELECTION_MODE_CURRENT:
             {
-                switch (GetMult())
+                switch (getMult())
                 {
                     case 10:
                         return 5;
@@ -1124,7 +1307,7 @@ int16_t aStepper::GetValueFromMode(uint8_t mode)
         case aDCSettings::SELECTION_MODE_RESISTANCE:
 #endif
         case aDCSettings::SELECTION_MODE_POWER:
-            return GetMult();
+            return getMult();
             break;
 
         default:
@@ -1139,7 +1322,7 @@ int16_t aStepper::GetValueFromMode(uint8_t mode)
  * \return bool
  *
  */
-bool aStepper::IsSynced()
+bool aStepper::isSynced()
 {
     return (m_inc == m_incPrev);
 }
@@ -1149,7 +1332,7 @@ bool aStepper::IsSynced()
  * \return void
  *
  */
-void aStepper::Sync()
+void aStepper::sync()
 {
     m_incPrev = m_inc;
 }
@@ -1306,6 +1489,7 @@ void aLCD::printCenter(const char *str)
  * \return void
  *
  */
+#if 1
 void aLCD::printCenter(const __FlashStringHelper *ifsh)
 {
     const char * __attribute__((progmem)) p = (const char *)ifsh;
@@ -1339,6 +1523,7 @@ void aLCD::printCenter(const __FlashStringHelper *ifsh)
 
     printCenter(buf);
 }
+#endif
 
 /** \brief Clear displayed value, from given row, stopping at value end field - destMinus
  *
@@ -1503,7 +1688,7 @@ void aDCDisplay::showBanner()
     aLCD::printCenter("DC Electronic Load");
 
     char buffer[LCD_COLS_NUM + 1];
-    snprintf(buffer, LCD_COLS_NUM, "Version %d.%d", SOFTWARE_VERSION_MAJOR, SOFTWARE_VERSION_MINOR);
+    snprintf(buffer, LCD_COLS_NUM, "v %d.%d", SOFTWARE_VERSION_MAJOR, SOFTWARE_VERSION_MINOR);
 
     aLCD::setCursor(0, 3);
     aLCD::printCenter(buffer);
@@ -1635,11 +1820,11 @@ void aDCDisplay::updateDisplay()
             }
 
             // Update Stepper icon
-            if (!d->IsSynced() || fullRedraw)
+            if (!d->isSynced() || fullRedraw)
             {
                 aLCD::setCursor(OFFSET_MARKER_RIGHT + 1, static_cast<uint8_t>(d->getSelectionMode()) + 1);
-                aLCD::write(d->GetValue());
-                d->Sync();
+                aLCD::write(d->getValue());
+                d->sync();
             }
 
             // Features icons
@@ -1884,7 +2069,6 @@ aDCEngine::aDCEngine(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t
                        m_encoder(new ClickEncoder(enca, encb, encpb, encsteps)),
                        m_RXoffset(0)
 {
-    m_RXbuffer[0] = '\0';
 }
 
 /** \brief Destructor
@@ -1898,7 +2082,7 @@ aDCEngine::~aDCEngine()
  * See also \ref logging
  *
  * \note Serial port configuration: 57600 8N1
- * \warning Commands and arguments are <b>case sensitive</b>, and all in <b>UPCASE</b>
+ * \warning Commands and arguments are <b>case sensitive</b>, <i><b>all</b></i> in <b>UPCASE</b>
  *
  * \section curget Current setting getter
  * <b>:ISET?:</b>
@@ -1909,6 +2093,23 @@ aDCEngine::~aDCEngine()
  * <b>:ISET:<i>value</i></b>
  * Set current <b><i>value</i></b> (in mA)
  * .<br> See \ref retval.
+ *
+ * \section cal Calibration
+ * <b>:CAL:<i>toggle</i></b>
+ * Turns <b><i>ON</i></b> or <b><i>OFF</i></b> the logging feature.<br>
+ * <b>:CAL:<i>section</i>:<i>slope</i>,<i>offset</i></b>
+ * <i>section</i> could be <b>V</b>, <b>C</b> or <b>D</b>, standing for <b>V</b>oltage, <b>C</b>urrent, <b>D</b>AC.
+ * <i>slope</i> and <i>offset</i> are floating point values, with US decimal '.' separator. These values could be calculated using the <i>LibreOffice</i>'s spreadsheet file: <b>aDCLoadCalibration.ods</b>.
+ * <br><b>:CAL:SAVE</b>
+ * Backup calibation datas into EEPROM.
+ * .<br> See \ref retval
+ * .<br> See \ref calibration
+ *
+ * \section dac DAC value setter (calibration purpose)
+ * <b>:DAC:<i>value</i></b>
+ * Set DAC value (from 0 to 4095). This command has no effect outside calibration mode
+ * .<br> See \ref cal
+ * .<br> See \ref calibration
  *
  * \section curread Current readed getter
  * <b>:I?:</b>
@@ -1921,12 +2122,12 @@ aDCEngine::~aDCEngine()
  * .<br> See \ref retval.
  *
  * \section logsingle Logging enability
- * <b>:L?:</b>
+ * <b>:LOG?:</b>
  * Printout if logging is ON or OFF.
  * .<br> See \ref retval.
  *
  * \section logrun Logging enability
- * <b>:L:<i>toggle</i></b>
+ * <b>:LOG:<i>toggle</i></b>
  * Turns <b><i>ON</i></b> or <b><i>OFF</i></b> the logging feature.<br>
  * If <b><i>toggle</i></b> value is not specified, a single logging line is returned.
  * .<br> See \ref retval.
@@ -1938,7 +2139,6 @@ aDCEngine::~aDCEngine()
  *  * <b>value</b> if any expected. <b>INVALID</b> on unknown command.
  *  * <b>status</b> could be <b>OK</b> on success or <b>ERR</b> on failure.
  *
- *
  */
 
 /**
@@ -1947,12 +2147,28 @@ aDCEngine::~aDCEngine()
  * \note fields are comma separated
  *
  * \section logform CSV logging format
- * <b>timestamp</b>,<b>voltage</b>,<b>current</b>,<b>temperature</b><b>\\r\\n</b>
+ * <b>timestamp</b>,<b>voltage</b>,<b>current sets</b>,<b>current read</b>,<b>temperature</b><b>\\r\\n</b>
  * - Where:
  *  + <b>timestamp</b> in hundred of milliseconds,
  *  + <b>voltage</b> in mV,
- *  + <b>current</b> in mA,
+ *  + <b>current sets</b> in mA,
+ *  + <b>current read</b> in mA,
  *  + <b>temperature</b> in Celcius degrees.
+ */
+
+/**
+ * \page calibration Calibration Process
+ *
+ * Blah blah blah....
+ * Blah blah blah....
+ * Blah blah blah....
+ * Blah blah blah....
+ * Blah blah blah....
+ * Blah blah blah....
+ * Blah blah blah....
+ * Blah blah blah....
+ *
+ *
  */
 
 /** \brief Check and handle remote control and data logging
@@ -1962,7 +2178,6 @@ aDCEngine::~aDCEngine()
  */
 void aDCEngine::_updateLoggingAndRemote()
 {
-#if 1
     if (Serial)
     {
         bool single = false;
@@ -1978,7 +2193,7 @@ void aDCEngine::_updateLoggingAndRemote()
             {
                 m_RXbuffer[m_RXoffset] = serialRead();
 
-                if (m_RXbuffer[m_RXoffset] == 0xA)
+                if ((m_RXbuffer[m_RXoffset] == 0xA) || (m_RXoffset == (RXBUFFER_MAXLEN - 1) /* Overflow checking */))
                 {
                     EOL = true;
                     break;
@@ -1987,23 +2202,24 @@ void aDCEngine::_updateLoggingAndRemote()
                 m_RXoffset++;
             }
 
-            m_RXbuffer[m_RXoffset] = '\0';
-
             if (EOL)
             {
                 bool valid = false;
 
+                m_RXbuffer[m_RXoffset] = '\0';
+
                 if (m_RXoffset >= 3)
                 {
                     /*
-                     *** Format is: :CMD:<ARG>
+                     *** Format is: :CMD:<ARG> or :CMD:SUB:ARG
                      ***         CMD is command
-                     ***         ARG is optional argument
+                     ***         SUB is sub-command
+                     ***         ARG is (<>: optional) argument
                      */
 
                     uint8_t *cmdStart, *cmdEnd;
                     if (((cmdStart = (uint8_t *)strchr((const char *)&m_RXbuffer[0], ':')) != NULL) &&
-                        ((cmdEnd = (uint8_t *)strchr((const char *)cmdStart + 1, ':')) != NULL))
+                        ((cmdEnd = (uint8_t *)strchr((const char *)cmdStart + 1, ':')) != NULL) )
                     {
                         uint8_t cmd[(cmdEnd - cmdStart)];
                         uint8_t *arg = cmdEnd + 1;
@@ -2012,7 +2228,7 @@ void aDCEngine::_updateLoggingAndRemote()
                         cmd[sizeof(cmd) - 1] = '\0';
 
                         serialPrint(':');
-
+#if 0
                         if (!strcmp((const char *)cmd, "*IDN?")) // Get Current Settings
                         {
                             char buf[64];
@@ -2024,7 +2240,9 @@ void aDCEngine::_updateLoggingAndRemote()
                             serialPrint(&buf[0]);
                             valid = true;
                         }
-                        else if (!strcmp((const char *)cmd, "ISET?")) // Get Current Settings
+                        else
+#endif
+                        if (!strcmp((const char *)cmd, "ISET?")) // Get Current Settings
                         {
                             serialPrint(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET)) * 1000.000), 0);
                             valid = true;
@@ -2062,7 +2280,7 @@ void aDCEngine::_updateLoggingAndRemote()
 #ifdef SIMU
                         else if (!strcmp((const char *)cmd, "USET")) // Voltage Read Setting
                         {
-                            float v = atof((const char *)arg);
+                            float v = atof(arg);
                             if (m_Data.setVoltage(floatRounding(floatRounding(v) / 1000.000)) == aDCSettings::SETTING_ERROR_OVERSIZED)
                             {
                                 m_Data.enableFeature(FEATURE_OVP);
@@ -2076,7 +2294,7 @@ void aDCEngine::_updateLoggingAndRemote()
                         }
                         else if (!strcmp((const char *)cmd, "IS")) // Set Current Read
                         {
-                            float v = atof((const char *)arg);
+                            float v = atof(arg);
                             float nv = floatRounding(floatRounding(v) / 1000.000);
 
                             m_Data.setCurrent(nv, aDCSettings::OPERATION_MODE_READ);
@@ -2086,6 +2304,79 @@ void aDCEngine::_updateLoggingAndRemote()
                             valid = (m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ) == nv);
                         }
 #endif
+                        else if (!strcmp((const char *)cmd, "CAL")) // Calibration
+                        {
+                            valid = true;
+
+                            // Turn ON calibation mode, DAC won't be automatically updated.
+                            if (!strcmp((const char *)arg, "ON"))
+                            {
+                                aDCSettings::CalibrationData_t cal;
+                                cal.slope = 1.0;
+                                cal.offset = 0.0;
+
+                                m_Data.setCalibationMode(true);
+
+                                m_Data.setCalibrationValues(aDCSettings::CALIBRATION_VOLTAGE, cal);
+                                m_Data.setCalibrationValues(aDCSettings::CALIBRATION_READ_CURRENT, cal);
+                                m_Data.setCalibrationValues(aDCSettings::CALIBRATION_DAC_CURRENT, cal);
+                            }
+                            else if (!strcmp((const char *)arg, "OFF"))
+                            {
+                                m_Data.setCalibationMode(false);
+                                m_Data.restoreCalibration();
+                            }
+                            else if (!strcmp((const char *)arg, "SAVE"))
+                            {
+                                m_Data.backupCalibration();
+                                m_Data.setCalibationMode(false);
+                            }
+#if 0
+                            else if (!strcmp((const char *)arg, "DUMP"))
+                            {
+                                m_Data.dumpCalibration();
+                            }
+#endif
+                            else
+                            {
+                                uint8_t *pV1; uint8_t *pV2;
+
+                                if (((pV1 = (uint8_t *)strchr((const char *)arg, ':')) != NULL)
+                                    && ((pV2 = (uint8_t *)strchr((const char *)pV1, ',')) != NULL))
+                                {
+                                    pV1++;
+
+                                    aDCSettings::CalibrationData_t cal;
+                                    uint8_t cmd2[(pV1 - arg)];
+
+                                    memcpy(&cmd2[0], arg, sizeof(cmd2) - 1);
+                                    cmd2[sizeof(cmd2) - 1] = '\0';
+
+                                    *pV2++ = '\0';
+
+                                    cal.slope = atof((char *)pV1);
+                                    cal.offset = atof((char *)pV2);
+
+                                    if (!strcmp((const char *)cmd2, "V"))
+                                        m_Data.setCalibrationValues(aDCSettings::CALIBRATION_VOLTAGE, cal);
+                                    else if (!strcmp((const char *)cmd2, "C"))
+                                        m_Data.setCalibrationValues(aDCSettings::CALIBRATION_READ_CURRENT, cal);
+                                    else if (!strcmp((const char *)cmd2, "D"))
+                                        m_Data.setCalibrationValues(aDCSettings::CALIBRATION_DAC_CURRENT, cal);
+                                    else
+                                        valid = false;
+                                }
+                                else
+                                    valid = false;
+                            }
+                        }
+                        else if (!strcmp((const char *)cmd, "DAC") && m_Data.getCalibrationMode())
+                        {
+                            uint16_t v = atoi((const char *)arg);
+
+                            _setDAC(v, DAC_CURRENT_CHAN);
+                            valid = true;
+                        }
                         else if (!strcmp((const char *)cmd, "I?")) // Report Current Read
                         {
                             serialPrint(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) * 1000.000), 0);
@@ -2096,12 +2387,12 @@ void aDCEngine::_updateLoggingAndRemote()
                             serialPrint(floatRounding(floatRounding(m_Data.getVoltage()) * 1000.000), 0);
                             valid = true;
                         }
-                        else if (!strcmp((const char *)cmd, "L?")) // Logging Ask
+                        else if (!strcmp((const char *)cmd, "LOG?")) // Logging Ask
                         {
                             serialPrint(m_Data.isFeatureEnabled(FEATURE_LOGGING) ? "ON" : "OFF");
                             valid = true;
                         }
-                        else if (!strcmp((const char *)cmd, "L")) // Logging ON/OFF
+                        else if (!strcmp((const char *)cmd, "LOG")) // Logging ON/OFF
                         {
                             if (!strcmp((const char *)arg, "OFF"))
                                 m_Data.enableFeature(FEATURE_LOGGING, false);
@@ -2112,49 +2403,16 @@ void aDCEngine::_updateLoggingAndRemote()
 
                             valid = true;
                         }
-#ifdef SIMU
-                        else if (!strcmp((const char *)cmd, "T")) // Temperature Read Setting
-                        {
-                            uint8_t v = static_cast<uint8_t>(atoi((const char *)arg));
-                            m_Data.setTemperature(v);
-
-                            serialPrint(int(m_Data.getTemperature()));
-                            valid = true;
-                        }
-#endif
-#if 0
-                        else if (!strcmp((const char *)cmd, "?")) // Temperature Read Setting
-                        {
-                            serialPrintln("Usage :CMD:ARG");
-                            serialPrintln("  CMD are:");
-                            serialPrintln("    I?      Get current.");
-                            serialPrintln("    I       Set max current.");
-                            serialPrintln("    ISET    Set current setting.");
-                            serialPrintln("    ISET?   Get current setting.");
-                            serialPrintln("    U?      Get Voltage.");
-                            serialPrintln("    L       Turn logging ON*, OFF* or SINGLE*.");
-                            serialPrintln("    ?       This help.");
-#ifdef SIMU
-                            serialPrintln("IS,USET,T (simulation).");
-#endif
-                            serialPrintln("");
-                            serialPrintln("* is ARG");
-                            serialPrintln("returns value (is needed) + ':OK:' or ':ERR:'");
-                            valid = true;
-                        }
-#endif
                         else
                             serialPrint("INVALID");
-                    }
 
-                    // Clear buffer for next command
-                    m_RXbuffer[0] = '\0';
-                    m_RXoffset = 0;
+                    }
                 }
 
-                serialPrint(':');
-                serialPrint(valid ? "OK" : "ERR");
-                serialPrintln(':');
+                // Clear buffer for next command
+                m_RXoffset = 0;
+
+                serialPrint(valid ? ":OK:\r\n" : ":ERR:\r\n");
             }
         }
 
@@ -2162,17 +2420,19 @@ void aDCEngine::_updateLoggingAndRemote()
         unsigned long m = millis();
         static unsigned long nextLogging = 0;
 
-        if ((m_Data.isFeatureEnabled(FEATURE_LOGGING) && ((m - nextLogging) > 300)) || single)
+        if ((m_Data.isFeatureEnabled(FEATURE_LOGGING) && ((m - nextLogging) > LOGGING_TIMEOUT)) || single)
         {
+            char buf[64];
+
             nextLogging = m;
-            serialPrint(m / 100);
-            serialPrint(',');
-            serialPrint(floatRounding(floatRounding(m_Data.getVoltage()) * 1000.000), 0);
-            serialPrint(',');
-            serialPrint(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) * 1000.000), 0);
-            serialPrint(',');
-            serialPrint(int(m_Data.getTemperature()));
-            serialPrintln();
+
+            snprintf(buf, sizeof(buf) - 1, "%lu,%u,%u,%u,%u\r\n",
+                    m/* / 100*/,
+                    static_cast<uint16_t>(floatRounding(floatRounding(m_Data.getVoltage()) * 1000.000)),
+                    static_cast<uint16_t>(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET)) * 1000.000)),
+                    static_cast<uint16_t>(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) * 1000.000)),
+                    m_Data.getTemperature());
+            serialPrint(buf);
         }
 
         serialFlush();
@@ -2186,12 +2446,11 @@ void aDCEngine::_updateLoggingAndRemote()
             m_Data.enableFeature(FEATURE_USB, false);
 
     }
-#endif
 }
 
 /** \brief Setup function, should be called before any other member
  *
- * \param isr ISRCallback : <b> callback function pointer that may call service() </b>
+ * \param isr ISRCallback : <b> pointer to callback function that may call service() </b>
  * \return void
  *
  */
@@ -2210,7 +2469,7 @@ void aDCEngine::setup(ISRCallback isr)
     SPI.setBitOrder(MSBFIRST);         // Not strictly needed but just to be sure.
     SPI.setDataMode(SPI_MODE0);        // Not strictly needed but just to be sure.
     // Set SPI clock divider to 16, therfore a 1 MhZ signal due to the maximum frequency of the ADC.
-    SPI.setClockDivider(SPI_CLOCK_DIV16);
+    SPI.setClockDivider(SPI_CLOCK_DIV32); // WAS 16
 
     // Initialise timer
     Timer1.initialize(1000);
@@ -2221,7 +2480,7 @@ void aDCEngine::setup(ISRCallback isr)
 
     // Data Logging and Remote Control
     Serial.begin(57600);
-    serialFlush();
+
     // Flushing buffered char.
      if (Serial)
         while (serialAvailable() > 0)
@@ -2248,7 +2507,7 @@ void aDCEngine::run()
 
         if ((v != 0) && (!m_Data.isFeatureEnabled(FEATURE_LOCKED)) && (m_Data.getDisplayMode() == aDCSettings::DISPLAY_MODE_VALUES))
         {
-            int16_t mult = m_Data.GetValueFromMode(m_Data.getSelectionMode());
+            int16_t mult = m_Data.getValueFromMode(m_Data.getSelectionMode());
 
             m_Data.incEncoderPosition((v * mult));
         }
@@ -2359,7 +2618,7 @@ void aDCEngine::run()
 
             // Increment encoder step (0.001, 0.01, 0.1, 1.0)
             if ((b == ClickEncoder::Clicked) && (m_Data.getDisplayMode() == aDCSettings::DISPLAY_MODE_VALUES))
-                m_Data.Increment();
+                m_Data.increment();
 
             // Change selection mode according to double click.
             _handleButtonEvent(b);
@@ -2486,11 +2745,31 @@ void aDCEngine::service()
 float aDCEngine::_readInputVoltage()
 {
 #ifdef SIMU
-    float v = m_Data.getVoltage();// 1.000;
+    float v = m_Data.getVoltage();
 #else
-    float v = (_readADC(ADC_INPUTVOLTAGE_CHAN)) * 12.03;
+    aDCSettings::CalibrationData_t cal;
+
+    // Retrieve Calibration data
+    m_Data.getCalibrationValues(aDCSettings::CALIBRATION_VOLTAGE, cal);
+
+    float v = (_readADC(ADC_INPUTVOLTAGE_CHAN) * cal.slope);
+    if (v > 0.000)
+        v += cal.offset;
+
+    // Compensate voltage drop
+    float current;
+    if ((current = m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) > 0.0)
+        v += (current * 0.11525); // 0.11525 is an average value of the voltage drop per mA
+
+    if (m_Data.getCalibrationMode())
+    {
+        serialPrint("U: ");
+        serialPrint(v, 5);
+    }
 #endif
-    return (v < 0.018 ? 0 : v);
+
+#warning DOUBLE CHECK THIS
+    return (v < 0.018 ? 0.0 : v);
 }
 
 /** \brief Function to measure the actual load current.
@@ -2503,7 +2782,29 @@ float aDCEngine::_readMeasuredCurrent()
 #ifdef SIMU
     return m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ);
 #else
-    return ((_readADC(ADC_MEASUREDCURRENT_CHAN)) / 0.1000);
+    float                           current = 0.0;
+    aDCSettings::CalibrationData_t  cal;
+
+    // Retrieve Calibration data
+    m_Data.getCalibrationValues(aDCSettings::CALIBRATION_READ_CURRENT, cal);
+
+    // Averaging
+    for (uint8_t i = 0; i < 10; i++)
+        current += _readADC(ADC_MEASUREDCURRENT_CHAN) / 0.1000;
+
+    current /= 10;
+    current = current * cal.slope;
+
+    if (current > 0.0)
+        current += cal.offset;
+
+    if (m_Data.getCalibrationMode())
+    {
+        serialPrint(", I: ");
+        serialPrintln(current, 5);
+    }
+
+    return current;
 #endif // SIMU
 }
 
@@ -2548,13 +2849,33 @@ void aDCEngine::_updateLoadCurrent()
             // Overcurrent alarm
             if (encoderChanged)
                 m_Data.enableFeature(FEATURE_OCP);
-            m_Data.setCurrent(encoderChanged ? 1 : 0.0, aDCSettings::OPERATION_MODE_SET);
-            m_Data.setEncoderPosition(encoderChanged ? 0 : 0);
+
+            // Set to MAX
+            switch (m_Data.getSelectionMode())
+            {
+                case aDCSettings::SELECTION_MODE_CURRENT:
+                    m_Data.setEncoderPosition(CURRENT_MAXIMUM * 500.000);
+                    //m_Data.updateValuesFromMode(CURRENT_MAXIMUM, aDCSettings::SELECTION_MODE_CURRENT);
+                    break;
+#ifdef RESISTANCE
+                case aDCSettings::SELECTION_MODE_RESISTANCE:
+                    m_Data.setEncoderPosition(RESISTANCE_MAXIMUM * 1000.000);
+                    //m_Data.updateValuesFromMode(RESISTANCE_MAXIMUM, aDCSettings::SELECTION_MODE_RESISTANCE);
+                    break;
+#endif
+                case aDCSettings::SELECTION_MODE_POWER:
+                    m_Data.setEncoderPosition(POWER_MAXIMUM * 1000.000);
+                    //m_Data.updateValuesFromMode(POWER_MAXIMUM, aDCSettings::SELECTION_MODE_POWER);
+                    break;
+
+                default:
+                    break;
+            }
+            _updateLoadCurrent();
             break;
 
         case aDCSettings::SETTING_ERROR_UNDERSIZED:
         case aDCSettings::SETTING_ERROR_VALID:
-            //m_Data.setOverCurrent(false);
             _adjustCurrent();
             break;
     }
@@ -2567,23 +2888,29 @@ void aDCEngine::_updateLoadCurrent()
  */
 void aDCEngine::_adjustCurrent()
 {
-    float roundedMeasuredCurrent = round(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ) * 1000) / 1000.000; // This the best way I can think of rounding a floating
-                                                                                     // point number to 3 decimal places.
-    //only adjust the current of the set and measured currents are different.
-    if (roundedMeasuredCurrent != m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET))
+    float currentMeasured = floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ));
+    float currentSets     = floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET));
+
+    // Only adjust the current if the set and measured currents are different.
+    if (currentMeasured != currentSets)
     {
-        float adjustedCurrent = 0.0;
+        aDCSettings::CalibrationData_t cal;
 
-        // To ensure we are not dividing by 0.
-        if (m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ) != 0.0)                                                                  // Turn the current error between set and measured
-            adjustedCurrent = (m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET) / m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) * m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET); // into a percentage so it can be adjusted
-        else
-            adjustedCurrent = m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET);
+        // Retrieve Calibration data
+        m_Data.getCalibrationValues(aDCSettings::CALIBRATION_DAC_CURRENT, cal);
 
-        int16_t dacCurrent = ((adjustedCurrent * 0.1 * 2.5) / 2.048) * 4096;
+        uint16_t dacCurrent = static_cast<uint16_t>(((currentSets * 1000.000) * cal.slope) + cal.offset);
 
         // Send the value to the DAC.
-        _setDAC(dacCurrent, DAC_CURRENT_CHAN);
+        if (!m_Data.getCalibrationMode() && (dacCurrent != m_Data.getCurrentDAC()))
+        {
+            if (dacCurrent > 4095)
+                dacCurrent = 4095;
+
+            _setDAC(dacCurrent, DAC_CURRENT_CHAN);
+
+            m_Data.setCurrentDAC(dacCurrent);
+        }
 
         // Read current value again
 #ifdef SIMU
@@ -2652,7 +2979,6 @@ float aDCEngine::_readADC(uint8_t channel)
     uint16_t digitalValue = (adcPrimaryByte << 8) | adcSecondaryByte;   // Shifts the 4 LSB of the primary byte to become the 4 MSB
                                                                         // of the 12 bit digital value, this is then ORed to the
                                                                         // secondary byte value that holds the 8 LSB of the digital value.
-
     return ((float(digitalValue) * 2.048) / 4096.000); // The digital value is converted to an analogue voltage using a VREF of 2.048V.
 }
 
@@ -2708,16 +3034,14 @@ int16_t aDCEngine::_readTemp()
 #ifdef SIMU
     return m_Data.getTemperature();
 #else
-    float tempSensor1 = _readADC(ADC_TEMPSENSE1_CHAN);
-    float tempSensor2 = _readADC(ADC_TEMPSENSE2_CHAN);
-    float tempVoltage = ((tempSensor1 + tempSensor2) / 2) * 1000; // This takes an average of bothe temp sensors and converts the
-                                                                  // value to millivolts
+    float tempVoltage = ((_readADC(ADC_TEMPSENSE1_CHAN) + _readADC(ADC_TEMPSENSE2_CHAN)) / 2) * 1000;   // This takes an average of both temp sensors and converts the
+                                                                                                        // value to millivolts
 
     return static_cast<int16_t>(((tempVoltage - 1885) / -11.2692307) + 20); // This comes from the datasheet to calculate the temp from the voltage given.
 #endif // SIMU
 }
 
-/** \brief Function to set the fan speed depending on the heatsink temperature.
+/** \brief Function to set the fan speed depending on the temperature sensors value.
  *
  * \return void
  *
@@ -2738,7 +3062,7 @@ void aDCEngine::_updateFanSpeed()
         { 50, 2500 },
         { 40, 2250 },
         { 30, 2000 },
-        { 0,  0}
+        { 20, 1800 }
     };
 #warning handle over temp
 

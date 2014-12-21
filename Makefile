@@ -2,6 +2,11 @@
 # Makefile for building Arduino sketches (programs) with Arduino from the
 # command line.
 #
+#
+# Code tweaking:
+# Copyright (C) 2014-2015  F1RMB, Daniel Caujolle-Bert <f1rmb.daniel@gmail.com>
+#
+# Original version:
 # Copyright (C) 2011-2013 by Volker Kuhlmann
 #               http://volker.top.geek.nz/contact.html
 # All rights reserved.
@@ -15,12 +20,12 @@
 #    Tested are Arduino versions 0.22, 0.23, 1.0 - 1.0.5.
 #  * Does not need the IDE program or java, but needs the IDE installed to get
 #    the core sources and board definitions.
-#  * Supports any number of Arduino libraries, 3rd-party Arduino libraries, or 
+#  * Supports any number of Arduino libraries, 3rd-party Arduino libraries, or
 #    Arduino libraries you made yourself.
 #  * Automatic dependencies generation.
 #  * Compiles with the macros ARDUINO and F_CPU being defined, same as the IDE.
 #  * Compiles into a subdirectory (similar to eclipse).
-#  * Runs gcc and the binutils out of $PATH by default, allowing to test 
+#  * Runs gcc and the binutils out of $PATH by default, allowing to test
 #    different gcc versions easily (same as the IDE).
 #  * By default compiles with a lot more warnings, to detect shoddy progamming.
 #    Comment out some of the OPT_WARN lines to turn this off.
@@ -62,7 +67,7 @@
 #     It might be easiest to start with the prototypes created by the IDE.
 #     Run the build in the IDE, locate the project source file created by the
 #     IDE (for a project XYZ it's something like
-#     /tmp/build4303013692903917981.tmp/XYZ.cpp, and copy the prototypes. 
+#     /tmp/build4303013692903917981.tmp/XYZ.cpp, and copy the prototypes.
 #     They're just before the first variable that is declared.
 #
 #     If you have multiple .ino/.pde files, put the prototypes for all of them
@@ -164,7 +169,7 @@ ARDUINO_CORE =	$(ARDUINO_DIR)/hardware/arduino/cores/arduino
 
 # Arduino variant (for Arduino 1.0+).
 # Directory containing the pins_arduino.h file.
-ifeq "$(ARDUINO_MODEL)" "leonardo"		
+ifeq "$(ARDUINO_MODEL)" "leonardo"
 ARDUINO_VARIANT=$(ARDUINO_DIR)/hardware/arduino/variants/leonardo
 else
 endif
@@ -226,14 +231,14 @@ OUTPUT =	output
 # If you set this, it must end with a slash!
 #AVR_TOOLS_PATH = $(ARDUINO_DIR)/hardware/tools/avr/bin/
 #AVR_TOOLS_PATH = /usr/bin/
-AVR_TOOLS_PATH = 
+AVR_TOOLS_PATH =
 
 # Reset command to use.
 # Possible values are: "stty", "python", "perl".
 RESETCMD =	stty
 
 ### Macro definitions. Place -D or -U options here.
-ARCHDEF =	
+ARCHDEF =
 ifeq "$(ARDUINO_MODEL)" "leonardo"
 ARCHDEF += -D__AVR_ATmega32U4__
 else
@@ -307,7 +312,7 @@ USB_PID ?= $(shell \
 	sed "/$(ARDUINO_MODEL)\.build.pid/ { s/.*=//; q }; d" \
 		$(ARDUINO_DIR)/hardware/arduino/boards.txt \
 	)
-#ifeq "$(ARDUINO_MODEL)" "leonardo"		
+#ifeq "$(ARDUINO_MODEL)" "leonardo"
 USB_HACK = -DUSB_VID=$(USB_VID) -DUSB_PID=$(USB_PID) \
 #endif
 endif
@@ -339,7 +344,7 @@ ifeq ($(ARDUINO_VARIANT),)
 ifeq "$(ARDUINO_MODEL)" "mega"
 ARDUINO_VARIANT ?= $(ARDUINO_DIR)/hardware/arduino/variants/mega
 else
-ifeq "$(ARDUINO_MODEL)" "mega2560"		
+ifeq "$(ARDUINO_MODEL)" "mega2560"
 ARDUINO_VARIANT=$(ARDUINO_DIR)/hardware/arduino/variants/mega
 else
 ifeq "$(ARDUINO_MODEL)" "micro"
@@ -554,7 +559,7 @@ OPT_WARN_C =	$(OPT_WARN)
 OPT_WARN_CXX =	$(OPT_WARN)
 
 # Other.
-OPT_OTHER =	
+OPT_OTHER =
 # Save gcc temp files (pre-processor, assembler):
 #OPT_OTHER +=	-save-temps
 

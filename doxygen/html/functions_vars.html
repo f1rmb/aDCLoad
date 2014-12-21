@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.2</span>
+   &#160;<span id="projectnumber">2.6</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -89,8 +89,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
+      <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_d"><span>d</span></a></li>
-      <li class="current"><a href="#index_m"><span>m</span></a></li>
+      <li><a href="#index_m"><span>m</span></a></li>
+      <li><a href="#index_o"><span>o</span></a></li>
+      <li><a href="#index_r"><span>r</span></a></li>
+      <li><a href="#index_s"><span>s</span></a></li>
+      <li class="current"><a href="#index_v"><span>v</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -125,6 +130,13 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <div class="contents">
 &#160;
 
+<h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
+<li>c
+: <a class="el" href="uniona_d_c_settings_1_1__eeprom_calibration_value__t.html#adaf343592f4bd0b00ace31270eed8001">aDCSettings::_eepromCalibrationValue_t</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
 <li>DATA_CURRENT_READ
 : <a class="el" href="classa_d_c_settings.html#a5347b272732d81d4e8f4057942c3af6b">aDCSettings</a>
@@ -137,6 +149,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>DATA_ENCODER
 : <a class="el" href="classa_d_c_settings.html#a503384bf36a485efc29c497896419742">aDCSettings</a>
+</li>
+<li>DATA_IN_CALIBRATION
+: <a class="el" href="classa_d_c_settings.html#ad725fae7eb730a5c0dbe96cd08ca7ac7">aDCSettings</a>
 </li>
 <li>DATA_OPERATION
 : <a class="el" href="classa_d_c_settings.html#a1a03cd57eba06b4bf45641d32360e4bf">aDCSettings</a>
@@ -160,11 +175,17 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
+<li>m_calibrationValues
+: <a class="el" href="classa_d_c_settings.html#a1be6dead4a441599565f7968d8e80531">aDCSettings</a>
+</li>
 <li>m_cols
 : <a class="el" href="classa_l_c_d.html#acc5e1b9602a2b327900e4287439954dd">aLCD</a>
 </li>
 <li>m_curCol
 : <a class="el" href="classa_l_c_d.html#a490136acbf068046e3c12bb449ed37f8">aLCD</a>
+</li>
+<li>m_currentDAC
+: <a class="el" href="classa_d_c_settings.html#a84a60b83510189a73d8c267166bbd140">aDCSettings</a>
 </li>
 <li>m_curRow
 : <a class="el" href="classa_l_c_d.html#ae90c3d36cae7b58e9cba0b398daf036f">aLCD</a>
@@ -233,7 +254,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="classa_l_c_d.html#a0e93d6c8eaf9930cedb37082799c790a">aLCD</a>
 </li>
 <li>m_RXbuffer
-: <a class="el" href="classa_d_c_engine.html#a086de697a244121e69b95f82c5d61dd9">aDCEngine</a>
+: <a class="el" href="classa_d_c_engine.html#aa302ade4d81c22c58f31c46440ac4686">aDCEngine</a>
 </li>
 <li>m_RXoffset
 : <a class="el" href="classa_d_c_engine.html#a15d3419f187e0f56ffc9d1a832493f72">aDCEngine</a>
@@ -248,12 +269,40 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="classa_stepper.html#ab5c22269335321d72d4deed0b5b6d391">aStepper</a>
 </li>
 </ul>
+
+
+<h3><a class="anchor" id="index_o"></a>- o -</h3><ul>
+<li>offset
+: <a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html#a35686c9c779c2c6614ec7b385c1063f5">aDCSettings::CalibrationData_t</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
+<li>RXBUFFER_MAXLEN
+: <a class="el" href="classa_d_c_engine.html#a9efe073abe646fae5a57e086b082ac7e">aDCEngine</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>slope
+: <a class="el" href="structa_d_c_settings_1_1_calibration_data__t.html#a86d6fc5000bdc4ce346109514ace740d">aDCSettings::CalibrationData_t</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_v"></a>- v -</h3><ul>
+<li>v
+: <a class="el" href="uniona_d_c_settings_1_1__eeprom_calibration_value__t.html#aea9480119bbe91a4979c85843df6843c">aDCSettings::_eepromCalibrationValue_t</a>
+</li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Dec 6 2014 09:38:45 for aDCLoad by
+    <li class="footer">Generated on Sun Dec 21 2014 17:58:39 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

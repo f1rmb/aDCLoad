@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.2</span>
+   &#160;<span id="projectnumber">2.6</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -138,6 +138,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a3fb924c316693f270490381fc5cee07b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial printing.  <a href="#a3fb924c316693f270490381fc5cee07b">More...</a><br/></td></tr>
 <tr class="separator:a3fb924c316693f270490381fc5cee07b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6fe8a2c3015302b1e5eb7bf07854110"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8cpp.html#ac6fe8a2c3015302b1e5eb7bf07854110">serialFlush</a> ()</td></tr>
+<tr class="memdesc:ac6fe8a2c3015302b1e5eb7bf07854110"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flush serial buffer (TX)  <a href="#ac6fe8a2c3015302b1e5eb7bf07854110">More...</a><br/></td></tr>
 <tr class="separator:ac6fe8a2c3015302b1e5eb7bf07854110"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21977fc8d234cbf69cd8503215c70823"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8cpp.html#a21977fc8d234cbf69cd8503215c70823">serialPrintln</a> ()</td></tr>
 <tr class="memdesc:a21977fc8d234cbf69cd8503215c70823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial printing.  <a href="#a21977fc8d234cbf69cd8503215c70823">More...</a><br/></td></tr>
@@ -154,9 +155,9 @@ Functions</h2></td></tr>
 <tr class="memitem:abf5ced41ffe57ba4e28f54f37b22169f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8cpp.html#abf5ced41ffe57ba4e28f54f37b22169f">serialAvailable</a> ()</td></tr>
 <tr class="memdesc:abf5ced41ffe57ba4e28f54f37b22169f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of bytes (characters) available for reading from the serial port.  <a href="#abf5ced41ffe57ba4e28f54f37b22169f">More...</a><br/></td></tr>
 <tr class="separator:abf5ced41ffe57ba4e28f54f37b22169f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c0d516c80fc1dfb5b93bbb24e517160"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8cpp.html#a6c0d516c80fc1dfb5b93bbb24e517160">serialRead</a> ()</td></tr>
-<tr class="memdesc:a6c0d516c80fc1dfb5b93bbb24e517160"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads incoming serial data.  <a href="#a6c0d516c80fc1dfb5b93bbb24e517160">More...</a><br/></td></tr>
-<tr class="separator:a6c0d516c80fc1dfb5b93bbb24e517160"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59f0e20bde84102af723e44163b7a592"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8cpp.html#a59f0e20bde84102af723e44163b7a592">serialRead</a> ()</td></tr>
+<tr class="memdesc:a59f0e20bde84102af723e44163b7a592"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads incoming serial data.  <a href="#a59f0e20bde84102af723e44163b7a592">More...</a><br/></td></tr>
+<tr class="separator:a59f0e20bde84102af723e44163b7a592"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6829b0bea95e673ca4e83da060ca59b1"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8cpp.html#a6829b0bea95e673ca4e83da060ca59b1">getNumericalLength</a> (float n, uint8_t len=3)</td></tr>
 <tr class="memdesc:a6829b0bea95e673ca4e83da060ca59b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get float string length, according to decimal man length.  <a href="#a6829b0bea95e673ca4e83da060ca59b1">More...</a><br/></td></tr>
 <tr class="separator:a6829b0bea95e673ca4e83da060ca59b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,9 +166,9 @@ Functions</h2></td></tr>
 <tr class="separator:a910f6d10ce9ed56158e95218514f495a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2014 Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb'+'.co'+'m.'+'au'; return false;">lee@w<span style="display: none;">.nosp@m.</span>igwe<span style="display: none;">.nosp@m.</span>b.com<span style="display: none;">.nosp@m.</span>.au</a> </dd>
+<div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2014-2015 F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r'+'mb'+'.da'+'ni'+'el@'+'gm'+'ail'+'.c'+'om'; return false;">f1rmb<span style="display: none;">.nosp@m.</span>.dan<span style="display: none;">.nosp@m.</span>iel@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a> </dd>
 <dd>
-Copyright (C) 2014 F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r'+'mb'+'.da'+'ni'+'el@'+'gm'+'ail'+'.c'+'om'; return false;">f1rmb<span style="display: none;">.nosp@m.</span>.dan<span style="display: none;">.nosp@m.</span>iel@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a></dd></dl>
+Copyright (C) 2014 Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb'+'.co'+'m.'+'au'; return false;">lee@w<span style="display: none;">.nosp@m.</span>igwe<span style="display: none;">.nosp@m.</span>b.com<span style="display: none;">.nosp@m.</span>.au</a></dd></dl>
 <dl class="section user"><dt>License:</dt><dd>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.<br/>
 <br/>
  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.<br/>
@@ -175,9 +176,9 @@ Copyright (C) 2014 F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.hre
  You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd><h1><center> BIG FAT WARNING </center></h1>
 </dd></dl>
-<center>Should be compiled with <b> "-Os" </b> flag.</center> <center>Bootloader <b><span style="text-decoration:underline;color:red;">couldn't</span></b> be flashed, <b>ISP programming ONLY</b></center> <center> -=- use <em>Code::Blocks</em> or the included <em>Makefile</em> to compile -=- </center> <dl class="section author"><dt>Author</dt><dd>Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb'+'.co'+'m.'+'au'; return false;">lee@w<span style="display: none;">.nosp@m.</span>igwe<span style="display: none;">.nosp@m.</span>b.com<span style="display: none;">.nosp@m.</span>.au</a> </dd>
+<center>Should be compiled with <b> "-Os" </b> flag.</center> <center>Bootloader <b><span style="text-decoration:underline;color:red;">couldn't</span></b> be flashed, <b>ISP programming ONLY</b></center> <center> -=- use <em>Code::Blocks</em> or the included <em>Makefile</em> to compile -=- </center> <dl class="section author"><dt>Author</dt><dd>F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r'+'mb'+'.da'+'ni'+'el@'+'gm'+'ail'+'.c'+'om'; return false;">f1rmb<span style="display: none;">.nosp@m.</span>.dan<span style="display: none;">.nosp@m.</span>iel@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a> </dd>
 <dd>
-F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r'+'mb'+'.da'+'ni'+'el@'+'gm'+'ail'+'.c'+'om'; return false;">f1rmb<span style="display: none;">.nosp@m.</span>.dan<span style="display: none;">.nosp@m.</span>iel@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a> </dd></dl>
+Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb'+'.co'+'m.'+'au'; return false;">lee@w<span style="display: none;">.nosp@m.</span>igwe<span style="display: none;">.nosp@m.</span>b.com<span style="display: none;">.nosp@m.</span>.au</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a910f6d10ce9ed56158e95218514f495a"></a>
 <div class="memitem">
@@ -201,7 +202,7 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>float </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>float : <b> rounded value </b> </dd></dl>
 
 </div>
 </div>
@@ -238,7 +239,7 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>int8_t </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>int8_t : <b> numeric value length </b> </dd></dl>
 
 </div>
 </div>
@@ -272,6 +273,9 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Flush serial buffer (TX) </p>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -513,12 +517,12 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 
 </div>
 </div>
-<a class="anchor" id="a6c0d516c80fc1dfb5b93bbb24e517160"></a>
+<a class="anchor" id="a59f0e20bde84102af723e44163b7a592"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int16_t serialRead </td>
+          <td class="memname">uint8_t serialRead </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -527,7 +531,7 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 </div><div class="memdoc">
 
 <p>Reads incoming serial data. </p>
-<dl class="section return"><dt>Returns</dt><dd>int16_t </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t </dd></dl>
 
 </div>
 </div>
@@ -562,7 +566,7 @@ F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a_d_c_load_8cpp.html">aDCLoad.cpp</a></li>
-    <li class="footer">Generated on Sat Dec 6 2014 09:38:45 for aDCLoad by
+    <li class="footer">Generated on Sun Dec 21 2014 17:58:39 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
