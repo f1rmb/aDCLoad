@@ -18,6 +18,7 @@ var searchData=
   ['m_5fincprev',['m_incPrev',['../classa_stepper.html#aa6204a14c91347d3f840ffe8baa5571e',1,'aStepper']]],
   ['m_5flocktick',['m_lockTick',['../classa_d_c_settings.html#ae1e5d811fa18bc2349c2bf007cd8df49',1,'aDCSettings']]],
   ['m_5fmode',['m_mode',['../classa_d_c_settings.html#a7d19741ffa17fa1ca8bd023103762ebb',1,'aDCSettings']]],
+  ['m_5fnextupdate',['m_nextUpdate',['../classa_d_c_display.html#a2ff79fdc12be6fc974b76a36cba14d33',1,'aDCDisplay']]],
   ['m_5foperationmode',['m_operationMode',['../classa_d_c_settings.html#a7e9a79d70084e611063fbe34c7e5945c',1,'aDCSettings']]],
   ['m_5foperationtick',['m_operationTick',['../classa_d_c_settings.html#a5e8db9cc2d318e1393d1049aa20843df',1,'aDCSettings']]],
   ['m_5fparent',['m_Parent',['../classa_d_c_display.html#a285992a92161daa422701242a679d2b9',1,'aDCDisplay']]],

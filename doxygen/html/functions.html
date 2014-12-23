@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.6</span>
+   &#160;<span id="projectnumber">2.8</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -140,8 +140,8 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a class="anchor" id="index__"></a>- _ -</h3><ul>
-<li>_adjustCurrent()
-: <a class="el" href="classa_d_c_engine.html#ab54dedf4bf882ad475d93105920c5727">aDCEngine</a>
+<li>_adjustLoadCurrent()
+: <a class="el" href="classa_d_c_engine.html#a21c5fe5c67802fa775113e09eb75d962">aDCEngine</a>
 </li>
 <li>_crc8()
 : <a class="el" href="classa_d_c_settings.html#a8b1d0e1535f62599c88e683a03863892">aDCSettings</a>
@@ -176,26 +176,29 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>_enableDataCheck()
 : <a class="el" href="classa_d_c_settings.html#a0f567103e60a6fbb863f81a20a977686">aDCSettings</a>
 </li>
+<li>_getADC()
+: <a class="el" href="classa_d_c_engine.html#a2f9c7e9823c90775a27290cd11e6133f">aDCEngine</a>
+</li>
+<li>_getInputVoltage()
+: <a class="el" href="classa_d_c_engine.html#aa282d750c537a5082a40f8d72ba9f79b">aDCEngine</a>
+</li>
+<li>_getMeasuredCurrent()
+: <a class="el" href="classa_d_c_engine.html#aedb9a636e6dee9f1805c5f2c5933afc3">aDCEngine</a>
+</li>
 <li>_getSettings()
 : <a class="el" href="classa_d_c_engine.html#aee524ec75d3b2f85a0b54f40162c7fd2">aDCEngine</a>
+</li>
+<li>_getTemp()
+: <a class="el" href="classa_d_c_engine.html#a27efcf87ef03952c1faa70f22d9b883d">aDCEngine</a>
 </li>
 <li>_handleButtonEvent()
 : <a class="el" href="classa_d_c_engine.html#a5f4a57bd54020fb3a06d5ea0cfd12d1e">aDCEngine</a>
 </li>
+<li>_handleLoggingAndRemote()
+: <a class="el" href="classa_d_c_engine.html#aaca080b82db4bda078d1cafe7b33ae04">aDCEngine</a>
+</li>
 <li>_pow()
 : <a class="el" href="classa_stepper.html#a15f227d117dffbbd09d887f51bd887d2">aStepper</a>
-</li>
-<li>_readADC()
-: <a class="el" href="classa_d_c_engine.html#ab8c7e1899e9951143346430cb90df792">aDCEngine</a>
-</li>
-<li>_readInputVoltage()
-: <a class="el" href="classa_d_c_engine.html#a50794fe28311b90226616b5c29573329">aDCEngine</a>
-</li>
-<li>_readMeasuredCurrent()
-: <a class="el" href="classa_d_c_engine.html#ab7557a6f8cd0521b9e00a909880bfb0c">aDCEngine</a>
-</li>
-<li>_readTemp()
-: <a class="el" href="classa_d_c_engine.html#aaf9e9e99f45f225c016cea2e4fe3bf04">aDCEngine</a>
 </li>
 <li>_setDAC()
 : <a class="el" href="classa_d_c_engine.html#a3af2b0f8e9d600604b8690f788771891">aDCEngine</a>
@@ -208,9 +211,6 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>_updateLoadCurrent()
 : <a class="el" href="classa_d_c_engine.html#a2121ae3e74152f2b728e8af6ba928057">aDCEngine</a>
-</li>
-<li>_updateLoggingAndRemote()
-: <a class="el" href="classa_d_c_engine.html#aaaaf3fca7867e8bce32caf30106540ff">aDCEngine</a>
 </li>
 <li>_wakeupBacklight()
 : <a class="el" href="classa_d_c_display.html#a4d58b2a62cacf405d07ae3fcda746e40">aDCDisplay</a>
@@ -323,6 +323,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 
 
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
+<li>enableAlarm()
+: <a class="el" href="classa_d_c_settings.html#a5442e78a851a4314c58f284ae2498c92">aDCSettings</a>
+</li>
 <li>enableFeature()
 : <a class="el" href="classa_d_c_settings.html#a1ece600ded8bd29a72d096e8f8ea97b3">aDCSettings</a>
 </li>
@@ -460,6 +463,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>m_mode
 : <a class="el" href="classa_d_c_settings.html#a7d19741ffa17fa1ca8bd023103762ebb">aDCSettings</a>
+</li>
+<li>m_nextUpdate
+: <a class="el" href="classa_d_c_display.html#a2ff79fdc12be6fc974b76a36cba14d33">aDCDisplay</a>
 </li>
 <li>m_operationMode
 : <a class="el" href="classa_d_c_settings.html#a7e9a79d70084e611063fbe34c7e5945c">aDCSettings</a>
@@ -685,7 +691,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Dec 21 2014 18:03:03 for aDCLoad by
+    <li class="footer">Generated on Tue Dec 23 2014 11:28:19 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

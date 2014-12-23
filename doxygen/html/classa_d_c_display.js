@@ -13,5 +13,6 @@ var classa_d_c_display =
     [ "updateField", "classa_d_c_display.html#a4afa7731f772641285305e2bf76f3943", null ],
     [ "m_dimmed", "classa_d_c_display.html#ac5ddd818997246eddfb6bb5c7615ddc7", null ],
     [ "m_dimmerTick", "classa_d_c_display.html#a95be909f701379556b674c0866f2d9b4", null ],
+    [ "m_nextUpdate", "classa_d_c_display.html#a2ff79fdc12be6fc974b76a36cba14d33", null ],
     [ "m_Parent", "classa_d_c_display.html#a285992a92161daa422701242a679d2b9", null ]
 ];

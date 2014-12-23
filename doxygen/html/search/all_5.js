@@ -7,6 +7,7 @@ var searchData=
   ['eeprom_5faddr_5fcalibration_5fvoltage',['EEPROM_ADDR_CALIBRATION_VOLTAGE',['../a_d_c_load_8h.html#a520712340d780df1acde1a36a5b234f0',1,'aDCLoad.h']]],
   ['eeprom_5faddr_5fmagic',['EEPROM_ADDR_MAGIC',['../a_d_c_load_8h.html#ac59c3105124881fecfb2ebcbbf7158c1',1,'aDCLoad.h']]],
   ['eeprom_5fcalibration_5fsize',['EEPROM_CALIBRATION_SIZE',['../a_d_c_load_8h.html#a7dbaf3d60ad434088462ff2ffd20fadf',1,'aDCLoad.h']]],
+  ['enablealarm',['enableAlarm',['../classa_d_c_settings.html#a5442e78a851a4314c58f284ae2498c92',1,'aDCSettings']]],
   ['enablefeature',['enableFeature',['../classa_d_c_settings.html#a1ece600ded8bd29a72d096e8f8ea97b3',1,'aDCSettings']]],
   ['encoder_5fa_5fpin',['ENCODER_A_PIN',['../a_d_c_load_8h.html#ae2724fced0205dea4ce23bd7f621df79',1,'aDCLoad.h']]],
   ['encoder_5fb_5fpin',['ENCODER_B_PIN',['../a_d_c_load_8h.html#a7078f04e43b456434bcae72831fdb76b',1,'aDCLoad.h']]],

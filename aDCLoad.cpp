@@ -386,7 +386,14 @@ aDCSettings::~aDCSettings()
  */
 aDCSettings::SettingError_t aDCSettings::setVoltage(float v)
 {
-    return _setValue(aDCSettings::OPERATION_MODE_READ, DATA_VOLTAGE, v, m_readVoltage, m_readVoltage, VOLTAGE_MAXIMUM);
+    SettingError_t err = _setValue(aDCSettings::OPERATION_MODE_READ, DATA_VOLTAGE, v, m_readVoltage, m_readVoltage, VOLTAGE_MAXIMUM);
+
+    // Over-Voltage protection triggered
+    if (err == SETTING_ERROR_OVERSIZED)
+        enableAlarm(FEATURE_OVP);
+
+    return err;
+
 }
 
 /** \brief Voltage getter
@@ -637,6 +644,12 @@ void aDCSettings::setTemperature(uint16_t v)
     m_readTemperature = v;
 
     _enableDataCheck(DATA_TEMPERATURE, (p != m_readTemperature));
+
+    // Turn over-temperature alarm, set current to zero;
+    if (m_readTemperature > TEMPERATURE_MAXIMUM)
+        enableAlarm(FEATURE_OTP);
+    else if ((m_readTemperature <= TEMPERATURE_MAXIMUM) && isFeatureEnabled(FEATURE_OTP))
+        enableFeature(FEATURE_OTP, false);
 }
 
 /** \brief Temperature readed getter
@@ -967,6 +980,26 @@ void aDCSettings::restoreCalibration()
     _eepromCalibrationRestore(EEPROM_ADDR_CALIBRATION_VOLTAGE, m_calibrationValues[CALIBRATION_VOLTAGE]);
     _eepromCalibrationRestore(EEPROM_ADDR_CALIBRATION_READ_CURRENT, m_calibrationValues[CALIBRATION_READ_CURRENT]);
     _eepromCalibrationRestore(EEPROM_ADDR_CALIBRATION_DAC_CURRENT, m_calibrationValues[CALIBRATION_DAC_CURRENT]);
+}
+
+/** \brief Turn alarm (OVP, OCP or OTP) on, sets output current to zero
+ *
+ * \param aBit uint16_t : <b> alarm bit to set </b>
+ * \return void
+ *
+ */
+void aDCSettings::enableAlarm(uint16_t aBit)
+{
+    if (!isFeatureEnabled(aBit))
+        enableFeature(aBit);
+
+    setCurrent(0.0, OPERATION_MODE_SET);
+    setPower(0.0, OPERATION_MODE_SET);
+#ifdef RESISTANCE
+    setResistance(0.0, OPERATION_MODE_SET);
+#endif
+    setEncoderPosition(0);
+    syncData(aDCSettings::DATA_ENCODER);
 }
 
 // Features bitfield
@@ -1561,7 +1594,7 @@ void aLCD::clearValue(uint8_t row, int destMinus)
  */
 aDCDisplay::aDCDisplay(aDCEngine *parent, uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cols, uint8_t rows) :
         aLCD(rs, enable, d0, d1, d2, d3, d4, d5, d6, d7, cols, rows),
-        m_Parent(parent), m_dimmed(false), m_dimmerTick(0)
+        m_Parent(parent), m_dimmed(false), m_dimmerTick(0), m_nextUpdate(0)
 {
 }
 
@@ -1726,248 +1759,276 @@ void aDCDisplay::updateDisplay()
     aDCSettings                    *d           = (aDCSettings *)m_Parent->_getSettings();
     bool                            fullRedraw  = false;
     aDCSettings::OperationMode_t    opMode;
+    unsigned long                   m = millis();
 
-    switch (d->getDisplayMode())
+    // Update the display each DISPLAY_UPDATE_RATE ms
+    if ((m - m_nextUpdate) > DISPLAY_UPDATE_RATE)
     {
-        case aDCSettings::DISPLAY_MODE_VALUES:
-            if (d->isDataEnabled(aDCSettings::DATA_DISPLAY))
-            {
-                fullRedraw = true;
+        m_nextUpdate = m;
 
-                aLCD::clear();
-                aLCD::setCursor(OFFSET_UNIT, 0);
-                aLCD::print("U: ");
-                aLCD::setCursor(OFFSET_UNIT + OFFSET_TEMP, 0);
-                aLCD::print(char(0xDF)); // °
-                aLCD::print("C: ");
-                aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_CURRENT + 1);
-                aLCD::print("I: ");
+        switch (d->getDisplayMode())
+        {
+            case aDCSettings::DISPLAY_MODE_VALUES:
+                if (d->isDataEnabled(aDCSettings::DATA_DISPLAY))
+                {
+                    fullRedraw = true;
+
+                    aLCD::clear();
+                    aLCD::setCursor(OFFSET_UNIT, 0);
+                    aLCD::print("U: ");
+                    aLCD::setCursor(OFFSET_UNIT + OFFSET_TEMP, 0);
+                    aLCD::print(char(0xDF)); // °
+                    aLCD::print("C: ");
+                    aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_CURRENT + 1);
+                    aLCD::print("I: ");
 #ifdef RESISTANCE
-                aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_RESISTANCE + 1);
-                aLCD::print("R: ");
+                    aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_RESISTANCE + 1);
+                    aLCD::print("R: ");
 #endif
-                aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_POWER + 1);
-                aLCD::print("P: ");
-            }
+                    aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_POWER + 1);
+                    aLCD::print("P: ");
+                }
 
-            if (d->isDataEnabled(aDCSettings::DATA_VOLTAGE) || fullRedraw)
-            {
-                aLCD::clearValue(0, -2);
-                aLCD::setCursor(OFFSET_VALUE, 0);
-                aLCD::print(d->getVoltage(), 3);
-                aLCD::print('V');
-                d->syncData(aDCSettings::DATA_VOLTAGE);
-            }
+                if (d->isDataEnabled(aDCSettings::DATA_VOLTAGE) || fullRedraw)
+                {
+                    aLCD::clearValue(0, -2);
+                    aLCD::setCursor(OFFSET_VALUE, 0);
+                    aLCD::print(d->getVoltage(), 3);
+                    aLCD::print('V');
+                    d->syncData(aDCSettings::DATA_VOLTAGE);
+                }
 
-            if (d->isDataEnabled(aDCSettings::DATA_TEMPERATURE) || fullRedraw)
-            {
-                aLCD::setCursor(OFFSET_VALUE + OFFSET_TEMP + 1, 0);
-                aLCD::print("   ");
-                aLCD::setCursor(OFFSET_VALUE + OFFSET_TEMP + 1, 0);
-                aLCD::print(d->getTemperature(), DEC);
-                d->syncData(aDCSettings::DATA_TEMPERATURE);
-            }
+                if (d->isDataEnabled(aDCSettings::DATA_TEMPERATURE) || fullRedraw)
+                {
+                    aLCD::setCursor(OFFSET_VALUE + OFFSET_TEMP + 1, 0);
+                    aLCD::print("   ");
+                    aLCD::setCursor(OFFSET_VALUE + OFFSET_TEMP + 1, 0);
+                    aLCD::print(d->getTemperature(), DEC);
+                    d->syncData(aDCSettings::DATA_TEMPERATURE);
+                }
 
-            // Display Current Set/Read
-            opMode = d->getOperationMode();
+                // Display Current Set/Read
+                opMode = d->getOperationMode();
 
-            if (d->isDataEnabled(aDCSettings::DATA_OPERATION))
-            {
-                fullRedraw = true;
-                d->syncData(aDCSettings::DATA_OPERATION);
-            }
+                if (d->isDataEnabled(aDCSettings::DATA_OPERATION))
+                {
+                    fullRedraw = true;
+                    d->syncData(aDCSettings::DATA_OPERATION);
+                }
 
-            if (d->isDataEnabled((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_CURRENT_READ : aDCSettings::DATA_CURRENT_SETS) || fullRedraw)
-            {
-                updateField(opMode, d->getCurrent(aDCSettings::OPERATION_MODE_SET), d->getCurrent(aDCSettings::OPERATION_MODE_READ), aDCSettings::SELECTION_MODE_CURRENT + 1, 'A');
-                d->syncData((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_CURRENT_READ : aDCSettings::DATA_CURRENT_SETS);
-            }
+                if (d->isDataEnabled((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_CURRENT_READ : aDCSettings::DATA_CURRENT_SETS) || fullRedraw)
+                {
+                    updateField(opMode, d->getCurrent(aDCSettings::OPERATION_MODE_SET), d->getCurrent(aDCSettings::OPERATION_MODE_READ), aDCSettings::SELECTION_MODE_CURRENT + 1, 'A');
+                    d->syncData((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_CURRENT_READ : aDCSettings::DATA_CURRENT_SETS);
+                }
 
 #ifdef RESISTANCE
-            if (d->isDataEnabled((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_RESISTANCE_READ : aDCSettings::DATA_RESISTANCE_SETS) || fullRedraw)
-            {
-                updateField(opMode, d->getResistance(aDCSettings::OPERATION_MODE_SET), d->getResistance(aDCSettings::OPERATION_MODE_READ), aDCSettings::SELECTION_MODE_RESISTANCE + 1, char(0xF4));
-                d->syncData((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_RESISTANCE_READ : aDCSettings::DATA_RESISTANCE_SETS);
-            }
+                if (d->isDataEnabled((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_RESISTANCE_READ : aDCSettings::DATA_RESISTANCE_SETS) || fullRedraw)
+                {
+                    updateField(opMode, d->getResistance(aDCSettings::OPERATION_MODE_SET), d->getResistance(aDCSettings::OPERATION_MODE_READ), aDCSettings::SELECTION_MODE_RESISTANCE + 1, char(0xF4));
+                    d->syncData((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_RESISTANCE_READ : aDCSettings::DATA_RESISTANCE_SETS);
+                }
 #endif // RESISTANCE
 
-            if (d->isDataEnabled((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_POWER_READ : aDCSettings::DATA_POWER_SETS) || fullRedraw)
-            {
-                updateField(opMode, d->getPower(aDCSettings::OPERATION_MODE_SET), d->getPower(aDCSettings::OPERATION_MODE_READ), aDCSettings::SELECTION_MODE_POWER + 1, 'W');
-                d->syncData((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_POWER_READ : aDCSettings::DATA_POWER_SETS);
-            }
+                if (d->isDataEnabled((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_POWER_READ : aDCSettings::DATA_POWER_SETS) || fullRedraw)
+                {
+                    updateField(opMode, d->getPower(aDCSettings::OPERATION_MODE_SET), d->getPower(aDCSettings::OPERATION_MODE_READ), aDCSettings::SELECTION_MODE_POWER + 1, 'W');
+                    d->syncData((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_POWER_READ : aDCSettings::DATA_POWER_SETS);
+                }
 
-            if (d->isDataEnabled(aDCSettings::DATA_SELECTION) || d->isDataEnabled(aDCSettings::DATA_DISPLAY) || fullRedraw)
-            {
-                uint8_t mode = static_cast<uint8_t>(d->getSelectionMode()) + 1;
-                uint8_t prevMode = static_cast<uint8_t>(d->getPrevNextMode(static_cast<aDCSettings::SelectionMode_t>(mode - 1), false)) + 1;
+                if (d->isDataEnabled(aDCSettings::DATA_SELECTION) || d->isDataEnabled(aDCSettings::DATA_DISPLAY) || fullRedraw)
+                {
+                    uint8_t mode = static_cast<uint8_t>(d->getSelectionMode()) + 1;
+                    uint8_t prevMode = static_cast<uint8_t>(d->getPrevNextMode(static_cast<aDCSettings::SelectionMode_t>(mode - 1), false)) + 1;
 
-                // Clear previous mode selection markers
-                aLCD::setCursor(OFFSET_MARKER_LEFT, prevMode);
-                aLCD::print(' ');
-                aLCD::setCursor(OFFSET_MARKER_RIGHT, prevMode);
-                aLCD::print("  "); // Marker + stepper
+                    // Clear previous mode selection markers
+                    aLCD::setCursor(OFFSET_MARKER_LEFT, prevMode);
+                    aLCD::print(' ');
+                    aLCD::setCursor(OFFSET_MARKER_RIGHT, prevMode);
+                    aLCD::print("  "); // Marker + stepper
 
-                // Force stepper redraw
-                fullRedraw = true;
+                    // Force stepper redraw
+                    fullRedraw = true;
 
-                aLCD::setCursor(OFFSET_MARKER_LEFT, mode);
-                aLCD::print('[');
-                aLCD::setCursor(OFFSET_MARKER_RIGHT, mode);
-                aLCD::print(']');
+                    aLCD::setCursor(OFFSET_MARKER_LEFT, mode);
+                    aLCD::print('[');
+                    aLCD::setCursor(OFFSET_MARKER_RIGHT, mode);
+                    aLCD::print(']');
 
-                d->syncData(aDCSettings::DATA_SELECTION);
-            }
+                    d->syncData(aDCSettings::DATA_SELECTION);
+                }
 
-            // Update Stepper icon
-            if (!d->isSynced() || fullRedraw)
-            {
-                aLCD::setCursor(OFFSET_MARKER_RIGHT + 1, static_cast<uint8_t>(d->getSelectionMode()) + 1);
-                aLCD::write(d->getValue());
-                d->sync();
-            }
+                // Update Stepper icon
+                if (!d->isSynced() || fullRedraw)
+                {
+                    aLCD::setCursor(OFFSET_MARKER_RIGHT + 1, static_cast<uint8_t>(d->getSelectionMode()) + 1);
+                    aLCD::write(d->getValue());
+                    d->sync();
+                }
 
-            // Features icons
-            // LOGGING
-            if (d->isFeatureEnabled(FEATURE_LOGGING) && (!d->isFeatureEnabled(FEATURE_LOGGING_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_LOGGING_VISIBLE);
-                aLCD::setCursor(LOGGING_ICON_X_COORD, LOGGING_ICON_Y_COORD);
-                aLCD::write(char(0xD0));
-            }
-            else if (!d->isFeatureEnabled(FEATURE_LOGGING) && (d->isFeatureEnabled(FEATURE_LOGGING_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_LOGGING_VISIBLE, false);
-                aLCD::setCursor(LOGGING_ICON_X_COORD, LOGGING_ICON_Y_COORD);
-                aLCD::write(char(0x20));
-            }
-            // USB
-            if (d->isFeatureEnabled(FEATURE_USB) && (!d->isFeatureEnabled(FEATURE_USB_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_USB_VISIBLE);
-                aLCD::setCursor(USB_ICON_X_COORD, USB_ICON_Y_COORD);
-                aLCD::write(GLYPH_USB);
-            }
-            else if (!d->isFeatureEnabled(FEATURE_USB) && (d->isFeatureEnabled(FEATURE_USB_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_USB_VISIBLE, false);
-                aLCD::setCursor(USB_ICON_X_COORD, USB_ICON_Y_COORD);
-                aLCD::write(char(0x20));
-            }
-            // LOCK
-            if (d->isAutolocked() && (!d->isFeatureEnabled(FEATURE_LOCKED_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_LOCKED_VISIBLE);
-                aLCD::setCursor(LOCK_ICON_X_COORD, LOCK_ICON_Y_COORD);
-                aLCD::write(GLYPH_LOCK);
-            }
-            else if (!d->isFeatureEnabled(FEATURE_LOCKED) && (d->isFeatureEnabled(FEATURE_LOCKED_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_LOCKED_VISIBLE, false);
-                aLCD::setCursor(LOCK_ICON_X_COORD, LOCK_ICON_Y_COORD);
-                aLCD::write(char(0x20));
-            }
+                // Features icons
+                // LOGGING
+                if (d->isFeatureEnabled(FEATURE_LOGGING) && (!d->isFeatureEnabled(FEATURE_LOGGING_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_LOGGING_VISIBLE);
+                    aLCD::setCursor(LOGGING_ICON_X_COORD, LOGGING_ICON_Y_COORD);
+                    aLCD::write(char(0xD0));
+                }
+                else if (!d->isFeatureEnabled(FEATURE_LOGGING) && (d->isFeatureEnabled(FEATURE_LOGGING_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_LOGGING_VISIBLE, false);
+                    aLCD::setCursor(LOGGING_ICON_X_COORD, LOGGING_ICON_Y_COORD);
+                    aLCD::write(char(0x20));
+                }
 
-            // OVP
-            if (d->isFeatureEnabled(FEATURE_OVP) && (!d->isFeatureEnabled(FEATURE_OVP_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_OVP_VISIBLE);
+                // USB
+                if (d->isFeatureEnabled(FEATURE_USB) && (!d->isFeatureEnabled(FEATURE_USB_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_USB_VISIBLE);
+                    aLCD::setCursor(USB_ICON_X_COORD, USB_ICON_Y_COORD);
+                    aLCD::write(GLYPH_USB);
+                }
+                else if (!d->isFeatureEnabled(FEATURE_USB) && (d->isFeatureEnabled(FEATURE_USB_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_USB_VISIBLE, false);
+                    aLCD::setCursor(USB_ICON_X_COORD, USB_ICON_Y_COORD);
+                    aLCD::write(char(0x20));
+                }
 
-                aLCD::setCursor(ALARM_OV_X_COORD, ALARM_OV_Y_COORD);
-                aLCD::print("OV");
-            }
-            else if (!d->isFeatureEnabled(FEATURE_OVP) && (d->isFeatureEnabled(FEATURE_OVP_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_OVP_VISIBLE, false);
+                // LOCK
+                if (d->isAutolocked() && (!d->isFeatureEnabled(FEATURE_LOCKED_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_LOCKED_VISIBLE);
+                    aLCD::setCursor(LOCK_ICON_X_COORD, LOCK_ICON_Y_COORD);
+                    aLCD::write(GLYPH_LOCK);
+                }
+                else if (!d->isFeatureEnabled(FEATURE_LOCKED) && (d->isFeatureEnabled(FEATURE_LOCKED_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_LOCKED_VISIBLE, false);
+                    aLCD::setCursor(LOCK_ICON_X_COORD, LOCK_ICON_Y_COORD);
+                    aLCD::write(char(0x20));
+                }
 
-                aLCD::setCursor(ALARM_OV_X_COORD, ALARM_OV_Y_COORD);
-                aLCD::print("  ");
-            }
+                // OVP
+                if (d->isFeatureEnabled(FEATURE_OVP) && (!d->isFeatureEnabled(FEATURE_OVP_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_OVP_VISIBLE);
 
-            // OCP
-            if (d->isFeatureEnabled(FEATURE_OCP) && (!d->isFeatureEnabled(FEATURE_OCP_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_OCP_VISIBLE);
+                    aLCD::setCursor(ALARM_OV_X_COORD, ALARM_OV_Y_COORD);
+                    aLCD::print("OV");
+                }
+                else if (!d->isFeatureEnabled(FEATURE_OVP) && (d->isFeatureEnabled(FEATURE_OVP_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_OVP_VISIBLE, false);
 
-                aLCD::setCursor(ALARM_OC_X_COORD, ALARM_OC_Y_COORD);
-                aLCD::print("OC");
-            }
-            else if (!d->isFeatureEnabled(FEATURE_OCP) && (d->isFeatureEnabled(FEATURE_OCP_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_OCP_VISIBLE, false);
+                    aLCD::setCursor(ALARM_OV_X_COORD, ALARM_OV_Y_COORD);
+                    aLCD::print("  ");
+                }
 
-                aLCD::setCursor(ALARM_OC_X_COORD, ALARM_OC_Y_COORD);
-                aLCD::print("  ");
-            }
-            break;
+                // OCP
+                if (d->isFeatureEnabled(FEATURE_OCP) && (!d->isFeatureEnabled(FEATURE_OCP_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_OCP_VISIBLE);
 
-      case aDCSettings::DISPLAY_MODE_SETUP:
-            pingBacklight();
-            d->pingAutolock();
-            if (d->isDataEnabled(aDCSettings::DATA_DISPLAY))
-            {
-                aLCD::clear();
-                aLCD::setCursor(0, 0);
-                aLCD::print("Options:");
-                d->syncData(aDCSettings::DATA_DISPLAY);
+                    aLCD::setCursor(ALARM_OC_X_COORD, ALARM_OC_Y_COORD);
+                    aLCD::print("OC");
+                }
+                else if (!d->isFeatureEnabled(FEATURE_OCP) && (d->isFeatureEnabled(FEATURE_OCP_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_OCP_VISIBLE, false);
 
-                aLCD::setCursor(0, 1);
-                aLCD::printCenter("Auto Dimmer");
-                aLCD::setCursor(0, 2);
-                aLCD::printCenter("Auto Lock");
-            }
+                    aLCD::setCursor(ALARM_OC_X_COORD, ALARM_OC_Y_COORD);
+                    aLCD::print("  ");
+                }
 
-            if (d->isDataEnabled(aDCSettings::DATA_SELECTION) || d->isDataEnabled(aDCSettings::DATA_DISPLAY) || fullRedraw)
-            {
-                uint8_t mode = static_cast<uint8_t>(d->getSelectionMode()) + 1;
-                uint8_t prevMode = static_cast<uint8_t>(d->getPrevNextMode(static_cast<aDCSettings::SelectionMode_t>(mode - 1), false)) + 1;
+                // OTP
+                if (d->isFeatureEnabled(FEATURE_OTP) && (!d->isFeatureEnabled(FEATURE_OTP_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_OTP_VISIBLE);
 
-                // Clear previous mode selection markers
-                aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT, prevMode);
-                aLCD::print(' ');
-                aLCD::setCursor(OFFSET_SETUP_MARKER_RIGHT, prevMode);
-                aLCD::print(' ');
+                    aLCD::setCursor(OFFSET_UNIT + OFFSET_TEMP, 0);
+                    aLCD::print("OT");
+                }
+                else if (!d->isFeatureEnabled(FEATURE_OTP) && (d->isFeatureEnabled(FEATURE_OTP_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_OTP_VISIBLE, false);
 
-                // Force stepper redraw
-                fullRedraw = true;
+                    aLCD::setCursor(OFFSET_UNIT + OFFSET_TEMP, 0);
+                    aLCD::print(char(0xDF)); // °
+                    aLCD::print("C");
+                }
 
-                aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT, mode);
-                aLCD::print('[');
-                aLCD::setCursor(OFFSET_SETUP_MARKER_RIGHT, mode);
-                aLCD::print(']');
+                break;
 
-                d->syncData(aDCSettings::DATA_SELECTION);
-            }
+            case aDCSettings::DISPLAY_MODE_SETUP:
+                pingBacklight();
+                d->pingAutolock();
 
-            if (d->isFeatureEnabled(FEATURE_AUTODIM) && (!d->isFeatureEnabled(FEATURE_AUTODIM_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_AUTODIM_VISIBLE);
-                aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT + 1, 1);
-                aLCD::write(GLYPH_CHECKBOX_TICKED);
-            }
-            else if (!d->isFeatureEnabled(FEATURE_AUTODIM) && (d->isFeatureEnabled(FEATURE_AUTODIM_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_AUTODIM_VISIBLE, false);
-                aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT + 1, 1);
-                aLCD::write(GLYPH_CHECKBOX_UNTICKED);
-            }
+                if (d->isDataEnabled(aDCSettings::DATA_DISPLAY))
+                {
+                    aLCD::clear();
+                    aLCD::setCursor(0, 0);
+                    aLCD::print("Options:");
+                    d->syncData(aDCSettings::DATA_DISPLAY);
 
-            if (d->isFeatureEnabled(FEATURE_AUTOLOCK) && (!d->isFeatureEnabled(FEATURE_AUTOLOCK_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_AUTOLOCK_VISIBLE);
-                aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT + 1, 2);
-                aLCD::write(GLYPH_CHECKBOX_TICKED);
-            }
-            else if (!d->isFeatureEnabled(FEATURE_AUTOLOCK) && (d->isFeatureEnabled(FEATURE_AUTOLOCK_VISIBLE) || fullRedraw))
-            {
-                d->enableFeature(FEATURE_AUTOLOCK_VISIBLE, false);
-                aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT + 1, 2);
-                aLCD::write(GLYPH_CHECKBOX_UNTICKED);
-            }
-            break;
+                    aLCD::setCursor(0, 1);
+                    aLCD::printCenter("Auto Dimmer");
+                    aLCD::setCursor(0, 2);
+                    aLCD::printCenter("Auto Lock");
+                }
 
-      default:
-        break;
+                if (d->isDataEnabled(aDCSettings::DATA_SELECTION) || d->isDataEnabled(aDCSettings::DATA_DISPLAY) || fullRedraw)
+                {
+                    uint8_t mode = static_cast<uint8_t>(d->getSelectionMode()) + 1;
+                    uint8_t prevMode = static_cast<uint8_t>(d->getPrevNextMode(static_cast<aDCSettings::SelectionMode_t>(mode - 1), false)) + 1;
+
+                    // Clear previous mode selection markers
+                    aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT, prevMode);
+                    aLCD::print(' ');
+                    aLCD::setCursor(OFFSET_SETUP_MARKER_RIGHT, prevMode);
+                    aLCD::print(' ');
+
+                    // Force stepper redraw
+                    fullRedraw = true;
+
+                    aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT, mode);
+                    aLCD::print('[');
+                    aLCD::setCursor(OFFSET_SETUP_MARKER_RIGHT, mode);
+                    aLCD::print(']');
+
+                    d->syncData(aDCSettings::DATA_SELECTION);
+                }
+
+                if (d->isFeatureEnabled(FEATURE_AUTODIM) && (!d->isFeatureEnabled(FEATURE_AUTODIM_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_AUTODIM_VISIBLE);
+                    aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT + 1, 1);
+                    aLCD::write(GLYPH_CHECKBOX_TICKED);
+                }
+                else if (!d->isFeatureEnabled(FEATURE_AUTODIM) && (d->isFeatureEnabled(FEATURE_AUTODIM_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_AUTODIM_VISIBLE, false);
+                    aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT + 1, 1);
+                    aLCD::write(GLYPH_CHECKBOX_UNTICKED);
+                }
+
+                if (d->isFeatureEnabled(FEATURE_AUTOLOCK) && (!d->isFeatureEnabled(FEATURE_AUTOLOCK_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_AUTOLOCK_VISIBLE);
+                    aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT + 1, 2);
+                    aLCD::write(GLYPH_CHECKBOX_TICKED);
+                }
+                else if (!d->isFeatureEnabled(FEATURE_AUTOLOCK) && (d->isFeatureEnabled(FEATURE_AUTOLOCK_VISIBLE) || fullRedraw))
+                {
+                    d->enableFeature(FEATURE_AUTOLOCK_VISIBLE, false);
+                    aLCD::setCursor(OFFSET_SETUP_MARKER_LEFT + 1, 2);
+                    aLCD::write(GLYPH_CHECKBOX_UNTICKED);
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 
     // Backlight dimming
@@ -2058,7 +2119,7 @@ bool aDCDisplay::isBacklightDimmed()
  * \param rows uint8_t : <b> LCD Rows number </b>
  * \param enca uint8_t : <b> Encoder A pin </b>
  * \param encb uint8_t : <b> Encoder B pin </b>
- * \param encpb uint8_t : <b> Encoder push button bin </b>
+ * \param encpb uint8_t : <b> Encoder push button pin </b>
  * \param encsteps uint8_t : <b> Encoder steps per notch </b>
  *
  */
@@ -2176,7 +2237,7 @@ aDCEngine::~aDCEngine()
  * \return void
  *
  */
-void aDCEngine::_updateLoggingAndRemote()
+void aDCEngine::_handleLoggingAndRemote()
 {
     if (Serial)
     {
@@ -2280,21 +2341,16 @@ void aDCEngine::_updateLoggingAndRemote()
 #ifdef SIMU
                         else if (!strcmp((const char *)cmd, "USET")) // Voltage Read Setting
                         {
-                            float v = atof(arg);
+                            float v = atof((const char *)arg);
                             if (m_Data.setVoltage(floatRounding(floatRounding(v) / 1000.000)) == aDCSettings::SETTING_ERROR_OVERSIZED)
-                            {
-                                m_Data.enableFeature(FEATURE_OVP);
-                                m_Data.setCurrent(0.0, aDCSettings::OPERATION_MODE_SET);
-                                m_Data.setEncoderPosition(0);
-                                m_Data.syncData(aDCSettings::DATA_ENCODER);
-                            }
+                                m_Data.enableAlarm(FEATURE_OVP);
 
                             serialPrint(floatRounding(floatRounding(m_Data.getVoltage()) * 1000.000), 0);
                             valid = true;
                         }
                         else if (!strcmp((const char *)cmd, "IS")) // Set Current Read
                         {
-                            float v = atof(arg);
+                            float v = atof((const char *)arg);
                             float nv = floatRounding(floatRounding(v) / 1000.000);
 
                             m_Data.setCurrent(nv, aDCSettings::OPERATION_MODE_READ);
@@ -2302,6 +2358,14 @@ void aDCEngine::_updateLoggingAndRemote()
                             serialPrint(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) * 1000.000), 0);
 
                             valid = (m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ) == nv);
+                        }
+                        else if (!strcmp((const char *)cmd, "T")) // Temperature Read Setting
+                        {
+                            uint8_t v = static_cast<uint8_t>(atoi((const char *)arg));
+                            m_Data.setTemperature(v);
+
+                            serialPrint(int(m_Data.getTemperature()));
+                            valid =true;
                         }
 #endif
                         else if (!strcmp((const char *)cmd, "CAL")) // Calibration
@@ -2420,14 +2484,14 @@ void aDCEngine::_updateLoggingAndRemote()
         unsigned long m = millis();
         static unsigned long nextLogging = 0;
 
-        if ((m_Data.isFeatureEnabled(FEATURE_LOGGING) && ((m - nextLogging) > LOGGING_TIMEOUT)) || single)
+        if ((m_Data.isFeatureEnabled(FEATURE_LOGGING) && ((m - nextLogging) > LOGGING_RATE)) || single)
         {
             char buf[64];
 
             nextLogging = m;
 
             snprintf(buf, sizeof(buf) - 1, "%lu,%u,%u,%u,%u\r\n",
-                    m/* / 100*/,
+                    m / 100,
                     static_cast<uint16_t>(floatRounding(floatRounding(m_Data.getVoltage()) * 1000.000)),
                     static_cast<uint16_t>(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET)) * 1000.000)),
                     static_cast<uint16_t>(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) * 1000.000)),
@@ -2525,14 +2589,7 @@ void aDCEngine::run()
                 pingBacklight();
                 continue;
             }
-/*
-            // If autolock is enabled, ignore encoder new position
-            if (m_Data.isFeatureEnabled(FEATURE_AUTOLOCK))
-            {
-                if (m_Data.isFeatureEnabled(FEATURE_LOCKED))
-                    continue;
-            }
-*/
+
             // Remote is enable, disable it now
             if (m_Data.isFeatureEnabled(FEATURE_USB))
                 m_Data.enableFeature(FEATURE_USB, false);
@@ -2625,13 +2682,7 @@ void aDCEngine::run()
         }
 
         // Reads input voltage from the load source. ****MAXIMUM 24V INPUT****
-        if (m_Data.setVoltage(_readInputVoltage()) == aDCSettings::SETTING_ERROR_OVERSIZED)
-        {
-            // Over-Voltage protection triggered
-            m_Data.enableFeature(FEATURE_OVP);
-            m_Data.setCurrent(0.0, aDCSettings::OPERATION_MODE_SET);
-            m_Data.setEncoderPosition(0);
-        }
+        m_Data.setVoltage(_getInputVoltage());
 
         // Calculates and sets required load current. Accepts the mode variable which defines the mode of the unit,
         // ie. Constant current, resistance or power.
@@ -2650,7 +2701,7 @@ void aDCEngine::run()
             m_Data.syncData(aDCSettings::DATA_ENCODER);
 
          // Data logging and USB controlling
-        _updateLoggingAndRemote();
+        _handleLoggingAndRemote();
     }
 }
 
@@ -2742,7 +2793,7 @@ void aDCEngine::service()
  * \return float : <b> readed input voltage </b>
  *
  */
-float aDCEngine::_readInputVoltage()
+float aDCEngine::_getInputVoltage()
 {
 #ifdef SIMU
     float v = m_Data.getVoltage();
@@ -2752,7 +2803,7 @@ float aDCEngine::_readInputVoltage()
     // Retrieve Calibration data
     m_Data.getCalibrationValues(aDCSettings::CALIBRATION_VOLTAGE, cal);
 
-    float v = (_readADC(ADC_INPUTVOLTAGE_CHAN) * cal.slope);
+    float v = (_getADC(ADC_INPUTVOLTAGE_CHAN) * cal.slope);
     if (v > 0.000)
         v += cal.offset;
 
@@ -2777,7 +2828,7 @@ float aDCEngine::_readInputVoltage()
  * \return float : <b> readed current </b>
  *
  */
-float aDCEngine::_readMeasuredCurrent()
+float aDCEngine::_getMeasuredCurrent()
 {
 #ifdef SIMU
     return m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ);
@@ -2789,10 +2840,11 @@ float aDCEngine::_readMeasuredCurrent()
     m_Data.getCalibrationValues(aDCSettings::CALIBRATION_READ_CURRENT, cal);
 
     // Averaging
-    for (uint8_t i = 0; i < 10; i++)
-        current += _readADC(ADC_MEASUREDCURRENT_CHAN) / 0.1000;
+    for (uint8_t i = 0; i < 5; i++)
+        current += _getADC(ADC_MEASUREDCURRENT_CHAN) / 0.1000;
 
-    current /= 10;
+    current /= 5;
+
     current = current * cal.slope;
 
     if (current > 0.0)
@@ -2823,18 +2875,15 @@ void aDCEngine::_updateLoadCurrent()
         {
             case aDCSettings::SELECTION_MODE_CURRENT:
                 m_Data.updateValuesFromMode(m_Data.getEncoderPosition() / 500.000, aDCSettings::SELECTION_MODE_CURRENT);
-                //m_Data.updateValuesFromMode(static_cast<float>(floatRounding(floatRounding(float(m_Data.getEncoderPosition())) / 500.000)), aDCSettings::SELECTION_MODE_CURRENT);
                 break;
 
 #ifdef RESISTANCE
             case aDCSettings::SELECTION_MODE_RESISTANCE:
                 m_Data.updateValuesFromMode(m_Data.getEncoderPosition() / 1000.000, aDCSettings::SELECTION_MODE_RESISTANCE);
-                //m_Data.updateValuesFromMode(static_cast<float>(floatRounding(floatRounding(float(m_Data.getEncoderPosition())) / 1000.000)), aDCSettings::SELECTION_MODE_RESISTANCE);
                 break;
 #endif
             case aDCSettings::SELECTION_MODE_POWER:
                 m_Data.updateValuesFromMode(m_Data.getEncoderPosition() / 1000.000, aDCSettings::SELECTION_MODE_POWER);
-//                m_Data.updateValuesFromMode(static_cast<float>(floatRounding(floatRounding(float(m_Data.getEncoderPosition())) / 1000.000)), aDCSettings::SELECTION_MODE_POWER);
                 break;
 
             default:
@@ -2843,7 +2892,7 @@ void aDCEngine::_updateLoadCurrent()
     }
 
     // Convert the set current into an voltage to be sent to the DAC
-    switch (m_Data.setCurrent(_readMeasuredCurrent(), aDCSettings::OPERATION_MODE_READ))
+    switch (m_Data.setCurrent(_getMeasuredCurrent(), aDCSettings::OPERATION_MODE_READ))
     {
         case aDCSettings::SETTING_ERROR_OVERSIZED:
             // Overcurrent alarm
@@ -2855,17 +2904,14 @@ void aDCEngine::_updateLoadCurrent()
             {
                 case aDCSettings::SELECTION_MODE_CURRENT:
                     m_Data.setEncoderPosition(CURRENT_MAXIMUM * 500.000);
-                    //m_Data.updateValuesFromMode(CURRENT_MAXIMUM, aDCSettings::SELECTION_MODE_CURRENT);
                     break;
 #ifdef RESISTANCE
                 case aDCSettings::SELECTION_MODE_RESISTANCE:
                     m_Data.setEncoderPosition(RESISTANCE_MAXIMUM * 1000.000);
-                    //m_Data.updateValuesFromMode(RESISTANCE_MAXIMUM, aDCSettings::SELECTION_MODE_RESISTANCE);
                     break;
 #endif
                 case aDCSettings::SELECTION_MODE_POWER:
                     m_Data.setEncoderPosition(POWER_MAXIMUM * 1000.000);
-                    //m_Data.updateValuesFromMode(POWER_MAXIMUM, aDCSettings::SELECTION_MODE_POWER);
                     break;
 
                 default:
@@ -2876,7 +2922,7 @@ void aDCEngine::_updateLoadCurrent()
 
         case aDCSettings::SETTING_ERROR_UNDERSIZED:
         case aDCSettings::SETTING_ERROR_VALID:
-            _adjustCurrent();
+            _adjustLoadCurrent();
             break;
     }
 }
@@ -2886,7 +2932,7 @@ void aDCEngine::_updateLoadCurrent()
  * \return void
  *
  */
-void aDCEngine::_adjustCurrent()
+void aDCEngine::_adjustLoadCurrent()
 {
     float currentMeasured = floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ));
     float currentSets     = floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET));
@@ -2916,7 +2962,7 @@ void aDCEngine::_adjustCurrent()
 #ifdef SIMU
         m_Data.setCurrent(m_Data.getCurrent(aDCSettings::OPERATION_MODE_SET), aDCSettings::OPERATION_MODE_READ);
 #else
-        m_Data.setCurrent(_readMeasuredCurrent(), aDCSettings::OPERATION_MODE_READ);
+        m_Data.setCurrent(_getMeasuredCurrent(), aDCSettings::OPERATION_MODE_READ);
 #endif
     }
 
@@ -2927,14 +2973,8 @@ void aDCEngine::_adjustCurrent()
     switch (m_Data.setPower(floatRounding(m_Data.getVoltage() * m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)), aDCSettings::OPERATION_MODE_READ))
     {
         case aDCSettings::SETTING_ERROR_OVERSIZED:
-            m_Data.enableFeature(FEATURE_OCP);
-            m_Data.setCurrent(0.0, aDCSettings::OPERATION_MODE_SET);
-            m_Data.setPower(0.0, aDCSettings::OPERATION_MODE_SET);
-#ifdef RESISTANCE
-            m_Data.setResistance(0.0, aDCSettings::OPERATION_MODE_SET);
-#endif
-            m_Data.setEncoderPosition(0);
-            _adjustCurrent();
+            m_Data.enableAlarm(FEATURE_OCP);
+            _adjustLoadCurrent();
             break;
 
         default:
@@ -2948,7 +2988,7 @@ void aDCEngine::_adjustCurrent()
  * \return float : <b> readed value </b>
  *
  */
-float aDCEngine::_readADC(uint8_t channel)
+float aDCEngine::_getADC(uint8_t channel)
 {
     uint8_t adcPrimaryRegister = 0b00000110;    // Sets default Primary ADC Address register B00000110, This is a default address
                                                 // setting, the third LSB is set to one to start the ADC, the second LSB is to set
@@ -3029,12 +3069,12 @@ void aDCEngine::_setDAC(uint16_t value, uint8_t channel)
  * \return int16_t : <b> temperature </b>
  *
  */
-int16_t aDCEngine::_readTemp()
+int16_t aDCEngine::_getTemp()
 {
 #ifdef SIMU
     return m_Data.getTemperature();
 #else
-    float tempVoltage = ((_readADC(ADC_TEMPSENSE1_CHAN) + _readADC(ADC_TEMPSENSE2_CHAN)) / 2) * 1000;   // This takes an average of both temp sensors and converts the
+    float tempVoltage = ((_getADC(ADC_TEMPSENSE1_CHAN) + _getADC(ADC_TEMPSENSE2_CHAN)) / 2) * 1000;   // This takes an average of both temp sensors and converts the
                                                                                                         // value to millivolts
 
     return static_cast<int16_t>(((tempVoltage - 1885) / -11.2692307) + 20); // This comes from the datasheet to calculate the temp from the voltage given.
@@ -3048,9 +3088,7 @@ int16_t aDCEngine::_readTemp()
  */
 void aDCEngine::_updateFanSpeed()
 {
-    m_Data.setTemperature(_readTemp());
-
-    uint16_t heatSinkTemp = m_Data.getTemperature();
+    uint16_t heatSinkTemp;
     static const struct
     {
         uint16_t temp;
@@ -3064,7 +3102,8 @@ void aDCEngine::_updateFanSpeed()
         { 30, 2000 },
         { 20, 1800 }
     };
-#warning handle over temp
+
+    m_Data.setTemperature((heatSinkTemp = _getTemp()));
 
     for (uint8_t i = 0; i < (sizeof(fanThresholds) / sizeof(fanThresholds[0])); i++)
     {

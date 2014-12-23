@@ -41,6 +41,7 @@ var classa_d_c_settings =
     [ "_enableDataCheck", "classa_d_c_settings.html#a0f567103e60a6fbb863f81a20a977686", null ],
     [ "_setValue", "classa_d_c_settings.html#a99db07a56e78706c9bb7568161a18fa7", null ],
     [ "backupCalibration", "classa_d_c_settings.html#a175085bf5766f19e26fbba5a6dd10922", null ],
+    [ "enableAlarm", "classa_d_c_settings.html#a5442e78a851a4314c58f284ae2498c92", null ],
     [ "enableFeature", "classa_d_c_settings.html#a1ece600ded8bd29a72d096e8f8ea97b3", null ],
     [ "getCalibrationMode", "classa_d_c_settings.html#a4876e7869ac961f9f09eff6d1afc1180", null ],
     [ "getCalibrationValues", "classa_d_c_settings.html#a5f9a501b45f6e6b7c2a86f0d6f4fa159", null ],

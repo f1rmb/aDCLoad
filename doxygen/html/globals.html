@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.6</span>
+   &#160;<span id="projectnumber">2.8</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -99,6 +99,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_o"><span>o</span></a></li>
       <li><a href="#index_p"><span>p</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
+      <li><a href="#index_t"><span>t</span></a></li>
       <li><a href="#index_u"><span>u</span></a></li>
       <li class="current"><a href="#index_v"><span>v</span></a></li>
     </ul>
@@ -157,6 +158,12 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>ALARM_OC_Y_COORD
 : <a class="el" href="a_d_c_load_8h.html#a194176bb87c555c30a4e36c37b088f90">aDCLoad.h</a>
 </li>
+<li>ALARM_OT_X_COORD
+: <a class="el" href="a_d_c_load_8h.html#af05e3d2bb2618d01594e575762620e51">aDCLoad.h</a>
+</li>
+<li>ALARM_OT_Y_COORD
+: <a class="el" href="a_d_c_load_8h.html#a28a68cba5c80a9ddb39165cc7a8b1810">aDCLoad.h</a>
+</li>
 <li>ALARM_OV_X_COORD
 : <a class="el" href="a_d_c_load_8h.html#aa1fe80edb2524a87643542c5791b9e68">aDCLoad.h</a>
 </li>
@@ -192,6 +199,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </li>
 <li>DAC_FAN_CHAN
 : <a class="el" href="a_d_c_load_8h.html#aaaa771905cd34ea0cb7dca2b1bb78653">aDCLoad.h</a>
+</li>
+<li>DISPLAY_UPDATE_RATE
+: <a class="el" href="a_d_c_load_8h.html#ab3ba7f00374f66935e4778e416175d91">aDCLoad.h</a>
 </li>
 </ul>
 
@@ -266,6 +276,12 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </li>
 <li>FEATURE_OCP_VISIBLE
 : <a class="el" href="a_d_c_load_8h.html#a8ecb5bdb772ff9f35ea89d2813c859a4">aDCLoad.h</a>
+</li>
+<li>FEATURE_OTP
+: <a class="el" href="a_d_c_load_8h.html#ae2cec4bc9920ebab487b2d0b9339badf">aDCLoad.h</a>
+</li>
+<li>FEATURE_OTP_VISIBLE
+: <a class="el" href="a_d_c_load_8h.html#ad6ce242d5db14cb13c90142b7d422433">aDCLoad.h</a>
 </li>
 <li>FEATURE_OVP
 : <a class="el" href="a_d_c_load_8h.html#acfd3d3de9de8ef54de988a662bbe9d4d">aDCLoad.h</a>
@@ -378,8 +394,8 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>LOGGING_ICON_Y_COORD
 : <a class="el" href="a_d_c_load_8h.html#ad2e70aa506de0f5154095a6f5a76c2dd">aDCLoad.h</a>
 </li>
-<li>LOGGING_TIMEOUT
-: <a class="el" href="a_d_c_load_8h.html#a400f951b439c14f0561a9a8833dfaa99">aDCLoad.h</a>
+<li>LOGGING_RATE
+: <a class="el" href="a_d_c_load_8h.html#a1a73ec8a56d135393282e7ac5a87c8e2">aDCLoad.h</a>
 </li>
 <li>loop()
 : <a class="el" href="sketch_8cpp.html#afe461d27b9c48d5921c00d521181f12f">sketch.cpp</a>
@@ -437,7 +453,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 : <a class="el" href="a_d_c_load_8cpp.html#ac6fe8a2c3015302b1e5eb7bf07854110">aDCLoad.cpp</a>
 </li>
 <li>serialPrint()
-: <a class="el" href="a_d_c_load_8cpp.html#a4a3721936bcdfccd9292221f239055f2">aDCLoad.cpp</a>
+: <a class="el" href="a_d_c_load_8cpp.html#af7538969bb87a3e9b0aa9d5ea3cfa915">aDCLoad.cpp</a>
 </li>
 <li>serialPrintln()
 : <a class="el" href="a_d_c_load_8cpp.html#a21977fc8d234cbf69cd8503215c70823">aDCLoad.cpp</a>
@@ -456,6 +472,13 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </li>
 <li>SOFTWARE_VERSION_MINOR
 : <a class="el" href="a_d_c_load_8h.html#aa00b28db26db5f4c514cc3d1047a41f4">aDCLoad.h</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
+<li>TEMPERATURE_MAXIMUM
+: <a class="el" href="a_d_c_load_8h.html#a8b444b0340366d13e31199998010b343">aDCLoad.h</a>
 </li>
 </ul>
 
@@ -480,7 +503,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Dec 21 2014 18:03:03 for aDCLoad by
+    <li class="footer">Generated on Tue Dec 23 2014 11:28:19 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

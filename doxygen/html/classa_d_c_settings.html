@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.6</span>
+   &#160;<span id="projectnumber">2.8</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -277,6 +277,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa921d468939b80d57c2726f935975612"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#aa921d468939b80d57c2726f935975612">restoreCalibration</a> ()</td></tr>
 <tr class="memdesc:aa921d468939b80d57c2726f935975612"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore calibration data from EEPROM.  <a href="#aa921d468939b80d57c2726f935975612">More...</a><br/></td></tr>
 <tr class="separator:aa921d468939b80d57c2726f935975612"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5442e78a851a4314c58f284ae2498c92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a5442e78a851a4314c58f284ae2498c92">enableAlarm</a> (uint16_t bit)</td></tr>
+<tr class="memdesc:a5442e78a851a4314c58f284ae2498c92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turn alarm (OVP, OCP or OTP) on, sets output current to zero.  <a href="#a5442e78a851a4314c58f284ae2498c92">More...</a><br/></td></tr>
+<tr class="separator:a5442e78a851a4314c58f284ae2498c92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ece600ded8bd29a72d096e8f8ea97b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a1ece600ded8bd29a72d096e8f8ea97b3">enableFeature</a> (uint16_t, bool=true)</td></tr>
 <tr class="memdesc:a1ece600ded8bd29a72d096e8f8ea97b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to manage bit-field features.  <a href="#a1ece600ded8bd29a72d096e8f8ea97b3">More...</a><br/></td></tr>
 <tr class="separator:a1ece600ded8bd29a72d096e8f8ea97b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1023,6 +1026,31 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Backup calibration data into EEPROM. </p>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5442e78a851a4314c58f284ae2498c92"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void aDCSettings::enableAlarm </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>aBit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Turn alarm (OVP, OCP or OTP) on, sets output current to zero. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aBit</td><td>uint16_t : <b> alarm bit to set </b> </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
@@ -2543,7 +2571,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classa_d_c_settings.html">aDCSettings</a></li>
-    <li class="footer">Generated on Sun Dec 21 2014 18:03:02 for aDCLoad by
+    <li class="footer">Generated on Tue Dec 23 2014 11:28:18 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

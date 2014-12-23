@@ -102,10 +102,12 @@ static const uint8_t       USB_ICON_X_COORD            = 18;       ///< USB icon
 static const uint8_t       USB_ICON_Y_COORD            = 3;        ///< USB icon LCD Y coord
 static const uint8_t       LOCK_ICON_X_COORD           = 19;       ///< LOCK icon LCD X coord
 static const uint8_t       LOCK_ICON_Y_COORD           = 3;        ///< LOCK icon LCD Y coord
-static const uint8_t       ALARM_OV_X_COORD            = 18;       ///< Overvoltage 'OV' text LCD X coord
-static const uint8_t       ALARM_OV_Y_COORD            = 1;        ///< Overvoltage 'OV' text LCD Y coord
-static const uint8_t       ALARM_OC_X_COORD            = 18;       ///< Overcurrent 'OC' text LCD X coord
-static const uint8_t       ALARM_OC_Y_COORD            = 2;        ///< Overcurrent 'OC' text LCD Y coord
+static const uint8_t       ALARM_OV_X_COORD            = 18;       ///< Over-voltage 'OV' text LCD X coord
+static const uint8_t       ALARM_OV_Y_COORD            = 1;        ///< Over-voltage 'OV' text LCD Y coord
+static const uint8_t       ALARM_OC_X_COORD            = 18;       ///< Over-current 'OC' text LCD X coord
+static const uint8_t       ALARM_OC_Y_COORD            = 2;        ///< Over-current 'OC' text LCD Y coord
+static const uint8_t       ALARM_OT_X_COORD            = 18;       ///< Over-temperature 'OT' text LCD X coord
+static const uint8_t       ALARM_OT_Y_COORD            = 2;        ///< Over-temperature 'OT' text LCD Y coord
 
 // Autolock
 static const unsigned long AUTOLOCK_TIMEOUT            = 60000;    ///< Autolock timeout value (60 seconds)
@@ -117,7 +119,10 @@ static const unsigned long OPERATION_SET_TIMEOUT       = 3000;     ///< Automati
 static const unsigned long BACKLIGHT_TIMEOUT           = 600000;   ///< Backlight dimmer timeout (10 minutes)
 
 // Logging rate
-static const unsigned long LOGGING_TIMEOUT             = 100;      ///< CSV data-logging rate (ms)
+static const unsigned long LOGGING_RATE                = 100;      ///< CSV data-logging rate (ms)
+
+// Display update rate
+static const unsigned long DISPLAY_UPDATE_RATE         = 200;      ///< Display update rate (ms)
 
 // Set maximum values.
 static const float         VOLTAGE_MAXIMUM             = 24.000;   ///< Maximum handled voltage (V)
@@ -130,10 +135,11 @@ static const float         POWER_MAXIMUM               = 50.000;   ///< Maximum 
 #ifdef RESISTANCE
 static const float         RESISTANCE_MAXIMUM          = FLT_MAX;  ///< Maximum resistance value (R)
 #endif // RESISTANCE
+static const uint16_t      TEMPERATURE_MAXIMUM         = 100;      ///< Over-temperature threshold
 
 // Software version
 static const int8_t        SOFTWARE_VERSION_MAJOR      = 2;        ///< Software major version
-static const int8_t        SOFTWARE_VERSION_MINOR      = 6;        ///< Software minor version
+static const int8_t        SOFTWARE_VERSION_MINOR      = 8;        ///< Software minor version
 
 // Features bitfield (max 16)
 static const uint16_t      FEATURE_LOGGING             = 1;        ///< Bitfield logging feature
@@ -142,14 +148,16 @@ static const uint16_t      FEATURE_USB                 = 1 << 2;   ///< Bitfield
 static const uint16_t      FEATURE_USB_VISIBLE         = 1 << 3;   ///< Bitfield USB icon feature
 static const uint16_t      FEATURE_LOCKED              = 1 << 4;   ///< Bitfield locking feature
 static const uint16_t      FEATURE_LOCKED_VISIBLE      = 1 << 5;   ///< Bitfield locking icon feature
-static const uint16_t      FEATURE_AUTOLOCK            = 1 << 6;   ///< Bitfield autolock setting feature
-static const uint16_t      FEATURE_AUTOLOCK_VISIBLE    = 1 << 7;   ///< Bitfield autolock setting icon feature
-static const uint16_t      FEATURE_AUTODIM             = 1 << 8;   ///< Bitfield autodimmer setting feature
-static const uint16_t      FEATURE_AUTODIM_VISIBLE     = 1 << 9;   ///< Bitfield autodimmer setting icon feature
-static const uint16_t      FEATURE_OVP                 = 1 << 10;  ///< Bitfield overvoltage protection feature
-static const uint16_t      FEATURE_OVP_VISIBLE         = 1 << 11;  ///< Bitfield overvoltage protection icon feature
-static const uint16_t      FEATURE_OCP                 = 1 << 12;  ///< Bitfield overcurrent protection feature
-static const uint16_t      FEATURE_OCP_VISIBLE         = 1 << 13;  ///< Bitfield overcurrent protection icon feature
+static const uint16_t      FEATURE_AUTOLOCK            = 1 << 6;   ///< Bitfield auto-lock setting feature
+static const uint16_t      FEATURE_AUTOLOCK_VISIBLE    = 1 << 7;   ///< Bitfield auto-lock setting icon feature
+static const uint16_t      FEATURE_AUTODIM             = 1 << 8;   ///< Bitfield auto-dimmer setting feature
+static const uint16_t      FEATURE_AUTODIM_VISIBLE     = 1 << 9;   ///< Bitfield auto-dimmer setting icon feature
+static const uint16_t      FEATURE_OVP                 = 1 << 10;  ///< Bitfield over-voltage protection feature
+static const uint16_t      FEATURE_OVP_VISIBLE         = 1 << 11;  ///< Bitfield over-voltage protection icon feature
+static const uint16_t      FEATURE_OCP                 = 1 << 12;  ///< Bitfield over-current protection feature
+static const uint16_t      FEATURE_OCP_VISIBLE         = 1 << 13;  ///< Bitfield over-current protection icon feature
+static const uint16_t      FEATURE_OTP                 = 1 << 14;  ///< Bitfield over-temperature protection feature
+static const uint16_t      FEATURE_OTP_VISIBLE         = 1 << 15;  ///< Bitfield over-temperature protection icon feature
 
 // Glyph offsets
 static const uint8_t       GLYPH_X1                    = 0;        ///< Offset of *1 icon in LCD HD44780 controller memory
@@ -377,6 +385,9 @@ class aDCSettings : public aStepper
         void                backupCalibration();
         void                restoreCalibration();
 
+        // Alarm
+        void                enableAlarm(uint16_t bit);
+
         // Features
         void                enableFeature(uint16_t, bool = true);
         bool                isFeatureEnabled(uint16_t);
@@ -505,6 +516,7 @@ class aDCDisplay : public aLCD
         aDCEngine          *m_Parent;       ///< Pointer to aDCEngine parent
         bool                m_dimmed;       ///< Dimmed state storage
         unsigned long       m_dimmerTick;   ///< Dimmer timeout tick counter
+        unsigned long       m_nextUpdate;
 };
 
 /** \brief Main class
@@ -526,16 +538,16 @@ class aDCEngine : public aDCDisplay
 
     private:
         void                _handleButtonEvent(ClickEncoder::Button);
-        float               _readInputVoltage();
-        float               _readADC(uint8_t);
+        float               _getInputVoltage();
+        float               _getADC(uint8_t);
         void                _setDAC(uint16_t, uint8_t);
-        int16_t             _readTemp();
+        int16_t             _getTemp();
         void                _updateFanSpeed();
-        float               _readMeasuredCurrent();
+        float               _getMeasuredCurrent();
         void                _updateLoadCurrent();
-        void                _adjustCurrent();
+        void                _adjustLoadCurrent();
         const aDCSettings  *_getSettings() const;
-        void                _updateLoggingAndRemote();
+        void                _handleLoggingAndRemote();
 
     private:
         aDCSettings         m_Data;                         ///< Settings object
