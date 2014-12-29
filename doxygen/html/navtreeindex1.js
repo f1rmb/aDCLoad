@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"classa_d_c_settings.html#ad725fae7eb730a5c0dbe96cd08ca7ac7":[5,0,2,61],
+"classa_d_c_settings.html#ad8c96bcd6ed9edc4b161b3bee59b8ac6":[5,0,2,49],
 "classa_d_c_settings.html#adefe7166c4b6402a6956abb9d2ffd99e":[5,0,2,39],
 "classa_d_c_settings.html#ae08f2d25a685275ae6649be64c6bbe4a":[5,0,2,56],
 "classa_d_c_settings.html#ae1e5d811fa18bc2349c2bf007cd8df49":[5,0,2,75],

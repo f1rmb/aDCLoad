@@ -32,6 +32,7 @@ var a_d_c_load_8h =
     [ "EEPROM_ADDR_CALIBRATION_DAC_CURRENT", "a_d_c_load_8h.html#a656d9d9fda8378e5411ea2ce356d1fc8", null ],
     [ "EEPROM_ADDR_CALIBRATION_READ_CURRENT", "a_d_c_load_8h.html#a27f45843429372bd737b5afd7a686cb0", null ],
     [ "EEPROM_ADDR_CALIBRATION_VOLTAGE", "a_d_c_load_8h.html#a520712340d780df1acde1a36a5b234f0", null ],
+    [ "EEPROM_ADDR_CALIBRATION_VOLTAGE_DROP", "a_d_c_load_8h.html#acd9ae4003ccd8a10e519d1100b5aadaa", null ],
     [ "EEPROM_ADDR_MAGIC", "a_d_c_load_8h.html#ac59c3105124881fecfb2ebcbbf7158c1", null ],
     [ "EEPROM_CALIBRATION_SIZE", "a_d_c_load_8h.html#a7dbaf3d60ad434088462ff2ffd20fadf", null ],
     [ "ENCODER_A_PIN", "a_d_c_load_8h.html#ae2724fced0205dea4ce23bd7f621df79", null ],

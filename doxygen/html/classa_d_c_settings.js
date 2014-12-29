@@ -6,6 +6,7 @@ var classa_d_c_settings =
       [ "CALIBRATION_VOLTAGE", "classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4a85f9cf57a01a7ad377217baaa58320ea", null ],
       [ "CALIBRATION_READ_CURRENT", "classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4a519d479a558177bcfc7b5cf263222e5f", null ],
       [ "CALIBRATION_DAC_CURRENT", "classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4ad56dfa703823e602ddf9d0064ee79e3b", null ],
+      [ "CALIBRATION_VOLTAGE_DROP", "classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4ad45425d8cadc3ff8f6675424adfb7523", null ],
       [ "CALIBRATION_MAX", "classa_d_c_settings.html#ac36b040d05f53f0b88baa0bdb18efdc4a76f7208c3348d7fc8a50214dc955c71b", null ]
     ] ],
     [ "DisplayMode_t", "classa_d_c_settings.html#ab0e1d893691e664545e069c34de55a84", [

@@ -5,6 +5,7 @@ var searchData=
   ['eeprom_5faddr_5fcalibration_5fdac_5fcurrent',['EEPROM_ADDR_CALIBRATION_DAC_CURRENT',['../a_d_c_load_8h.html#a656d9d9fda8378e5411ea2ce356d1fc8',1,'aDCLoad.h']]],
   ['eeprom_5faddr_5fcalibration_5fread_5fcurrent',['EEPROM_ADDR_CALIBRATION_READ_CURRENT',['../a_d_c_load_8h.html#a27f45843429372bd737b5afd7a686cb0',1,'aDCLoad.h']]],
   ['eeprom_5faddr_5fcalibration_5fvoltage',['EEPROM_ADDR_CALIBRATION_VOLTAGE',['../a_d_c_load_8h.html#a520712340d780df1acde1a36a5b234f0',1,'aDCLoad.h']]],
+  ['eeprom_5faddr_5fcalibration_5fvoltage_5fdrop',['EEPROM_ADDR_CALIBRATION_VOLTAGE_DROP',['../a_d_c_load_8h.html#acd9ae4003ccd8a10e519d1100b5aadaa',1,'aDCLoad.h']]],
   ['eeprom_5faddr_5fmagic',['EEPROM_ADDR_MAGIC',['../a_d_c_load_8h.html#ac59c3105124881fecfb2ebcbbf7158c1',1,'aDCLoad.h']]],
   ['eeprom_5fcalibration_5fsize',['EEPROM_CALIBRATION_SIZE',['../a_d_c_load_8h.html#a7dbaf3d60ad434088462ff2ffd20fadf',1,'aDCLoad.h']]],
   ['enablealarm',['enableAlarm',['../classa_d_c_settings.html#a5442e78a851a4314c58f284ae2498c92',1,'aDCSettings']]],
