@@ -965,9 +965,10 @@ void aDCSettings::setCalibrationValues(CalibrationValues_t calsection, Calibrati
  */
 void aDCSettings::backupCalibration()
 {
-    _eepromCalibrationBackup(EEPROM_ADDR_CALIBRATION_VOLTAGE, m_calibrationValues[CALIBRATION_VOLTAGE]);
-    _eepromCalibrationBackup(EEPROM_ADDR_CALIBRATION_READ_CURRENT, m_calibrationValues[CALIBRATION_READ_CURRENT]);
-    _eepromCalibrationBackup(EEPROM_ADDR_CALIBRATION_DAC_CURRENT, m_calibrationValues[CALIBRATION_DAC_CURRENT]);
+    int16_t start = EEPROM_ADDR_CALIBRATION_VOLTAGE;
+
+    for (uint8_t i = CALIBRATION_VOLTAGE; i < CALIBRATION_MAX; i++, start += EEPROM_CALIBRATION_SIZE)
+        _eepromCalibrationBackup(start, m_calibrationValues[i]);
 }
 
 /** \brief Restore calibration data from EEPROM
@@ -977,9 +978,10 @@ void aDCSettings::backupCalibration()
  */
 void aDCSettings::restoreCalibration()
 {
-    _eepromCalibrationRestore(EEPROM_ADDR_CALIBRATION_VOLTAGE, m_calibrationValues[CALIBRATION_VOLTAGE]);
-    _eepromCalibrationRestore(EEPROM_ADDR_CALIBRATION_READ_CURRENT, m_calibrationValues[CALIBRATION_READ_CURRENT]);
-    _eepromCalibrationRestore(EEPROM_ADDR_CALIBRATION_DAC_CURRENT, m_calibrationValues[CALIBRATION_DAC_CURRENT]);
+    int16_t start = EEPROM_ADDR_CALIBRATION_VOLTAGE;
+
+    for (uint8_t i = CALIBRATION_VOLTAGE; i < CALIBRATION_MAX; i++, start += EEPROM_CALIBRATION_SIZE)
+        _eepromCalibrationRestore(start, m_calibrationValues[i]);
 }
 
 /** \brief Turn alarm (OVP, OCP or OTP) on, sets output current to zero
@@ -2365,7 +2367,12 @@ void aDCEngine::_handleLoggingAndRemote()
                             m_Data.setTemperature(v);
 
                             serialPrint(int(m_Data.getTemperature()));
-                            valid =true;
+                            valid = true;
+                        }
+                        else if (!strcmp((const char *)cmd, "F")) // Fan speed (DAC value)
+                        {
+                            _setDAC((static_cast<uint16_t>(atoi((const char *)arg))), DAC_FAN_CHAN);
+                            valid = true;
                         }
 #endif
                         else if (!strcmp((const char *)cmd, "CAL")) // Calibration
@@ -2381,9 +2388,9 @@ void aDCEngine::_handleLoggingAndRemote()
 
                                 m_Data.setCalibationMode(true);
 
-                                m_Data.setCalibrationValues(aDCSettings::CALIBRATION_VOLTAGE, cal);
-                                m_Data.setCalibrationValues(aDCSettings::CALIBRATION_READ_CURRENT, cal);
-                                m_Data.setCalibrationValues(aDCSettings::CALIBRATION_DAC_CURRENT, cal);
+                                // Set all calibration values to zero
+                                for (uint8_t i = aDCSettings::CALIBRATION_VOLTAGE; i < aDCSettings::CALIBRATION_MAX; i++)
+                                    m_Data.setCalibrationValues(static_cast<aDCSettings::CalibrationValues_t>(i), cal);
                             }
                             else if (!strcmp((const char *)arg, "OFF"))
                             {
@@ -2421,7 +2428,9 @@ void aDCEngine::_handleLoggingAndRemote()
                                     cal.slope = atof((char *)pV1);
                                     cal.offset = atof((char *)pV2);
 
-                                    if (!strcmp((const char *)cmd2, "V"))
+                                    if (!strcmp((const char *)cmd2, "VD"))
+                                        m_Data.setCalibrationValues(aDCSettings::CALIBRATION_VOLTAGE_DROP, cal);
+                                    else if (!strcmp((const char *)cmd2, "V"))
                                         m_Data.setCalibrationValues(aDCSettings::CALIBRATION_VOLTAGE, cal);
                                     else if (!strcmp((const char *)cmd2, "C"))
                                         m_Data.setCalibrationValues(aDCSettings::CALIBRATION_READ_CURRENT, cal);
@@ -2807,12 +2816,17 @@ float aDCEngine::_getInputVoltage()
     if (v > 0.000)
         v += cal.offset;
 
-    // Compensate voltage drop
-    float current;
-    if ((current = m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) > 0.0)
-        v += (current * 0.11525); // 0.11525 is an average value of the voltage drop per mA
-
-    if (m_Data.getCalibrationMode())
+    if (!m_Data.getCalibrationMode())
+    {
+        // Compensate voltage drop
+        float current;
+        if ((current = m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) > 0.000)
+        {
+            m_Data.getCalibrationValues(aDCSettings::CALIBRATION_VOLTAGE_DROP, cal);
+            v += (current * cal.slope); // (0.11525 for single, 0.013555 for twin) is an average value of the voltage drop per mA
+        }
+    }
+    else
     {
         serialPrint("U: ");
         serialPrint(v, 5);
@@ -2820,7 +2834,7 @@ float aDCEngine::_getInputVoltage()
 #endif
 
 #warning DOUBLE CHECK THIS
-    return (v < 0.018 ? 0.0 : v);
+    return (v < 0.018 ? 0.000 : v);
 }
 
 /** \brief Function to measure the actual load current.
@@ -2895,6 +2909,12 @@ void aDCEngine::_updateLoadCurrent()
     switch (m_Data.setCurrent(_getMeasuredCurrent(), aDCSettings::OPERATION_MODE_READ))
     {
         case aDCSettings::SETTING_ERROR_OVERSIZED:
+            if (m_Data.getCalibrationMode())
+            {
+                _adjustLoadCurrent();
+                break;
+            }
+
             // Overcurrent alarm
             if (encoderChanged)
                 m_Data.enableFeature(FEATURE_OCP);
@@ -2973,8 +2993,11 @@ void aDCEngine::_adjustLoadCurrent()
     switch (m_Data.setPower(floatRounding(m_Data.getVoltage() * m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)), aDCSettings::OPERATION_MODE_READ))
     {
         case aDCSettings::SETTING_ERROR_OVERSIZED:
-            m_Data.enableAlarm(FEATURE_OCP);
-            _adjustLoadCurrent();
+            if (!m_Data.getCalibrationMode())
+            {
+                m_Data.enableAlarm(FEATURE_OCP);
+                _adjustLoadCurrent();
+            }
             break;
 
         default:
@@ -3095,10 +3118,9 @@ void aDCEngine::_updateFanSpeed()
         uint16_t speed;
     } fanThresholds[] PROGMEM =
     {
-        { 70, 3000 },
-        { 60, 2750 },
-        { 50, 2500 },
-        { 40, 2250 },
+        { 60, 4095 },
+        { 50, 3000 },
+        { 40, 2400 },
         { 30, 2000 },
         { 20, 1800 }
     };

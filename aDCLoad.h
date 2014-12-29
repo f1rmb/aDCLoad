@@ -37,6 +37,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         :CAL:C:0.9597601497,0.0211903263
         :CAL:D:0.522215448,7.4469088399
 
+      twin:
+        :CAL:V:12.0165258544,0.029649335
+        :CAL:C:0.9602825049,0.0367962659
+        :CAL:D:0.5218646521,3.9098266577
+        :CAL:VD:0.013555,0.000
+
     JKY:
         :CAL:V:
         :CAL:C:
@@ -126,7 +132,8 @@ static const unsigned long DISPLAY_UPDATE_RATE         = 200;      ///< Display 
 
 // Set maximum values.
 static const float         VOLTAGE_MAXIMUM             = 24.000;   ///< Maximum handled voltage (V)
-static const float         CURRENT_MAXIMUM             = 7.825;    ///< Maximum value of load current (A)
+static const float         CURRENT_MAXIMUM             = 7.845;// single: 7.825;    ///< Maximum value of load current (A)
+
 #ifdef MAX_POWER
 static const float         POWER_MAXIMUM               = VOLTAGE_MAXIMUM * CURRENT_MAXIMUM;   ///< Maximum power dissipated (W)
 #else
@@ -135,11 +142,11 @@ static const float         POWER_MAXIMUM               = 50.000;   ///< Maximum 
 #ifdef RESISTANCE
 static const float         RESISTANCE_MAXIMUM          = FLT_MAX;  ///< Maximum resistance value (R)
 #endif // RESISTANCE
-static const uint16_t      TEMPERATURE_MAXIMUM         = 100;      ///< Over-temperature threshold
+static const uint16_t      TEMPERATURE_MAXIMUM         = 80;      ///< Over-temperature threshold
 
 // Software version
 static const int8_t        SOFTWARE_VERSION_MAJOR      = 2;        ///< Software major version
-static const int8_t        SOFTWARE_VERSION_MINOR      = 8;        ///< Software minor version
+static const int8_t        SOFTWARE_VERSION_MINOR      = 2;        ///< Software minor version
 
 // Features bitfield (max 16)
 static const uint16_t      FEATURE_LOGGING             = 1;        ///< Bitfield logging feature
@@ -177,6 +184,7 @@ static const int16_t       EEPROM_CALIBRATION_SIZE              = (sizeof(float)
 static const int16_t       EEPROM_ADDR_CALIBRATION_VOLTAGE      = EEPROM_ADDR_AUTOLOCK + 1; ///< EEPROM start offset for voltage calibration values
 static const int16_t       EEPROM_ADDR_CALIBRATION_READ_CURRENT = EEPROM_ADDR_CALIBRATION_VOLTAGE + EEPROM_CALIBRATION_SIZE; ///< EEPROM start offset for current calibration values
 static const int16_t       EEPROM_ADDR_CALIBRATION_DAC_CURRENT  = EEPROM_ADDR_CALIBRATION_READ_CURRENT + EEPROM_CALIBRATION_SIZE; ///< EEPROM start offset for DAC calibration values
+static const int16_t       EEPROM_ADDR_CALIBRATION_VOLTAGE_DROP = EEPROM_ADDR_CALIBRATION_DAC_CURRENT + EEPROM_CALIBRATION_SIZE; ///< EEPROM start offset for DAC calibration values
 
 
 typedef void (*ISRCallback)();                              ///< Function prototype for ISR callback
@@ -287,6 +295,7 @@ class aDCSettings : public aStepper
             CALIBRATION_VOLTAGE,        ///< Voltage calibration offset value
             CALIBRATION_READ_CURRENT,   ///< Readed Current calibration offset value
             CALIBRATION_DAC_CURRENT,    ///< DAC Current calibration offset value
+            CALIBRATION_VOLTAGE_DROP,    ///< Voltage drop calibration offset value
             CALIBRATION_MAX             ///< Maximum offset in calibration array
         } CalibrationValues_t;
 

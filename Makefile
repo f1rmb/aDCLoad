@@ -972,6 +972,25 @@ reset_python:
 dtr:
 	$(STTY) -a | tr ' ' '\n' | grep hupcl
 
+# Burn the fuses
+fuses:
+	$(AVRDUDE) -F -p $(MCU) -C /etc/avrdude.conf -v -e -V -c usbasp -P usb -U lfuse:w:0xFF:m -U hfuse:w:0xD8:m -U efuse:w:0xCB:m -F lfuse:w:0xE1:m -U hfuse:w:0xD9:m
+	$(AVRDUDE) -p $(MCU) -C /etc/avrdude.conf -P usb -c usbasp -b 9600 -nv
+
+# Program the Arduino, without bootloader
+burn: hex
+	$(AVRDUDE) -F -p $(MCU) -C /etc/avrdude.conf -V -c usbasp -P usb $(AVRDUDE_WRITE_FLASH) -U lock:w:0xe8:m
+
+#send calibration datas
+calibration:
+	@if [ -z "$(CALV)" -o -z "$(CALC)" -o -z "$(CALD)" -o -z "$(CALVD)" ]; then \
+		echo "Please, specify CALV, CALC, CALD and CALVD values, like: "; \
+		echo "   make calibration CALV=:CAL:V:12.0165258544,0.029649335 CALC=:CAL:C:0.9602825049,0.0367962659 CALD=:CAL:D:0.5218646521,3.9098266577 CALVD=:CAL:VD:0.013555,0.000"; \
+	else \
+		echo "Uploading and saving calibration values:"; \
+		python -c "import serial; p = serial.Serial('$(PORT)', '$(UPLOAD_RATE)'); p.write('$(CALV)' + '\n'); r = p.readline(); print(':CAL:V: ' + ('Failed' if r.find('::OK:') else 'Okay')); p.write('$(CALC)' + '\n'); r = p.readline();  print(':CAL:C: ' + ('Failed' if r.find('::OK:') else 'Okay')); p.write('$(CALD)' + '\n'); r = p.readline(); print(':CAL:D: ' + ('Failed' if r.find('::OK:') else 'Okay')); p.write('$(CALVD)' + '\n'); r = p.readline(); print(':CAL:VD: ' + ('Failed' if r.find('::OK:') else 'Okay')); p.write(':CAL:SAVE' + '\n'); r = p.readline(); print(':CAL:SAVE: ' + ('Failed' if r.find('::OK:') else 'Okay')); p.close();" ; \
+	fi
+
 # Program the Arduino board (upload program).
 upload up: hex reset
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH)
