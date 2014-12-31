@@ -19,5 +19,6 @@ var searchData=
   ['alcd',['aLCD',['../classa_l_c_d.html',1,'aLCD'],['../classa_l_c_d.html#ac3cd6cd3cefcb616ca8290d27b2c1180',1,'aLCD::aLCD()']]],
   ['astepper',['aStepper',['../classa_stepper.html',1,'aStepper'],['../classa_stepper.html#ad807a96795f77f8e553e086e1be0bd90',1,'aStepper::aStepper()']]],
   ['autolock_5ftimeout',['AUTOLOCK_TIMEOUT',['../a_d_c_load_8h.html#aad673a91da7f627db3cb380ac64c3bbc',1,'aDCLoad.h']]],
+  ['atmega32u4_20fuses_20settings',['ATmega32U4 fuses settings',['../fuses.html',1,'']]],
   ['arduino_20programmable_20constant_20current_20power_20resistance_20load',['Arduino Programmable Constant Current Power Resistance Load',['../md__home_daniel_src__arduino__arduino_a_d_c_load__r_e_a_d_m_e.html',1,'']]]
 ];

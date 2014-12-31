@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.8</span>
+   &#160;<span id="projectnumber">2.4</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -103,42 +103,54 @@ $(document).ready(function(){initNavTree('gui.html','');});
 <div class="title">User interface overview </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><ul>
-<li>The DC load control is done using a simple rotary encoder, which integrates a push button. There are two modes, <b>values reading</b> and <b>values settings</b>. When you rotate the encoder, the controler automatically switches to settings mode. You just need to rotate the encoder to set up the desired value. In both modes, a double click changes the focus (delimited by '[' and ']' symbols) to the next value parameter. Also, a simple click changes the tuning step. Next to the ']' delimiter symbol, an icon displays the tuning step, as following:<ul>
-<li>x1 : <div class="image">
+<div class="textblock"><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>complete GUI section</dd></dl>
+<ul>
+<li>The DC load control is done using a simple rotary encoder, which integrates a push button. There are two modes, <b>values reading</b> and <b>values settings</b>. When you rotate the encoder, the controler automatically switches to settings mode. You just need to rotate the encoder to set up the desired value. In both modes, a double click changes the focus (delimited by '[' and ']' symbols) to the next value parameter. Also, a simple click changes the tuning step. Next to the ']' delimiter symbol, an icon displays the tuning step, as following: <table class="doxtable">
+<tr>
+<th>Multiplier </th><th>Glyph  </th></tr>
+<tr>
+<td>x1 </td><td><div class="image">
 <img src="x1.png" alt="x1.png"/>
 </div>
- </li>
-<li>x10 : <div class="image">
+ </td></tr>
+<tr>
+<td>x10 </td><td><div class="image">
 <img src="x10.png" alt="x10.png"/>
 </div>
- </li>
-<li>x100 : <div class="image">
+ </td></tr>
+<tr>
+<td>x100 </td><td><div class="image">
 <img src="x100.png" alt="x100.png"/>
 </div>
- </li>
-<li>x1000 : <div class="image">
+ </td></tr>
+<tr>
+<td>x1000 </td><td><div class="image">
 <img src="x1k.png" alt="x1k.png"/>
 </div>
-  <br/>
+ </td></tr>
+</table>
+<br/>
 </li>
-</ul>
-</li>
-<li>According to the status of the DC Load, some icons may be shown:<ul>
-<li>Logging : <div class="image">
+<li>According to the status of the DC Load, some icons may be shown: <table class="doxtable">
+<tr>
+<th>Feature </th><th>Glyph  </th></tr>
+<tr>
+<td>Logging </td><td><div class="image">
 <img src="Logging.png" alt="Logging.png"/>
 </div>
- </li>
-<li>Locked : <div class="image">
+ </td></tr>
+<tr>
+<td>Locked </td><td><div class="image">
 <img src="Lock.png" alt="Lock.png"/>
 </div>
- </li>
-<li>USB remote control : <div class="image">
+ </td></tr>
+<tr>
+<td>USB remote control </td><td><div class="image">
 <img src="USB.png" alt="USB.png"/>
 </div>
-  <br/>
-</li>
-</ul>
+ </td></tr>
+</table>
+<br/>
 </li>
 <li>To access to the options, you need to press the button for more than 3 seconds. In this <em>window</em>, you can enable or disable the <b>backlight's auto-dimmer</b> and the <b>rotary encoder's auto-lock</b> features. A double click changes the option focus, a simple click changes the option status and a long press exits this <em>window</em>.</li>
 </ul>
@@ -146,6 +158,11 @@ $(document).ready(function(){initNavTree('gui.html','');});
 </p>
 <ul>
 <li>When auto-lock is turned on, and triggered, a double click unlocks the rotary encoder.</li>
+</ul>
+<p><br/>
+</p>
+<ul>
+<li>There are 3 differents alarms: <b>OC</b> for over-current, <b>OV</b> for over-voltage and <b>OT</b> the over-termperature.</li>
 </ul>
 <p><br/>
 </p>
@@ -162,7 +179,7 @@ $(document).ready(function(){initNavTree('gui.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Dec 29 2014 08:53:08 for aDCLoad by
+    <li class="footer">Generated on Wed Dec 31 2014 11:11:27 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

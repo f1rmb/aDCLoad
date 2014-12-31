@@ -45,24 +45,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 // A bit of user's manual
 /**
+ * \page fuses ATmega32U4 fuses settings
+ *
+ * Unlike the Arduino Leornardo board, the ATmega32U4 MCU used in this DC load needs some special fuses settings.
+ *
+ * The following command line defines them to the correct values:
+ *
+ * \code avrdude -F -p atmega32u4 -C /etc/avrdude.conf -v -e -V -c usbasp -P usb -U lfuse:w:0xFF:m -U hfuse:w:0xD1:m -U efuse:w:0xCB:m -F lfuse:w:0xE1:m \endcode
+ *
+ *
+ */
+
+/**
  * \page gui User interface overview
+ * \todo complete GUI section
  *
  * - The DC load control is done using a simple rotary encoder, which integrates a push button.
  * There are two modes, <b>values reading</b> and <b>values settings</b>.
  * When you rotate the encoder, the controler automatically switches to settings mode. You just need to rotate the encoder to set up the desired value.
  * In both modes, a double click changes the focus (delimited by '[' and ']' symbols) to the next value parameter.
  * Also, a simple click changes the tuning step. Next to the ']' delimiter symbol, an icon displays the tuning step, as following:
- *  + x1 : \image html x1.png "" \image latex x1.png ""
- *  + x10 : \image html x10.png "" \image latex x10.png ""
- *  + x100 : \image html x100.png "" \image latex x100.png ""
- *  + x1000 : \image html x1k.png "" \image latex x1k.png ""
+ *  Multiplier | Glyph
+ *  -----------|-------
+ *  x1 | \image html x1.png "" \image latex x1.png ""
+ *  x10 | \image html x10.png "" \image latex x10.png ""
+ *  x100 |  \image html x100.png "" \image latex x100.png ""
+ *  x1000 | \image html x1k.png "" \image latex x1k.png ""
  *
  * <br>
  *
  * - According to the status of the DC Load, some icons may be shown:
- *  + Logging : \image html Logging.png "" \image latex Logging.png ""
- *  + Locked : \image html Lock.png "" \image latex Lock.png ""
- *  + USB remote control : \image html USB.png "" \image latex USB.png ""
+ *  Feature | Glyph
+ *  --------|------
+ *  Logging | \image html Logging.png "" \image latex Logging.png ""
+ *  Locked | \image html Lock.png "" \image latex Lock.png ""
+ *  USB remote control | \image html USB.png "" \image latex USB.png ""
  *
  * <br>
  *
@@ -76,12 +93,243 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * <br>
  *
+ * - There are 3 differents alarms: <b>OC</b> for over-current, <b>OV</b> for over-voltage and <b>OT</b> the over-termperature.
+ *
+ * <br>
+ *
  * - When auto-dimmer is turned on, and triggered, any rotary encoder action will turn the backlight on, without any change to
  * the defined settings.
  *
  * <br>
  *
  * - The DC Load can be remotely controlled, see \ref remote
+ */
+
+/**
+ * \page remote Remote Commands
+ * See also \ref logging
+ *
+ * \note Serial port configuration: <b>57600</b>,<b>8</b>,<b>N</b>,<b>1</b>
+ * \warning Commands and arguments are <b>case sensitive</b>, <b>ALL</b> in <b>UPCASE</b>
+ *
+ * \section idn Get Identification
+ * * <b>:*IDN?:</b>
+ *      - Returns firmware informations
+ *
+ * See \ref retval
+ *
+ * \section curget Current setting getter
+ * * <b>:ISET?:</b>
+ *      - Returns current setting (in <b>mA</b>)
+ *
+ * See \ref retval.
+ *
+ * \section curset Current setting setter
+ * * <b>:ISET:<i>value</i></b>
+ *      - Set current <b><i>value</i></b> (in <b>mA</b>)
+ *
+ * See \ref retval.
+ *
+ * \section cal Calibration
+ * * <b>:CAL:<i>toggle</i></b>
+ *      - Turns <b><i>ON</i></b> or <b><i>OFF</i></b> the logging feature.<br>
+ * * <b>:CAL:<i>section</i>:<i>slope</i>,<i>offset</i></b>
+ *      - <b><i>section</i></b> could be <b>V</b>, <b>C</b>, <b>D</b> or <b>VD</b>, standing for <b>V</b><i>oltage</i>, <b>C</b><i>urrent</i>, <b>D</b><i>AC</i> and <b>V</b><i>oltage</i> <b>D</b><i>rop</i>.
+        - <b><i>slope</i></b> and <b><i>offset</i></b> are floating point values, with US period decimal separator ('.'). These values could be calculated using the <i>LibreOffice</i>'s spreadsheet file <i>aDCLoadCalibration.ods</i>.
+ * * <b>:CAL:SAVE</b>
+ *      - Backup calibation datas into EEPROM.
+ *
+ * See \ref retval
+ * <br> See \ref calibration
+ *
+ * \section dac DAC value setter (calibration purpose)
+ * * <b>:DAC:<i>value</i></b>
+ *      - Set DAC value (from <b>0</b> to <b>4095</b>).
+ *
+ * \note This command has no effect outside calibration mode
+ *
+ * See \ref cal
+ * <br> See \ref calibration
+ *
+ * \section curread Current readed getter
+ * * <b>:I?:</b>
+ *      - Returns current readed from the load (in <b>mA</b>)
+ *
+ * See \ref retval.
+ *
+ * \section volread Voltage readed getter
+ * * <b>:U?:</b>
+ *      - Returns voltage readed from the load (in <b>mV</b>)
+ *
+ * See \ref retval.
+ *
+ * \section logsingle Logging enability
+ * * <b>:LOG?:</b>
+ *      - Printout if logging is <b><i>ON</i></b> or <b><i>OFF</i></b>.
+ *
+ * See \ref retval.
+ *
+ * \section logrun Logging enability
+ * * <b>:LOG:<i>toggle</i></b>
+ *      - Turns <b><i>ON</i></b> or <b><i>OFF</i></b> the logging feature.<br>
+
+ * \note If <b><i>toggle</i></b> value is not specified, a single logging line is returned.
+
+ * See \ref retval.
+ *
+ *
+ * \section retval Return value
+ * <b>:<i>value</i>:<i>status</i>:</b>
+ * - Where:
+ *  * <b><i>value</i></b> if any expected. <b>INVALID</b> on unknown command.
+ *  * <b><i>status</i></b> could be <b>OK</b> on success or <b>ERR</b> on failure.
+ *
+ */
+
+/**
+ * \page logging Logging data format
+ * See also \ref remote
+ * \note fields are comma separated
+ *
+ * \section logform CSV logging format
+ * <b><i>timestamp</i></b>,<b><i>voltage</i></b>,<b><i>current sets</i></b>,<b><i>current read</i></b>,<b><i>temperature</i></b><b><i>\\r\\n</i></b>
+ * - Where:
+ *  + <b><i>timestamp</i></b> in <b>hundred of milliseconds</b>,
+ *  + <b><i>voltage</i></b> in <b>mV</b>,
+ *  + <b><i>current sets</i></b> in <b>mA</b>,
+ *  + <b><i>current read</i></b> in <b>mA</b>,
+ *  + <b><i>temperature</i></b> in <b>Celcius degrees</b>.
+ */
+
+/**
+ * \page calibration Calibration Process
+ *
+ *
+ * + __Prerequisites__:<br><br>
+ *
+ *      - __Hardware__:
+ *        - Amp-meter,
+ *        - Volt-meter,
+ *        - Power supply (<b>0..24V</b>, <b>8A</b>)
+ * <br><br>
+ *      - __Software__:
+ *        * A serial terminal emulator (eg: “<i>HyperTerminal</i>” or “<i>Tera Term</i>” on Windows, “<i>minicom</i>” or “<i>cutecom</i>” on Linux).
+ *
+ *         The communication settings are: <b>57600</b>, <b>8</b>, <b>N</b>, <b>1</b>
+ *
+ * <br>
+ * + __Process Description__:<br><br>
+ *
+ *      - __Step 1: Maximum Current__
+ *
+ *          Select “<i>Step 1</i>” tab in the calibration spreadsheet file.
+ *
+ *          Connect the amp-meter and the power supply to the DC load, for current measurements.
+ *          Open your serial terminal emulator, connect the DC load, then type:
+ *          \code :DAC:4095 \endcode
+ *          Write down the <b>mA</b> value readed on the amp-meter to the “<b><i>mA<sub>max</sub></i></b>” column.
+ *          Now, type:
+ *          \code :DAC:0 \endcode
+ *          Edit the aDCLoad.h source file, browse down the file, looking for the following line:
+ *          \code static const float         CURRENT_MAXIMUM             = 7.845;    ///< Maximum value of load current (A) \endcode
+ *          If necessary, change the 7.845 value to the one you've got on your amp-meter (don't forget to convert it from <b>mA</b>
+ *          to <b>A</b>), then reflash the board with new code (using <i>Code::Blocks IDE</i> or the provided <i>Makefile</i>,
+ *          running “<i>make burn</i>” command).
+ *
+ *          Remember, if you have to reflash the board, that could be only done using ICSP programming. There is no bootloader flashed on the MCU, due to flash space restriction.
+ *
+ *          Calibration step 1 is now done.<br><br>
+ *
+ *      - __Step 2: Voltage__
+ *
+ *          Select “<i>Step 2</i>” tab in the calibration spreadsheet file.
+ *
+ *          Connect your power supply to the DC load, sets to <b>0V</b>. The DC Load should the sets to <b>0mA</b>.
+ *          In the serial terminal emulator, type:
+ *          \code :CAL:ON \endcode
+ *          Set your power supply voltage output for each value in “<b><i>V<sub>set</sub></i></b>” column, and write down the readed
+ *          value in “<b><i>V<sub>read</sub></i></b>” column.
+ *
+ *          Once you went through the whole array, the calibration string should be entered into the serial terminal emulator, like:
+ *          \code :CAL:V:x.xxx,y.yyy \endcode
+ *          Please note that the decimal separator <b>HAS TO BE</b> a period ('.'), as in US format.
+ *
+ *          Calibration step 2 is now done.<br><br>
+ *
+ *      - __Step 3: Current__
+ *
+ *          Select “<i>Step 3</i>” tab in the calibration spreadsheet file.
+ *
+ *         Connect the amp-meter and the power supply to the DC load, for current measurements.
+ *         Sets the output voltage to <b>5V</b>.
+ *
+ *         Using the DAC command, try to adjust its value to match each value in the “<b><i>A Amp-Meter</i></b>” column,
+ *         and write down the readed value, on the LCD or serial terminal emulator output, into the “<b><i>A LCD/Term.</i></b>” column.
+ *
+ *         You can change the values in the “<b><i>A Amp-Meter</i></b>” column to strictly match the ones you're reading on the amp-meter.
+ *
+ *         The DAC command syntax is :
+ *         \code :DAC:value \endcode where value is an integer from 0 to 4095.<br><br>
+ *         Once you went through the whole array, set DAC value to <b>0</b>:
+ *         \code :DAC:0 \endcode
+ *         The calibration string should be entered into the serial terminal emulator, like:
+ *         \code :CAL:C:x.xxx,y.yyy \endcode
+ *         Please note that the decimal separator <b>HAS TO BE</b> a period ('.'), as in US format.
+ *
+ *         Calibration step 3 is now done.<br><br>
+ *
+ *      - __Step 4: DAC__
+ *
+ *         Select “<i>Step 4</i>” tab in the calibration spreadsheet file.
+ *
+ *         Connect the amp-meter and the power supply to the DC load, for current measurements.
+ *         Sets the output voltage to <b>5V</b>.
+ *
+ *         Set the DAC value for each value in “<b><i>Steps</i></b>” column, and write down the readed value on the
+ *         amp-meter into the “<b><i>mA<sub>read</sub></i></b>” column.
+ *
+ *         The DAC command syntax is :
+ *         \code :DAC:value \endcode where value is an integer from 0 to 4095.<br><br>
+ *         Once you went through the whole array, set DAC value to <b>0</b>:
+ *         \code :DAC:0 \endcode
+ *         The calibration string should be entered into the serial terminal emulator, like:
+ *         \code :CAL:D:x.xxx,y.yyy \endcode
+ *         Please note that the decimal separator <b>HAS TO BE</b> a period ('.'), as in US format.
+ *
+ *         Calibration step 4 is now done.<br><br>
+ *
+ *      - __Step 5: Voltage Drop__
+ *
+ *          Select “<i>Step 5</i>” tab in the calibration spreadsheet file.
+ *
+ *          Connect the amp-meter, the volt-meter and the power supply to the DC load, for current <b>AND</b> voltage measurements.
+ *          Sets the output voltage to <b>5V</b> (the last entry in the array should be set around <b>12V</b>).
+ *
+ *          Using the DAC command, try to adjust the its value to match each value in the “<b><i>mA</i></b>” column on the amp-meter,
+ *          and write down the voltage readed value on the volt-meter into the “<b><i>mV meter</i></b>” column, and the readed value
+ *          on the LCD and/or serial terminal emulator to the “<b><i>mV LCD/Term.</i></b>” column.
+ *
+ *          The DAC command syntax is :
+ *          \code :DAC:value \endcode where value is an integer from 0 to 4095.<br><br>
+ *          You can change the values in the “<b><i>mA</i></b>” column to strictly match the ones you're reading on the amp-meter.
+ *
+ *          For the last row on the array, set the output voltage to around <b>12V</b>.
+ *
+ *          Once you went through the whole array, set DAC value to <b>0</b>:
+ *          \code :DAC:0 \endcode
+ *          The calibration string should be entered into the serial terminal emulator, like:
+ *          \code :CAL:VD:x.xxx,y.yyy \endcode
+ *          Please note that the decimal separator <b>HAS TO BE</b> a period ('.'), as in US format.
+ *
+ *          Calibration step 5 is now done.<br><br>
+ *
+ *      - __Last Step: Backup__
+ *
+ *          Once the full calibration is done, you <b>HAVE</b> to save the values into the EEPROM, using the following command:
+ *          \code :CAL:SAVE \endcode <br><br>
+ *          ### Now, the calibration is done. You can use your DC load.
+ *
+ *
  */
 
 /**
@@ -2140,100 +2388,6 @@ aDCEngine::~aDCEngine()
 {
 }
 
-/**
- * \page remote Remote Commands
- * See also \ref logging
- *
- * \note Serial port configuration: 57600 8N1
- * \warning Commands and arguments are <b>case sensitive</b>, <i><b>all</b></i> in <b>UPCASE</b>
- *
- * \section curget Current setting getter
- * <b>:ISET?:</b>
- * Returns current setting
- * .<br> See \ref retval.
- *
- * \section curset Current setting setter
- * <b>:ISET:<i>value</i></b>
- * Set current <b><i>value</i></b> (in mA)
- * .<br> See \ref retval.
- *
- * \section cal Calibration
- * <b>:CAL:<i>toggle</i></b>
- * Turns <b><i>ON</i></b> or <b><i>OFF</i></b> the logging feature.<br>
- * <b>:CAL:<i>section</i>:<i>slope</i>,<i>offset</i></b>
- * <i>section</i> could be <b>V</b>, <b>C</b> or <b>D</b>, standing for <b>V</b>oltage, <b>C</b>urrent, <b>D</b>AC.
- * <i>slope</i> and <i>offset</i> are floating point values, with US decimal '.' separator. These values could be calculated using the <i>LibreOffice</i>'s spreadsheet file: <b>aDCLoadCalibration.ods</b>.
- * <br><b>:CAL:SAVE</b>
- * Backup calibation datas into EEPROM.
- * .<br> See \ref retval
- * .<br> See \ref calibration
- *
- * \section dac DAC value setter (calibration purpose)
- * <b>:DAC:<i>value</i></b>
- * Set DAC value (from 0 to 4095). This command has no effect outside calibration mode
- * .<br> See \ref cal
- * .<br> See \ref calibration
- *
- * \section curread Current readed getter
- * <b>:I?:</b>
- * Returns current readed from the load
- * .<br> See \ref retval.
- *
- * \section volread Voltage readed getter
- * <b>:U?:</b>
- * Returns voltage readed from the load
- * .<br> See \ref retval.
- *
- * \section logsingle Logging enability
- * <b>:LOG?:</b>
- * Printout if logging is ON or OFF.
- * .<br> See \ref retval.
- *
- * \section logrun Logging enability
- * <b>:LOG:<i>toggle</i></b>
- * Turns <b><i>ON</i></b> or <b><i>OFF</i></b> the logging feature.<br>
- * If <b><i>toggle</i></b> value is not specified, a single logging line is returned.
- * .<br> See \ref retval.
- *
- *
- * \section retval Return value
- * <b>:<i>value</i>:<i>status</i>:</b>
- * - Where:
- *  * <b>value</b> if any expected. <b>INVALID</b> on unknown command.
- *  * <b>status</b> could be <b>OK</b> on success or <b>ERR</b> on failure.
- *
- */
-
-/**
- * \page logging Logging data format
- * See also \ref remote
- * \note fields are comma separated
- *
- * \section logform CSV logging format
- * <b>timestamp</b>,<b>voltage</b>,<b>current sets</b>,<b>current read</b>,<b>temperature</b><b>\\r\\n</b>
- * - Where:
- *  + <b>timestamp</b> in hundred of milliseconds,
- *  + <b>voltage</b> in mV,
- *  + <b>current sets</b> in mA,
- *  + <b>current read</b> in mA,
- *  + <b>temperature</b> in Celcius degrees.
- */
-
-/**
- * \page calibration Calibration Process
- *
- * Blah blah blah....
- * Blah blah blah....
- * Blah blah blah....
- * Blah blah blah....
- * Blah blah blah....
- * Blah blah blah....
- * Blah blah blah....
- * Blah blah blah....
- *
- *
- */
-
 /** \brief Check and handle remote control and data logging
  *
  * \return void
@@ -2291,8 +2445,8 @@ void aDCEngine::_handleLoggingAndRemote()
                         cmd[sizeof(cmd) - 1] = '\0';
 
                         serialPrint(':');
-#if 0
-                        if (!strcmp((const char *)cmd, "*IDN?")) // Get Current Settings
+#if 1
+                        if (!strcmp((const char *)cmd, "*IDN?")) // Get Identification
                         {
                             char buf[64];
 
@@ -2558,6 +2712,9 @@ void aDCEngine::setup(ISRCallback isr)
      if (Serial)
         while (serialAvailable() > 0)
             serialRead();
+
+    // Workaround TX LED indicator
+    TXLED0;
 }
 
 /** \brief Main loop function.

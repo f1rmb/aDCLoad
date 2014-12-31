@@ -132,7 +132,7 @@ static const unsigned long DISPLAY_UPDATE_RATE         = 200;      ///< Display 
 
 // Set maximum values.
 static const float         VOLTAGE_MAXIMUM             = 24.000;   ///< Maximum handled voltage (V)
-static const float         CURRENT_MAXIMUM             = 7.845;// single: 7.825;    ///< Maximum value of load current (A)
+static const float         CURRENT_MAXIMUM             = 7.845;    ///< Maximum value of load current (A)
 
 #ifdef MAX_POWER
 static const float         POWER_MAXIMUM               = VOLTAGE_MAXIMUM * CURRENT_MAXIMUM;   ///< Maximum power dissipated (W)
@@ -146,7 +146,7 @@ static const uint16_t      TEMPERATURE_MAXIMUM         = 80;      ///< Over-temp
 
 // Software version
 static const int8_t        SOFTWARE_VERSION_MAJOR      = 2;        ///< Software major version
-static const int8_t        SOFTWARE_VERSION_MINOR      = 2;        ///< Software minor version
+static const int8_t        SOFTWARE_VERSION_MINOR      = 4;        ///< Software minor version
 
 // Features bitfield (max 16)
 static const uint16_t      FEATURE_LOGGING             = 1;        ///< Bitfield logging feature

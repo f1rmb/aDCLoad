@@ -2,8 +2,10 @@ var NAVTREE =
 [
   [ "aDCLoad", "index.html", [
     [ "Arduino Programmable Constant Current Power Resistance Load", "md__home_daniel_src__arduino__arduino_a_d_c_load__r_e_a_d_m_e.html", null ],
+    [ "ATmega32U4 fuses settings", "fuses.html", null ],
     [ "User interface overview", "gui.html", null ],
     [ "Remote Commands", "remote.html", [
+      [ "Get Identification", "remote.html#idn", null ],
       [ "Current setting getter", "remote.html#curget", null ],
       [ "Current setting setter", "remote.html#curset", null ],
       [ "Calibration", "remote.html#cal", null ],
@@ -18,6 +20,7 @@ var NAVTREE =
       [ "CSV logging format", "logging.html#logform", null ]
     ] ],
     [ "Calibration Process", "calibration.html", null ],
+    [ "Todo List", "todo.html", null ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
       [ "Class Index", "classes.html", null ],

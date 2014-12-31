@@ -974,7 +974,7 @@ dtr:
 
 # Burn the fuses
 fuses:
-	$(AVRDUDE) -F -p $(MCU) -C /etc/avrdude.conf -v -e -V -c usbasp -P usb -U lfuse:w:0xFF:m -U hfuse:w:0xD8:m -U efuse:w:0xCB:m -F lfuse:w:0xE1:m -U hfuse:w:0xD9:m
+	$(AVRDUDE) -F -p $(MCU) -C /etc/avrdude.conf -v -e -V -c usbasp -P usb -U lfuse:w:0xFF:m -U hfuse:w:0xD1:m -U efuse:w:0xCB:m -F lfuse:w:0xE1:m
 	$(AVRDUDE) -p $(MCU) -C /etc/avrdude.conf -P usb -c usbasp -b 9600 -nv
 
 # Program the Arduino, without bootloader

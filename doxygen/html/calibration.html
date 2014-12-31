@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.8</span>
+   &#160;<span id="projectnumber">2.4</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -103,13 +103,130 @@ $(document).ready(function(){initNavTree('calibration.html','');});
 <div class="title">Calibration Process </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Blah blah blah.... Blah blah blah.... Blah blah blah.... Blah blah blah.... Blah blah blah.... Blah blah blah.... Blah blah blah.... Blah blah blah.... </p>
+<div class="textblock"><ul>
+<li><b>Prerequisites</b>:<br/>
+<br/>
+<ul>
+<li><b>Hardware</b>:<ul>
+<li>Amp-meter,</li>
+<li>Volt-meter,</li>
+<li>Power supply (<b>0..24V</b>, <b>8A</b>) <br/>
+<br/>
+</li>
+</ul>
+</li>
+<li><b>Software</b>:<ul>
+<li><p class="startli">A serial terminal emulator (eg: “<em>HyperTerminal</em>” or “<em>Tera Term</em>” on Windows, “<em>minicom</em>” or “<em>cutecom</em>” on Linux).</p>
+<p class="startli">The communication settings are: <b>57600</b>, <b>8</b>, <b>N</b>, <b>1</b></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><br/>
+</p>
+<ul>
+<li><b>Process Description</b>:<br/>
+<br/>
+<ul>
+<li><p class="startli"><b>Step 1: Maximum Current</b></p>
+<p class="startli">Select “<em>Step 1</em>” tab in the calibration spreadsheet file.</p>
+<p class="startli">Connect the amp-meter and the power supply to the DC load, for current measurements. Open your serial terminal emulator, connect the DC load, then type: </p>
+<div class="fragment"><div class="line">:DAC:4095 </div>
+</div><!-- fragment --><p> Write down the <b>mA</b> value readed on the amp-meter to the “<b><em>mA<sub>max</sub></em></b>” column. Now, type: </p>
+<div class="fragment"><div class="line">:DAC:0 </div>
+</div><!-- fragment --><p> Edit the <a class="el" href="a_d_c_load_8h.html">aDCLoad.h</a> source file, browse down the file, looking for the following line: </p>
+<div class="fragment"><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">float</span>         <a class="code" href="a_d_c_load_8h.html#a3fedf00f7a232198f2a6bce0d0411bbd">CURRENT_MAXIMUM</a>             = 7.845;    <span class="comment">///&lt; Maximum value of load current (A) </span></div>
+</div><!-- fragment --><p> If necessary, change the 7.845 value to the one you've got on your amp-meter (don't forget to convert it from <b>mA</b> to <b>A</b>), then reflash the board with new code (using <em>Code::Blocks IDE</em> or the provided <em>Makefile</em>, running “<em>make burn</em>” command).</p>
+<p class="startli">Remember, if you have to reflash the board, that could be only done using ICSP programming. There is no bootloader flashed on the MCU, due to flash space restriction.</p>
+<p class="startli">Calibration step 1 is now done.<br/>
+<br/>
+</p>
+</li>
+<li><p class="startli"><b>Step 2: Voltage</b></p>
+<p class="startli">Select “<em>Step 2</em>” tab in the calibration spreadsheet file.</p>
+<p class="startli">Connect your power supply to the DC load, sets to <b>0V</b>. The DC Load should the sets to <b>0mA</b>. In the serial terminal emulator, type: </p>
+<div class="fragment"><div class="line">:CAL:ON </div>
+</div><!-- fragment --><p> Set your power supply voltage output for each value in “<b><em>V<sub>set</sub></em></b>” column, and write down the readed value in “<b><em>V<sub>read</sub></em></b>” column.</p>
+<p class="startli">Once you went through the whole array, the calibration string should be entered into the serial terminal emulator, like: </p>
+<div class="fragment"><div class="line">:CAL:V:x.xxx,y.yyy </div>
+</div><!-- fragment --><p> Please note that the decimal separator <b>HAS TO BE</b> a period ('.'), as in US format.</p>
+<p class="startli">Calibration step 2 is now done.<br/>
+<br/>
+</p>
+</li>
+<li><p class="startli"><b>Step 3: Current</b></p>
+<p class="startli">Select “<em>Step 3</em>” tab in the calibration spreadsheet file.</p>
+<p class="startli">Connect the amp-meter and the power supply to the DC load, for current measurements. Sets the output voltage to <b>5V</b>.</p>
+<p class="startli">Using the DAC command, try to adjust its value to match each value in the “<b><em>A Amp-Meter</em></b>” column, and write down the readed value, on the LCD or serial terminal emulator output, into the “<b><em>A LCD/Term.</em></b>” column.</p>
+<p class="startli">You can change the values in the “<b><em>A Amp-Meter</em></b>” column to strictly match the ones you're reading on the amp-meter.</p>
+<p class="startli">The DAC command syntax is : </p>
+<div class="fragment"><div class="line">:DAC:value </div>
+</div><!-- fragment --><p> where value is an integer from 0 to 4095.<br/>
+<br/>
+ Once you went through the whole array, set DAC value to <b>0</b>: </p>
+<div class="fragment"><div class="line">:DAC:0 </div>
+</div><!-- fragment --><p> The calibration string should be entered into the serial terminal emulator, like: </p>
+<div class="fragment"><div class="line">:CAL:C:x.xxx,y.yyy </div>
+</div><!-- fragment --><p> Please note that the decimal separator <b>HAS TO BE</b> a period ('.'), as in US format.</p>
+<p class="startli">Calibration step 3 is now done.<br/>
+<br/>
+</p>
+</li>
+<li><p class="startli"><b>Step 4: DAC</b></p>
+<p class="startli">Select “<em>Step 4</em>” tab in the calibration spreadsheet file.</p>
+<p class="startli">Connect the amp-meter and the power supply to the DC load, for current measurements. Sets the output voltage to <b>5V</b>.</p>
+<p class="startli">Set the DAC value for each value in “<b><em>Steps</em></b>” column, and write down the readed value on the amp-meter into the “<b><em>mA<sub>read</sub></em></b>” column.</p>
+<p class="startli">The DAC command syntax is : </p>
+<div class="fragment"><div class="line">:DAC:value </div>
+</div><!-- fragment --><p> where value is an integer from 0 to 4095.<br/>
+<br/>
+ Once you went through the whole array, set DAC value to <b>0</b>: </p>
+<div class="fragment"><div class="line">:DAC:0 </div>
+</div><!-- fragment --><p> The calibration string should be entered into the serial terminal emulator, like: </p>
+<div class="fragment"><div class="line">:CAL:D:x.xxx,y.yyy </div>
+</div><!-- fragment --><p> Please note that the decimal separator <b>HAS TO BE</b> a period ('.'), as in US format.</p>
+<p class="startli">Calibration step 4 is now done.<br/>
+<br/>
+</p>
+</li>
+<li><p class="startli"><b>Step 5: Voltage Drop</b></p>
+<p class="startli">Select “<em>Step 5</em>” tab in the calibration spreadsheet file.</p>
+<p class="startli">Connect the amp-meter, the volt-meter and the power supply to the DC load, for current <b>AND</b> voltage measurements. Sets the output voltage to <b>5V</b> (the last entry in the array should be set around <b>12V</b>).</p>
+<p class="startli">Using the DAC command, try to adjust the its value to match each value in the “<b><em>mA</em></b>” column on the amp-meter, and write down the voltage readed value on the volt-meter into the “<b><em>mV meter</em></b>” column, and the readed value on the LCD and/or serial terminal emulator to the “<b><em>mV LCD/Term.</em></b>” column.</p>
+<p class="startli">The DAC command syntax is : </p>
+<div class="fragment"><div class="line">:DAC:value </div>
+</div><!-- fragment --><p> where value is an integer from 0 to 4095.<br/>
+<br/>
+ You can change the values in the “<b><em>mA</em></b>” column to strictly match the ones you're reading on the amp-meter.</p>
+<p class="startli">For the last row on the array, set the output voltage to around <b>12V</b>.</p>
+<p class="startli">Once you went through the whole array, set DAC value to <b>0</b>: </p>
+<div class="fragment"><div class="line">:DAC:0 </div>
+</div><!-- fragment --><p> The calibration string should be entered into the serial terminal emulator, like: </p>
+<div class="fragment"><div class="line">:CAL:VD:x.xxx,y.yyy </div>
+</div><!-- fragment --><p> Please note that the decimal separator <b>HAS TO BE</b> a period ('.'), as in US format.</p>
+<p class="startli">Calibration step 5 is now done.<br/>
+<br/>
+</p>
+</li>
+<li><p class="startli"><b>Last Step: Backup</b></p>
+<p class="startli">Once the full calibration is done, you <b>HAVE</b> to save the values into the EEPROM, using the following command: </p>
+<div class="fragment"><div class="line">:CAL:SAVE </div>
+</div><!-- fragment --><p> <br/>
+<br/>
+ </p>
+<h3>Now, the calibration is done. You can use your DC load.</h3>
+</li>
+</ul>
+</li>
+</ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Dec 29 2014 08:53:08 for aDCLoad by
+    <li class="footer">Generated on Wed Dec 31 2014 11:11:27 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

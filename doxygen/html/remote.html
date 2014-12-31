@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.8</span>
+   &#160;<span id="projectnumber">2.4</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -104,52 +104,111 @@ $(document).ready(function(){initNavTree('remote.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>See also <a class="el" href="logging.html">Logging data format</a></p>
-<dl class="section note"><dt>Note</dt><dd>Serial port configuration: 57600 8N1 </dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>Commands and arguments are <b>case sensitive</b>, <em><b>all</b></em> in <b>UPCASE</b></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Serial port configuration: <b>57600</b>,<b>8</b>,<b>N</b>,<b>1</b> </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Commands and arguments are <b>case sensitive</b>, <b>ALL</b> in <b>UPCASE</b></dd></dl>
+<h1><a class="anchor" id="idn"></a>
+Get Identification</h1>
+<ul>
+<li><b>:*IDN?:</b><ul>
+<li>Returns firmware informations</li>
+</ul>
+</li>
+</ul>
+<p>See <a class="el" href="remote.html#retval">Return value</a></p>
 <h1><a class="anchor" id="curget"></a>
 Current setting getter</h1>
-<p><b>:ISET?:</b> Returns current setting .<br/>
- See <a class="el" href="remote.html#retval">Return value</a>.</p>
+<ul>
+<li><b>:ISET?:</b><ul>
+<li>Returns current setting (in <b>mA</b>)</li>
+</ul>
+</li>
+</ul>
+<p>See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="curset"></a>
 Current setting setter</h1>
-<p><b>:ISET:<em>value</em></b> Set current <b><em>value</em></b> (in mA) .<br/>
- See <a class="el" href="remote.html#retval">Return value</a>.</p>
+<ul>
+<li><b>:ISET:<em>value</em></b><ul>
+<li>Set current <b><em>value</em></b> (in <b>mA</b>)</li>
+</ul>
+</li>
+</ul>
+<p>See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="cal"></a>
 Calibration</h1>
-<p><b>:CAL:<em>toggle</em></b> Turns <b><em>ON</em></b> or <b><em>OFF</em></b> the logging feature.<br/>
- <b>:CAL:<em>section</em>:<em>slope</em>,<em>offset</em></b> <em>section</em> could be <b>V</b>, <b>C</b> or <b>D</b>, standing for <b>V</b>oltage, <b>C</b>urrent, <b>D</b>AC. <em>slope</em> and <em>offset</em> are floating point values, with US decimal '.' separator. These values could be calculated using the <em>LibreOffice</em>'s spreadsheet file: <b>aDCLoadCalibration.ods</b>. <br/>
-<b>:CAL:SAVE</b> Backup calibation datas into EEPROM. .<br/>
- See <a class="el" href="remote.html#retval">Return value</a> .<br/>
+<ul>
+<li><b>:CAL:<em>toggle</em></b><ul>
+<li>Turns <b><em>ON</em></b> or <b><em>OFF</em></b> the logging feature.<br/>
+</li>
+</ul>
+</li>
+<li><b>:CAL:<em>section</em>:<em>slope</em>,<em>offset</em></b><ul>
+<li><b><em>section</em></b> could be <b>V</b>, <b>C</b>, <b>D</b> or <b>VD</b>, standing for <b>V</b><em>oltage</em>, <b>C</b><em>urrent</em>, <b>D</b><em>AC</em> and <b>V</b><em>oltage</em> <b>D</b><em>rop</em>.</li>
+<li><b><em>slope</em></b> and <b><em>offset</em></b> are floating point values, with US period decimal separator ('.'). These values could be calculated using the <em>LibreOffice</em>'s spreadsheet file <em>aDCLoadCalibration.ods</em>.</li>
+</ul>
+</li>
+<li><b>:CAL:SAVE</b><ul>
+<li>Backup calibation datas into EEPROM.</li>
+</ul>
+</li>
+</ul>
+<p>See <a class="el" href="remote.html#retval">Return value</a> <br/>
  See <a class="el" href="calibration.html">Calibration Process</a></p>
 <h1><a class="anchor" id="dac"></a>
 DAC value setter (calibration purpose)</h1>
-<p><b>:DAC:<em>value</em></b> Set DAC value (from 0 to 4095). This command has no effect outside calibration mode .<br/>
- See <a class="el" href="remote.html#cal">Calibration</a> .<br/>
+<ul>
+<li><b>:DAC:<em>value</em></b><ul>
+<li>Set DAC value (from <b>0</b> to <b>4095</b>).</li>
+</ul>
+</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>This command has no effect outside calibration mode</dd></dl>
+<p>See <a class="el" href="remote.html#cal">Calibration</a> <br/>
  See <a class="el" href="calibration.html">Calibration Process</a></p>
 <h1><a class="anchor" id="curread"></a>
 Current readed getter</h1>
-<p><b>:I?:</b> Returns current readed from the load .<br/>
- See <a class="el" href="remote.html#retval">Return value</a>.</p>
+<ul>
+<li><b>:I?:</b><ul>
+<li>Returns current readed from the load (in <b>mA</b>)</li>
+</ul>
+</li>
+</ul>
+<p>See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="volread"></a>
 Voltage readed getter</h1>
-<p><b>:U?:</b> Returns voltage readed from the load .<br/>
- See <a class="el" href="remote.html#retval">Return value</a>.</p>
+<ul>
+<li><b>:U?:</b><ul>
+<li>Returns voltage readed from the load (in <b>mV</b>)</li>
+</ul>
+</li>
+</ul>
+<p>See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="logsingle"></a>
 Logging enability</h1>
-<p><b>:LOG?:</b> Printout if logging is ON or OFF. .<br/>
- See <a class="el" href="remote.html#retval">Return value</a>.</p>
+<ul>
+<li><b>:LOG?:</b><ul>
+<li>Printout if logging is <b><em>ON</em></b> or <b><em>OFF</em></b>.</li>
+</ul>
+</li>
+</ul>
+<p>See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="logrun"></a>
 Logging enability</h1>
-<p><b>:LOG:<em>toggle</em></b> Turns <b><em>ON</em></b> or <b><em>OFF</em></b> the logging feature.<br/>
- If <b><em>toggle</em></b> value is not specified, a single logging line is returned. .<br/>
- See <a class="el" href="remote.html#retval">Return value</a>.</p>
+<ul>
+<li><b>:LOG:<em>toggle</em></b><ul>
+<li>Turns <b><em>ON</em></b> or <b><em>OFF</em></b> the logging feature.<br/>
+</li>
+</ul>
+</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>If <b><em>toggle</em></b> value is not specified, a single logging line is returned.</dd></dl>
+<p>See <a class="el" href="remote.html#retval">Return value</a>.</p>
 <h1><a class="anchor" id="retval"></a>
 Return value</h1>
 <p><b>:<em>value</em>:<em>status</em>:</b></p>
 <ul>
 <li>Where:<ul>
-<li><b>value</b> if any expected. <b>INVALID</b> on unknown command.</li>
-<li><b>status</b> could be <b>OK</b> on success or <b>ERR</b> on failure. </li>
+<li><b><em>value</em></b> if any expected. <b>INVALID</b> on unknown command.</li>
+<li><b><em>status</em></b> could be <b>OK</b> on success or <b>ERR</b> on failure. </li>
 </ul>
 </li>
 </ul>
@@ -158,7 +217,7 @@ Return value</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Dec 29 2014 08:53:08 for aDCLoad by
+    <li class="footer">Generated on Wed Dec 31 2014 11:11:27 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
