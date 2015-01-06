@@ -98,7 +98,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  *   <br>
  *
- * - By default, the DC Load displays <b>Input Voltage</b>, <b>Current load</b>, and <b>Power dissipation</b> values.
+ * - By default, the DC Load displays <b>Input Voltage</b>, <b>Current load</b>, <b>Power dissipation</b> values and <b>heatsink temperature</b>.
  *   \note The Voltage is measured on the input connectors of the DC Load and may differs from the measured value out of the power supply source.
  *
  *   <br>
@@ -265,8 +265,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * <br><br>
  *      - __Software__:
  *        * A serial terminal emulator (e.g. “<i>HyperTerminal</i>” or “<i>Tera Term</i>” on Windows, “<i>minicom</i>” or “<i>cutecom</i>” on Linux).
+ *        * The calibration spreadsheet file <b>aDCLoadCalibration.ods</b>
+ *        * A software able to open the calibration spreadsheet, like “<i>LibreOffice</i>“, “<i>OpenOffice</i>“ and so on.
  *
- *         The communication settings are: <b>57600</b>, <b>8</b>, <b>N</b>, <b>1</b>
+ *         The serial communication settings are: <b>57600</b>, <b>8</b>, <b>N</b>, <b>1</b>
  *
  * <br>
  * + __Process Description__:<br><br>
@@ -3351,7 +3353,7 @@ void aDCEngine::_updateFanSpeed()
     }
 }
 
-/** \brief Return a pointer to settings instancied class
+/** \brief Return a pointer to settings instantiated class
  *
  * \return const aDCSettings*
  *
