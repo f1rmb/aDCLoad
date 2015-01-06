@@ -40,7 +40,7 @@ var classa_d_c_settings =
     [ "_eepromWriteMagicNumbers", "classa_d_c_settings.html#a0ace51e0fde63a546c1aa201a47927b2", null ],
     [ "_enableData", "classa_d_c_settings.html#a34315ff87a0e926116bcababae0db6f1", null ],
     [ "_enableDataCheck", "classa_d_c_settings.html#a0f567103e60a6fbb863f81a20a977686", null ],
-    [ "_setValue", "classa_d_c_settings.html#a99db07a56e78706c9bb7568161a18fa7", null ],
+    [ "_setValue", "classa_d_c_settings.html#a287a4bda7b2d3f559b93e9809d02fb64", null ],
     [ "backupCalibration", "classa_d_c_settings.html#a175085bf5766f19e26fbba5a6dd10922", null ],
     [ "enableAlarm", "classa_d_c_settings.html#a5442e78a851a4314c58f284ae2498c92", null ],
     [ "enableFeature", "classa_d_c_settings.html#a1ece600ded8bd29a72d096e8f8ea97b3", null ],

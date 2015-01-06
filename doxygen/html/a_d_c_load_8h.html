@@ -406,6 +406,7 @@ Variables</h2></td></tr>
 <tr class="memdesc:a590f65997d9b95252e068b11443a75c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">EEPROM start offset for autolocking setting.  <a href="#a590f65997d9b95252e068b11443a75c0">More...</a><br/></td></tr>
 <tr class="separator:a590f65997d9b95252e068b11443a75c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dbaf3d60ad434088462ff2ffd20fadf"><td class="memItemLeft" align="right" valign="top">static const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a7dbaf3d60ad434088462ff2ffd20fadf">EEPROM_CALIBRATION_SIZE</a> = (sizeof(float) * 2) + sizeof(uint8_t)</td></tr>
+<tr class="memdesc:a7dbaf3d60ad434088462ff2ffd20fadf"><td class="mdescLeft">&#160;</td><td class="mdescRight">EEPROM calibration size: 2 float (slope &amp; offset), and one uint8_t for crc.  <a href="#a7dbaf3d60ad434088462ff2ffd20fadf">More...</a><br/></td></tr>
 <tr class="separator:a7dbaf3d60ad434088462ff2ffd20fadf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a520712340d780df1acde1a36a5b234f0"><td class="memItemLeft" align="right" valign="top">static const int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8h.html#a520712340d780df1acde1a36a5b234f0">EEPROM_ADDR_CALIBRATION_VOLTAGE</a> = <a class="el" href="a_d_c_load_8h.html#a590f65997d9b95252e068b11443a75c0">EEPROM_ADDR_AUTOLOCK</a> + 1</td></tr>
 <tr class="memdesc:a520712340d780df1acde1a36a5b234f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">EEPROM start offset for voltage calibration values.  <a href="#a520712340d780df1acde1a36a5b234f0">More...</a><br/></td></tr>
@@ -1030,6 +1031,8 @@ Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>EEPROM calibration size: 2 float (slope &amp; offset), and one uint8_t for crc. </p>
 
 </div>
 </div>
@@ -2381,7 +2384,7 @@ Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a_d_c_load_8h.html">aDCLoad.h</a></li>
-    <li class="footer">Generated on Tue Jan 6 2015 16:07:02 for aDCLoad by
+    <li class="footer">Generated on Tue Jan 6 2015 17:30:51 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

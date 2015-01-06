@@ -180,14 +180,14 @@ static const uint8_t       GLYPH_CHECKBOX_TICKED       = 7;        ///< Offset o
 static const int16_t       EEPROM_ADDR_MAGIC               = 0;        ///< EEPROM start offset to magic numbers (0xDEAD)
 static const int16_t       EEPROM_ADDR_AUTODIM             = 4;        ///< EEPROM start offset for autodimming setting
 static const int16_t       EEPROM_ADDR_AUTOLOCK            = 5;        ///< EEPROM start offset for autolocking setting
-static const int16_t       EEPROM_CALIBRATION_SIZE              = (sizeof(float) * 2) + sizeof(uint8_t); // 2 float (slope & offset), and one uint8_t for crc
+static const int16_t       EEPROM_CALIBRATION_SIZE              = (sizeof(float) * 2) + sizeof(uint8_t); ///< EEPROM calibration size: 2 float (slope & offset), and one uint8_t for crc
 static const int16_t       EEPROM_ADDR_CALIBRATION_VOLTAGE      = EEPROM_ADDR_AUTOLOCK + 1; ///< EEPROM start offset for voltage calibration values
 static const int16_t       EEPROM_ADDR_CALIBRATION_READ_CURRENT = EEPROM_ADDR_CALIBRATION_VOLTAGE + EEPROM_CALIBRATION_SIZE; ///< EEPROM start offset for current calibration values
 static const int16_t       EEPROM_ADDR_CALIBRATION_DAC_CURRENT  = EEPROM_ADDR_CALIBRATION_READ_CURRENT + EEPROM_CALIBRATION_SIZE; ///< EEPROM start offset for DAC calibration values
 static const int16_t       EEPROM_ADDR_CALIBRATION_VOLTAGE_DROP = EEPROM_ADDR_CALIBRATION_DAC_CURRENT + EEPROM_CALIBRATION_SIZE; ///< EEPROM start offset for DAC calibration values
 
 
-typedef void (*ISRCallback)();                              ///< Function prototype for ISR callback
+typedef void (*ISRCallback)();                                     ///< Function prototype for ISR callback
 
 
 /**
@@ -405,6 +405,7 @@ class aDCSettings : public aStepper
         void                syncData(uint16_t);
 
     private:
+        SettingError_t      _setValue(OperationMode_t, uint16_t, float, float &, float &, float);
         uint8_t             _crc8(const uint8_t *, uint8_t);
         void                _eepromCalibrationRestore(int16_t, CalibrationData_t &);
         void                _eepromCalibrationBackup(int16_t, CalibrationData_t);
@@ -414,37 +415,6 @@ class aDCSettings : public aStepper
         void                _eepromRestore();
         void                _enableData(uint16_t, bool);
         void                _enableDataCheck(uint16_t, bool);
-
-        /** \brief Value setter
-         *
-         * \param mode OperationMode_t : <b> Operation mode (SET/READ) </b>
-         * \param bit uint16_t : <b> DATA_* bit to set </b>
-         * \param value T : <b> value to store </b>
-         * \param sets T& : <b> destination variable for OPERATION_SET </b>
-         * \param read T& : <b> destination variable for OPERTION_READ </b>
-         * \param maximum float : <b> maximum value, used for boundaries checking </b>
-         * \return template<typename T> SettingError_t : <b> validity result </b>
-         *
-        */
-        template<typename T>
-        SettingError_t      _setValue(OperationMode_t mode, uint16_t bit, T value, T &sets, T &read, float maximum)
-        {
-            if (value < 0)
-                return SETTING_ERROR_UNDERSIZED;
-            else if (value > maximum)
-                return SETTING_ERROR_OVERSIZED;
-
-            T p = (mode == OPERATION_MODE_SET) ? sets : read;
-
-            if (mode == OPERATION_MODE_SET)
-                sets = value;
-            else
-                read = value;
-
-            _enableDataCheck(bit, (p != ((mode == OPERATION_MODE_SET) ? sets : read)));
-
-            return SETTING_ERROR_VALID;
-        }
 
     private:
         float               m_readVoltage;                          ///< voltage storage

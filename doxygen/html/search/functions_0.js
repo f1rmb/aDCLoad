@@ -21,7 +21,7 @@ var searchData=
   ['_5fhandleloggingandremote',['_handleLoggingAndRemote',['../classa_d_c_engine.html#aaca080b82db4bda078d1cafe7b33ae04',1,'aDCEngine']]],
   ['_5fpow',['_pow',['../classa_stepper.html#a15f227d117dffbbd09d887f51bd887d2',1,'aStepper']]],
   ['_5fsetdac',['_setDAC',['../classa_d_c_engine.html#a3af2b0f8e9d600604b8690f788771891',1,'aDCEngine']]],
-  ['_5fsetvalue',['_setValue',['../classa_d_c_settings.html#a99db07a56e78706c9bb7568161a18fa7',1,'aDCSettings']]],
+  ['_5fsetvalue',['_setValue',['../classa_d_c_settings.html#a287a4bda7b2d3f559b93e9809d02fb64',1,'aDCSettings']]],
   ['_5fupdatefanspeed',['_updateFanSpeed',['../classa_d_c_engine.html#a9dcf5e9eaa29e367460ac6f097f5b247',1,'aDCEngine']]],
   ['_5fupdateloadcurrent',['_updateLoadCurrent',['../classa_d_c_engine.html#a2121ae3e74152f2b728e8af6ba928057',1,'aDCEngine']]],
   ['_5fwakeupbacklight',['_wakeupBacklight',['../classa_d_c_display.html#a4d58b2a62cacf405d07ae3fcda746e40',1,'aDCDisplay']]]

@@ -1451,6 +1451,36 @@ void aDCSettings::syncData(uint16_t bit)
     _enableData(bit, false);
 }
 
+/** \brief Value setter
+ *
+ * \param mode OperationMode_t : <b> Operation mode (SET/READ) </b>
+ * \param bit uint16_t : <b> DATA_* bit to set </b>
+ * \param value float : <b> value to store </b>
+ * \param sets float& : <b> destination variable for OPERATION_SET </b>
+ * \param read float& : <b> destination variable for OPERTION_READ </b>
+ * \param maximum float : <b> maximum value, used for boundaries checking </b>
+ * \return SettingError_t : <b> validity result </b>
+ *
+ */
+aDCSettings::SettingError_t aDCSettings::_setValue(OperationMode_t mode, uint16_t bit, float value, float &sets, float &read, float maximum)
+{
+    if (value < 0)
+        return SETTING_ERROR_UNDERSIZED;
+    else if (value > maximum)
+        return SETTING_ERROR_OVERSIZED;
+
+    float p = (mode == OPERATION_MODE_SET) ? sets : read;
+
+    if (mode == OPERATION_MODE_SET)
+        sets = value;
+    else
+        read = value;
+
+    _enableDataCheck(bit, (p != ((mode == OPERATION_MODE_SET) ? sets : read)));
+
+    return SETTING_ERROR_VALID;
+}
+
 //! \brief CRC8 computation
 //!
 //! Code took from http://www.pjrc.com/teensy/td_libs_OneWire.html
