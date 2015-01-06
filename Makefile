@@ -978,7 +978,7 @@ fuses:
 	$(AVRDUDE) -p $(MCU) -C /etc/avrdude.conf -P usb -c usbasp -b 9600 -nv
 
 # Program the Arduino, without bootloader
-burn: hex
+burn:
 	$(AVRDUDE) -F -p $(MCU) -C /etc/avrdude.conf -V -c usbasp -P usb $(AVRDUDE_WRITE_FLASH) -U lock:w:0xe8:m
 
 #send calibration datas
