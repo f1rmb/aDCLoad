@@ -103,9 +103,28 @@ $(document).ready(function(){initNavTree('gui.html','');});
 <div class="title">User interface overview </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>complete GUI section</dd></dl>
-<ul>
-<li>The DC load control is done using a simple rotary encoder, which integrates a push button. There are two modes, <b>values reading</b> and <b>values settings</b>. When you rotate the encoder, the controler automatically switches to settings mode. You just need to rotate the encoder to set up the desired value. In both modes, a double click changes the focus (delimited by '[' and ']' symbols) to the next value parameter. Also, a simple click changes the tuning step. Next to the ']' delimiter symbol, an icon displays the tuning step, as following: <table class="doxtable">
+<div class="textblock"><ul>
+<li><p class="startli">The DC load control is done using a simple rotary encoder, which integrates a push button.</p>
+<p class="startli"><br/>
+</p>
+</li>
+<li><p class="startli">When the DC Load displays the input value (left aligned values), a single encoder detents turns the DC Load's display in settings mode (right aligned values), without any setting value changes.</p>
+<p class="startli"><br/>
+</p>
+</li>
+<li><p class="startli">There are two display modes, <b>input values</b> and <b>settings values</b>. <br/>
+ When you rotate the encoder, the DC Load switches automatically to <b>settings mode</b>. <br/>
+ You just need to rotate the encoder to define the desired value, accordingly to the focus : <b>Current</b> or <b>Power</b>.</p>
+<p class="startli"><br/>
+</p>
+</li>
+<li><p class="startli">In both display modes, a double click changes the focus (delimited by '<b>[</b>' and '<b>]</b>' symbols) to the next value parameter, Current (<b>I</b>) or Power (<b>P</b>).</p>
+<p class="startli"><br/>
+</p>
+</li>
+<li><p class="startli">A simple click changes the tuning step. <br/>
+ Next to the '<b>]</b>' delimiter symbol, an icon displays the tuning step multiplier, as following: </p>
+<center> <table class="doxtable">
 <tr>
 <th>Multiplier </th><th>Glyph  </th></tr>
 <tr>
@@ -129,45 +148,87 @@ $(document).ready(function(){initNavTree('gui.html','');});
 </div>
  </td></tr>
 </table>
+</center><p class="startli"><br/>
+</p>
+</li>
+<li>By default, the DC Load displays <b>Input Voltage</b>, <b>Current load</b>, and <b>Power dissipation</b> values. <dl class="section note"><dt>Note</dt><dd>The Voltage is measured on the input connectors of the DC Load and may differs from the measured value out of the power supply source.</dd></dl>
 <br/>
 </li>
-<li>According to the status of the DC Load, some icons may be shown: <table class="doxtable">
+<li><p class="startli">After 3 seconds in settings mode, without any encoder action, the DC Load returns to the <b>input values</b> display mode.</p>
+<p class="startli"><br/>
+</p>
+</li>
+<li>According to the actual status of the DC Load, some icons may be shown: <center> <table class="doxtable">
 <tr>
 <th>Feature </th><th>Glyph  </th></tr>
 <tr>
-<td>Logging </td><td><div class="image">
+<td>Logging is running </td><td><div class="image">
 <img src="Logging.png" alt="Logging.png"/>
 </div>
  </td></tr>
 <tr>
-<td>Locked </td><td><div class="image">
+<td>Encoder is locked </td><td><div class="image">
 <img src="Lock.png" alt="Lock.png"/>
 </div>
  </td></tr>
 <tr>
-<td>USB remote control </td><td><div class="image">
+<td>USB remote controlled </td><td><div class="image">
 <img src="USB.png" alt="USB.png"/>
 </div>
  </td></tr>
+<tr>
+<td>Over-Current alam </td><td><div class="image">
+<img src="OC.png" alt="OC.png"/>
+</div>
+ </td></tr>
+<tr>
+<td>Over-Voltage alarm </td><td><div class="image">
+<img src="OV.png" alt="OV.png"/>
+</div>
+ </td></tr>
+<tr>
+<td>Over-Temperature alarm (<small>in place of "°C"</small>)</td><td><div class="image">
+<img src="OT.png" alt="OT.png"/>
+</div>
+ </td></tr>
 </table>
+</center></li>
+</ul>
+<p><br/>
+</p>
+<ul>
+<li>To access to the options configuration, you need to press the button for more than 3 seconds. In this <em>window</em>, you can enable or disable the <b>backlight's auto-dimmer</b> and the <b>rotary encoder's auto-lock</b> features. <br/>
+ A double click changes the option focus, a simple click changes the option enability and a long press exits the options <em>window</em>.</li>
+</ul>
+<p><br/>
+</p>
+<ul>
+<li>When <b>auto-lock</b> is turned on and triggered, a double click unlocks the rotary encoder (the key icon disappear).</li>
+</ul>
+<p><br/>
+</p>
+<ul>
+<li>When <b>auto-dimmer</b> is turned on and triggered, any rotary encoder action will turn the backlight on, without any change to the defined settings.</li>
+</ul>
+<p><br/>
+</p>
+<ul>
+<li>There are 3 differents kind of alarms:<ol type="1">
+<li><b>OC</b> for over-current:<br/>
+ When <b>Over-Current</b> is triggered, Current setting is defined to 0mA, <b>OC</b> icon is displayed.<br/>
+ Over-Current alarm will be cleared once the encoder is used to set a new Current value. <br/>
 <br/>
 </li>
-<li>To access to the options, you need to press the button for more than 3 seconds. In this <em>window</em>, you can enable or disable the <b>backlight's auto-dimmer</b> and the <b>rotary encoder's auto-lock</b> features. A double click changes the option focus, a simple click changes the option status and a long press exits this <em>window</em>.</li>
-</ul>
-<p><br/>
-</p>
-<ul>
-<li>When auto-lock is turned on, and triggered, a double click unlocks the rotary encoder.</li>
-</ul>
-<p><br/>
-</p>
-<ul>
-<li>There are 3 differents alarms: <b>OC</b> for over-current, <b>OV</b> for over-voltage and <b>OT</b> the over-termperature.</li>
-</ul>
-<p><br/>
-</p>
-<ul>
-<li>When auto-dimmer is turned on, and triggered, any rotary encoder action will turn the backlight on, without any change to the defined settings.</li>
+<li><b>OV</b> for over-voltage:<br/>
+ When <b>Over-Voltage</b> is trig&lt;gered, Current setting is defined to 0mA, <b>OV</b> icon is displayed.<br/>
+ Encoder will have no action until the input voltage drops below to its maximum value (24V). <br/>
+<br/>
+</li>
+<li><b>OT</b> the over-temperature:<br/>
+ When <b>Over-Temperature</b> is triggered, Current setting is defined to 0mA, <b>OT</b> icon is displayed.<br/>
+ Encoder will have no action until the internal temperature drops below to its maximum value (80°C).</li>
+</ol>
+</li>
 </ul>
 <p><br/>
 </p>
@@ -179,7 +240,7 @@ $(document).ready(function(){initNavTree('gui.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Dec 31 2014 11:11:27 for aDCLoad by
+    <li class="footer">Generated on Tue Jan 6 2015 13:32:23 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

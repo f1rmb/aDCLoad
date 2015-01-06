@@ -17,7 +17,7 @@ var indexSectionsWithContent =
   7: "cdos",
   8: "a",
   9: "m",
-  10: "aclrtu"
+  10: "aclru"
 };
 
 var indexSectionNames =

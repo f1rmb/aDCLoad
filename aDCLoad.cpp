@@ -47,58 +47,109 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 /**
  * \page fuses ATmega32U4 fuses settings
  *
- * Unlike the Arduino Leornardo board, the ATmega32U4 MCU used in this DC load needs some special fuses settings.
+ * Unlike the Arduino&trade; Leornardo board, the ATmega32U4 MCU used in this DC Load needs some special fuses settings.
  *
  * The following command line defines them to the correct values:
  *
  * \code avrdude -F -p atmega32u4 -C /etc/avrdude.conf -v -e -V -c usbasp -P usb -U lfuse:w:0xFF:m -U hfuse:w:0xD1:m -U efuse:w:0xCB:m -F lfuse:w:0xE1:m \endcode
  *
+ * You can also invoke the provided <i>Makefile</i>, as:
+ *
+ * \code make fuses \endcode
  *
  */
 
 /**
  * \page gui User interface overview
- * \todo complete GUI section
+ *
  *
  * - The DC load control is done using a simple rotary encoder, which integrates a push button.
- * There are two modes, <b>values reading</b> and <b>values settings</b>.
- * When you rotate the encoder, the controler automatically switches to settings mode. You just need to rotate the encoder to set up the desired value.
- * In both modes, a double click changes the focus (delimited by '[' and ']' symbols) to the next value parameter.
- * Also, a simple click changes the tuning step. Next to the ']' delimiter symbol, an icon displays the tuning step, as following:
- *  Multiplier | Glyph
- *  -----------|-------
- *  x1 | \image html x1.png "" \image latex x1.png ""
- *  x10 | \image html x10.png "" \image latex x10.png ""
- *  x100 |  \image html x100.png "" \image latex x100.png ""
- *  x1000 | \image html x1k.png "" \image latex x1k.png ""
+ *
+ *   <br>
+ *
+ * - When the DC Load displays the input value (left aligned values), a single encoder detents turns the DC Load's display in settings mode (right aligned values), without any setting value changes.
+ *
+ *   <br>
+ *
+ * - There are two display modes, <b>input values</b> and <b>settings values</b>.
+ *   <br>
+ *   When you rotate the encoder, the DC Load switches automatically to <b>settings mode</b>.
+ *   <br>
+ *   You just need to rotate the encoder to define the desired value, accordingly to the focus : <b>Current</b> or <b>Power</b>.
+ *
+ *   <br>
+ *
+ * - In both display modes, a double click changes the focus (delimited by '<b>[</b>' and '<b>]</b>' symbols) to the next value parameter,
+ *   Current (<b>I</b>) or Power (<b>P</b>).
+ *
+ *   <br>
+ *
+ * - A simple click changes the tuning step.
+ *   <br>
+ *   Next to the '<b>]</b>' delimiter symbol, an icon displays the tuning step multiplier, as following:
+ *   <center>
+ *      Multiplier | Glyph
+ *      -----------|-------
+ *      x1 | \image html x1.png "" \image latex x1.png ""
+ *      x10 | \image html x10.png "" \image latex x10.png ""
+ *      x100 |  \image html x100.png "" \image latex x100.png ""
+ *      x1000 | \image html x1k.png "" \image latex x1k.png ""
+ *   </center>
+ *
+ *   <br>
+ *
+ * - By default, the DC Load displays <b>Input Voltage</b>, <b>Current load</b>, and <b>Power dissipation</b> values.
+ *   \note The Voltage is measured on the input connectors of the DC Load and may differs from the measured value out of the power supply source.
+ *
+ *   <br>
+ *
+ * - After 3 seconds in settings mode, without any encoder action, the DC Load returns to the <b>input values</b> display mode.
+ *
+ *   <br>
+ *
+ * - According to the actual status of the DC Load, some icons may be shown:
+ *   <center>
+ *      Feature | Glyph
+ *      --------|------
+ *      Logging is running | \image html Logging.png "" \image latex Logging.png ""
+ *      Encoder is locked | \image html Lock.png "" \image latex Lock.png ""
+ *      USB remote controlled | \image html USB.png "" \image latex USB.png ""
+ *      Over-Current alam | \image html OC.png "" \image latex OC.png ""
+ *      Over-Voltage alarm | \image html OV.png "" \image latex OV.png ""
+ *      Over-Temperature alarm (<small>in place of "°C"</small>)| \image html OT.png "" \image latex OT.png ""
+ *   </center>
  *
  * <br>
  *
- * - According to the status of the DC Load, some icons may be shown:
- *  Feature | Glyph
- *  --------|------
- *  Logging | \image html Logging.png "" \image latex Logging.png ""
- *  Locked | \image html Lock.png "" \image latex Lock.png ""
- *  USB remote control | \image html USB.png "" \image latex USB.png ""
+ * - To access to the options configuration, you need to press the button for more than 3 seconds.
+ *   In this <i>window</i>, you can enable or disable the <b>backlight's auto-dimmer</b> and the <b>rotary encoder's
+ *   auto-lock</b> features.
+ *   <br>
+ *   A double click changes the option focus, a simple click changes the option enability and a long press exits the options <i>window</i>.
  *
  * <br>
  *
- * - To access to the options, you need to press the button for more than 3 seconds. In this <i>window</i>,
- * you can enable or disable the <b>backlight's auto-dimmer</b> and the <b>rotary encoder's auto-lock</b> features.
- * A double click changes the option focus, a simple click changes the option status and a long press exits this <i>window</i>.
+ * - When <b>auto-lock</b> is turned on and triggered, a double click unlocks the rotary encoder (the key icon disappear).
  *
  * <br>
  *
- * - When auto-lock is turned on, and triggered, a double click unlocks the rotary encoder.
+ * - When <b>auto-dimmer</b> is turned on and triggered, any rotary encoder action will turn the backlight on, without any change to
+ *   the defined settings.
  *
  * <br>
  *
- * - There are 3 differents alarms: <b>OC</b> for over-current, <b>OV</b> for over-voltage and <b>OT</b> the over-termperature.
- *
- * <br>
- *
- * - When auto-dimmer is turned on, and triggered, any rotary encoder action will turn the backlight on, without any change to
- * the defined settings.
+ * - There are 3 differents kind of alarms:
+ *    -# <b>OC</b> for over-current:<br>
+ *      When <b>Over-Current</b> is triggered, Current setting is defined to 0mA, <b>OC</b> icon is displayed.<br>
+ *      Over-Current alarm will be cleared once the encoder is used to set a new Current value.
+ *     <br><br>
+ *    -# <b>OV</b> for over-voltage:<br>
+ *      When <b>Over-Voltage</b> is trig<gered, Current setting is defined to 0mA, <b>OV</b> icon is displayed.<br>
+ *      Encoder will have no action until the input voltage drops below to its maximum value (24V).
+ *     <br><br>
+ *    -# <b>OT</b> the over-temperature:<br>
+ *      When <b>Over-Temperature</b> is triggered, Current setting is defined to 0mA, <b>OT</b> icon is displayed.<br>
+ *      Encoder will have no action until the internal temperature drops below to its maximum value (80°C).
  *
  * <br>
  *
@@ -213,7 +264,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *        - Power supply (<b>0..24V</b>, <b>8A</b>)
  * <br><br>
  *      - __Software__:
- *        * A serial terminal emulator (eg: “<i>HyperTerminal</i>” or “<i>Tera Term</i>” on Windows, “<i>minicom</i>” or “<i>cutecom</i>” on Linux).
+ *        * A serial terminal emulator (e.g. “<i>HyperTerminal</i>” or “<i>Tera Term</i>” on Windows, “<i>minicom</i>” or “<i>cutecom</i>” on Linux).
  *
  *         The communication settings are: <b>57600</b>, <b>8</b>, <b>N</b>, <b>1</b>
  *

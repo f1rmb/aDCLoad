@@ -20,7 +20,6 @@ var NAVTREE =
       [ "CSV logging format", "logging.html#logform", null ]
     ] ],
     [ "Calibration Process", "calibration.html", null ],
-    [ "Todo List", "todo.html", null ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
       [ "Class Index", "classes.html", null ],
