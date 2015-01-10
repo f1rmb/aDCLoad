@@ -189,6 +189,7 @@ ARDUINO_LIBS =
 USER_LIBDIR =	~/sketchbook/libraries
 #USER_LIBS =	ClickEncoder
 #USER_LIBS +=	TimerOne
+#USER_LIBS +=	TimerThree
 #USER_LIBS +=	Volker
 #USER_LIBS +=	AnyPrint
 #USER_LIBS +=	CLIserial
@@ -454,6 +455,7 @@ CINCS = \
 	-I/usr/share/arduino/libraries/Wire/utility \
 	-I./ClickEncoder \
 	-I./TimerOne \
+	-I./TimerThree \
 	-I$(USER_LIBDIR)/
 
 
