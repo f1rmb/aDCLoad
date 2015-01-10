@@ -920,8 +920,9 @@
 			<Add directory="$(ARDUINO_DIR)/libraries/TinyGPS" />
 			<Add directory="$(ARDUINO_DIR)/libraries/Wire" />
 			<Add directory="$(ARDUINO_DIR)/libraries/Wire/utility" />
-			<Add directory="ClickEncoder" />
-			<Add directory="TimerOne" />
+			<Add directory="./ClickEncoder" />
+			<Add directory="./TimerOne" />
+			<Add directory="./TimerThree" />
 		</Compiler>
 		<Linker>
 			<Add option="-Wl,--gc-sections" />

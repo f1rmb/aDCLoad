@@ -17,6 +17,8 @@ var searchData=
   ['setfanspeed',['setFanSpeed',['../classa_d_c_settings.html#a31cc9ffe3466374d156b92bfa19509c0',1,'aDCSettings']]],
   ['setoperationmode',['setOperationMode',['../classa_d_c_settings.html#ad8c96bcd6ed9edc4b161b3bee59b8ac6',1,'aDCSettings']]],
   ['setpower',['setPower',['../classa_d_c_settings.html#a17469377e0b2f7df3b03b507700aa92b',1,'aDCSettings']]],
+  ['setpulse',['setPulse',['../classa_d_c_settings.html#a0ea0ca3f471077aae336f61c0e060c09',1,'aDCSettings']]],
+  ['setpulsehigh',['setPulseHigh',['../classa_d_c_settings.html#a5d7ab7c41cc2e1bb2b29de225497c966',1,'aDCSettings']]],
   ['setselectionmode',['setSelectionMode',['../classa_d_c_settings.html#a9af567b4a4cd2473a0014a561b340271',1,'aDCSettings']]],
   ['settemperature',['setTemperature',['../classa_d_c_settings.html#abbbd50bc969628c02bc00780316709e2',1,'aDCSettings']]],
   ['setup',['setup',['../classa_d_c_display.html#a4622e023f968931a0a55d6a258c65df7',1,'aDCDisplay::setup()'],['../classa_d_c_engine.html#a59c7629fa3d7762ab9368fa34db5bb4f',1,'aDCEngine::setup()'],['../sketch_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d',1,'setup():&#160;sketch.cpp']]],

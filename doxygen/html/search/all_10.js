@@ -2,6 +2,7 @@ var searchData=
 [
   ['selection_5fmode_5fcurrent',['SELECTION_MODE_CURRENT',['../classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35a9edf59cc291fdd158c96b2a813f57af8',1,'aDCSettings']]],
   ['selection_5fmode_5fpower',['SELECTION_MODE_POWER',['../classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35a95400c9529da3d197e15ee2c21e19b3d',1,'aDCSettings']]],
+  ['selection_5fmode_5fpulse',['SELECTION_MODE_PULSE',['../classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35aee61cbebe0cfa670b48330c0b7153d9c',1,'aDCSettings']]],
   ['selection_5fmode_5funknown',['SELECTION_MODE_UNKNOWN',['../classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35abf13fab765b0da271af7c7c4e2075a7e',1,'aDCSettings']]],
   ['selectionmode_5ft',['SelectionMode_t',['../classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35',1,'aDCSettings']]],
   ['serialavailable',['serialAvailable',['../a_d_c_load_8cpp.html#abf5ced41ffe57ba4e28f54f37b22169f',1,'aDCLoad.cpp']]],
@@ -21,6 +22,8 @@ var searchData=
   ['setfanspeed',['setFanSpeed',['../classa_d_c_settings.html#a31cc9ffe3466374d156b92bfa19509c0',1,'aDCSettings']]],
   ['setoperationmode',['setOperationMode',['../classa_d_c_settings.html#ad8c96bcd6ed9edc4b161b3bee59b8ac6',1,'aDCSettings']]],
   ['setpower',['setPower',['../classa_d_c_settings.html#a17469377e0b2f7df3b03b507700aa92b',1,'aDCSettings']]],
+  ['setpulse',['setPulse',['../classa_d_c_settings.html#a0ea0ca3f471077aae336f61c0e060c09',1,'aDCSettings']]],
+  ['setpulsehigh',['setPulseHigh',['../classa_d_c_settings.html#a5d7ab7c41cc2e1bb2b29de225497c966',1,'aDCSettings']]],
   ['setselectionmode',['setSelectionMode',['../classa_d_c_settings.html#a9af567b4a4cd2473a0014a561b340271',1,'aDCSettings']]],
   ['settemperature',['setTemperature',['../classa_d_c_settings.html#abbbd50bc969628c02bc00780316709e2',1,'aDCSettings']]],
   ['setting_5ferror_5foversized',['SETTING_ERROR_OVERSIZED',['../classa_d_c_settings.html#a493db8c7659fc379940eb2873c77b3f4acda4d7488e27b1cf33878ef72c93995d',1,'aDCSettings']]],

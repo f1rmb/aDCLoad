@@ -1,7 +1,7 @@
 var NAVTREE =
 [
   [ "aDCLoad", "index.html", [
-    [ "Arduino Programmable Constant Current Power Resistance Load", "md__home_daniel_src__arduino__arduino_a_d_c_load__r_e_a_d_m_e.html", null ],
+    [ "Arduino Programmable Constant Current Power Resistance Load", "md__home_daniel_tmp_a_d_c_load__r_e_a_d_m_e.html", null ],
     [ "ATmega32U4 fuses settings", "fuses.html", null ],
     [ "User interface overview", "gui.html", null ],
     [ "Remote Commands", "remote.html", [
@@ -14,6 +14,8 @@ var NAVTREE =
       [ "Voltage readed getter", "remote.html#volread", null ],
       [ "Logging enability", "remote.html#logsingle", null ],
       [ "Logging enability", "remote.html#logrun", null ],
+      [ "Pulse value getter", "remote.html#pulseinfo", null ],
+      [ "Pulse value setter", "remote.html#pulse", null ],
       [ "Return value", "remote.html#retval", null ]
     ] ],
     [ "Logging data format", "logging.html", [
@@ -49,7 +51,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_c_d_c_8cpp.html",
-"classa_d_c_settings.html#ad725fae7eb730a5c0dbe96cd08ca7ac7"
+"classa_d_c_settings.html#ac5398bce9dfacdccfea88b59607b7720"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

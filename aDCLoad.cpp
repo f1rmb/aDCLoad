@@ -36,6 +36,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <ClickEncoder.h>
 #include <TimerOne.h>
 
+#ifndef RESISTANCE
+#include <TimerThree.h>
+#endif
+
 #include "aDCLoad.h"
 
 /** \file aDCLoad.cpp
@@ -75,12 +79,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *   <br>
  *   When you rotate the encoder, the DC Load switches automatically to <b>settings mode</b>.
  *   <br>
- *   You just need to rotate the encoder to define the desired value, accordingly to the focus : <b>Current</b> or <b>Power</b>.
+ *   You just need to rotate the encoder to define the desired value, accordingly to the focus : <b>Current</b>, <b>Power</b> or <b>Pulse Transient Time</b>.
  *
  *   <br>
  *
  * - In both display modes, a double click changes the focus (delimited by '<b>[</b>' and '<b>]</b>' symbols) to the next value parameter,
- *   Current (<b>I</b>) or Power (<b>P</b>).
+ *   Current (<b>I</b>), Power (<b>P</b>) or Pulse Transient Time (<b>t</b>).
  *
  *   <br>
  *
@@ -98,10 +102,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  *   <br>
  *
- * - By default, the DC Load displays <b>Input Voltage</b>, <b>Current load</b>, <b>Power dissipation</b> values and <b>heatsink temperature</b>.
+ * - By default, the DC Load displays <b>Input Voltage</b>, <b>Current load</b>, <b>Power dissipation</b>, <b>Pulse Transient Time</b> values and <b>heatsink temperature</b>.
  *   \note The Voltage is measured on the input connectors of the DC Load and may differs from the measured value out of the power supply source.
  *
  *   <br>
+ *
+ * - The <b>Pulse Transient Time</b> permits you to define a pulse duration, from <b>0mA</b> to the defined loading current value. After this peak, the DC Load will switch to <b>0mA</b> loading current, for same duration.
+ *   This will cycle endlessly until you set the <b>Pulse Transient Time</b> to <b>0s</b>.
+ *
+ *      \image html aDCLoad-Pulse.png "" \image latex aDCLoad-Pulse.png ""
+ *
+ *   \note The maximum duration is <b>8.192s</b>
+ *
+ *   <br>
+ *
  *
  * - After 3 seconds in settings mode, without any encoder action, the DC Load returns to the <b>input values</b> display mode.
  *
@@ -158,7 +172,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 /**
  * \page remote Remote Commands
- * See also \ref logging
+ * See also \ref logging.
  *
  * \note Serial port configuration: <b>57600</b>,<b>8</b>,<b>N</b>,<b>1</b>
  * \warning Commands and arguments are <b>case sensitive</b>, <b>ALL</b> in <b>UPCASE</b>
@@ -167,7 +181,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * * <b>:*IDN?:</b>
  *      - Returns firmware informations
  *
- * See \ref retval
+ * See \ref retval.
  *
  * \section curget Current setting getter
  * * <b>:ISET?:</b>
@@ -190,8 +204,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * * <b>:CAL:SAVE</b>
  *      - Backup calibation datas into EEPROM.
  *
- * See \ref retval
- * <br> See \ref calibration
+ * See \ref retval.
+ * <br> See \ref calibration.
  *
  * \section dac DAC value setter (calibration purpose)
  * * <b>:DAC:<i>value</i></b>
@@ -199,8 +213,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * \note This command has no effect outside calibration mode
  *
- * See \ref cal
- * <br> See \ref calibration
+ * See \ref cal.
+ * <br> See \ref calibration.
  *
  * \section curread Current readed getter
  * * <b>:I?:</b>
@@ -219,15 +233,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *      - Printout if logging is <b><i>ON</i></b> or <b><i>OFF</i></b>.
  *
  * See \ref retval.
+ * <br> See \ref logging.
  *
  * \section logrun Logging enability
  * * <b>:LOG:<i>toggle</i></b>
  *      - Turns <b><i>ON</i></b> or <b><i>OFF</i></b> the logging feature.<br>
-
+ *
  * \note If <b><i>toggle</i></b> value is not specified, a single logging line is returned.
-
+ *
+ * See \ref retval.
+ * <br> See \ref logging.
+ *
+ * \section pulseinfo Pulse value getter
+ * * <b>:PUL?:</b>
+ *      - Returns pulse time value (in <b>ms</b>)
+ *
  * See \ref retval.
  *
+ * \section pulse Pulse value setter
+ *
+ * * <b>:PUL:<i>value</i></b>
+ *      - Set pulse time <b><i>value</i></b> (in <b>ms</b>)
+ *
+ * See \ref retval.
  *
  * \section retval Return value
  * <b>:<i>value</i>:<i>status</i>:</b>
@@ -384,6 +412,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  *
  */
+
+aDCEngine *pThis = NULL;
 
 /**
 *** Implement our serial print function to save ~300ko
@@ -644,6 +674,8 @@ aDCSettings::aDCSettings() :
                     m_setsCurrent(0), m_readCurrent(0),
 #ifdef RESISTANCE
                     m_setsResistance(0), m_readResistance(0),
+#else
+                    m_setsPulse(0),
 #endif
                     m_setsPower(0), m_readPower(0),
 #ifdef SIMU
@@ -660,6 +692,10 @@ aDCSettings::aDCSettings() :
                     m_lockTick(0), m_operationTick(0),
                     m_features(0x0),
                     m_datas(0xFFFF)
+#ifndef RESISTANCE
+                    , m_pulseEnabled(false),
+                    m_pulseHigh(true)
+#endif
 {
     // Calibration zeroing
     for (uint8_t i = 0; i < CALIBRATION_MAX; i++)
@@ -757,7 +793,53 @@ float aDCSettings::getResistance(OperationMode_t mode)
 {
     return (mode == OPERATION_MODE_SET) ? m_setsResistance : m_readResistance;
 }
+#else
+/** \brief Pulse setter
+ *
+ * \param v float : <b> pulse (ms) </b>
+ * \return aDCSettings::SettingError_t
+ *
+ */
+aDCSettings::SettingError_t aDCSettings::setPulse(float v)
+{
+    SettingError_t err = _setValue(aDCSettings::OPERATION_MODE_SET, DATA_PULSE_SETS, v, m_setsPulse, m_setsPulse, PULSE_MAXIMUM);
 
+    if (err == SETTING_ERROR_VALID)
+    {
+        // Set Timer3 period
+        // Enable Pulse ?
+        if (m_setsPulse == 0.0)
+        {
+            if (m_pulseEnabled)
+            {
+                m_pulseEnabled = false;
+
+                Timer3.setPeriod((PULSE_MAXIMUM * 1000.000) * 1000); ///< Sleep well honey
+
+                m_pulseHigh = true;
+            }
+        }
+        else
+        {
+            if (!m_pulseEnabled)
+                m_pulseEnabled = true;;
+
+            Timer3.setPeriod(static_cast<unsigned long>((m_setsPulse * 1000.000) * 1000)); ///< Wake up son!
+        }
+    }
+
+    return err;
+}
+
+/** \brief Pulse getter
+ *
+ * \return float : <b> pulse (ms) </b>
+ *
+ */
+float aDCSettings::getPulse()
+{
+    return m_setsPulse;
+}
 #endif
 
 // Power
@@ -890,6 +972,24 @@ void aDCSettings::updateValuesFromMode(float v, SelectionMode_t mode)
 
                 case aDCSettings::SETTING_ERROR_UNDERSIZED:
                     break;
+
+                default:
+                    break;
+            }
+            break;
+
+#else   // Pulse
+        case SELECTION_MODE_PULSE:
+            switch (setPulse(v))
+            {
+                case aDCSettings::SETTING_ERROR_UNDERSIZED:
+                    setPulse(0.0);
+                    setEncoderPosition(0);
+                    break;
+
+                case aDCSettings::SETTING_ERROR_OVERSIZED:
+                    setPulse(PULSE_MAXIMUM);
+                    setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(PULSE_MAXIMUM) * 1000.000)));
 
                 default:
                     break;
@@ -1058,7 +1158,13 @@ aDCSettings::SelectionMode_t aDCSettings::getPrevNextMode(aDCSettings::Selection
             return static_cast<SelectionMode_t>(m - 1);
     }
 
-    return (next ? SELECTION_MODE_CURRENT : SELECTION_MODE_POWER);
+    return (next ? SELECTION_MODE_CURRENT :
+#ifdef RESISTANCE
+            SELECTION_MODE_RESISTANCE
+#else
+            SELECTION_MODE_PULSE
+#endif
+            );
 }
 
 // Display Mode
@@ -1671,6 +1777,8 @@ int16_t aStepper::getValueFromMode(uint8_t mode)
 
 #ifdef RESISTANCE
         case aDCSettings::SELECTION_MODE_RESISTANCE:
+#else
+        case aDCSettings::SELECTION_MODE_PULSE:
 #endif
         case aDCSettings::SELECTION_MODE_POWER:
             return getMult();
@@ -1735,10 +1843,6 @@ inline int16_t aStepper::_pow(int base, int exp)
  *
  * \param rs uint8_t : <b> LCD RS pin </b>
  * \param enable uint8_t : <b> LCD ENABLE pin </b>
- * \param d0 uint8_t : <b> LCD d0 pin </b>
- * \param d1 uint8_t : <b> LCD d1 pin </b>
- * \param d2 uint8_t : <b> LCD d2 pin </b>
- * \param d3 uint8_t : <b> LCD d3 pin </b>
  * \param d4 uint8_t : <b> LCD d4 pin </b>
  * \param d5 uint8_t : <b> LCD d5 pin </b>
  * \param d6 uint8_t : <b> LCD d6 pin </b>
@@ -1747,8 +1851,8 @@ inline int16_t aStepper::_pow(int base, int exp)
  * \param rows uint8_t : <b> LCD rows number </b>
  *
  */
-aLCD::aLCD(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cols, uint8_t rows) :
-        LiquidCrystal(rs, enable, d0, d1, d2, d3, d4, d5, d6, d7),
+aLCD::aLCD(uint8_t rs, uint8_t enable, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cols, uint8_t rows) :
+        LiquidCrystal(rs, enable, d4, d5, d6, d7),
         m_cols(0), m_rows(0), m_curCol(0), m_curRow(0)
 {
     begin(cols, rows);
@@ -1913,10 +2017,6 @@ void aLCD::clearValue(uint8_t row, int destMinus)
  * \param parent aDCEngine* : <b> Parent engine </b>
  * \param rs uint8_t : <b> LCD RS pin </b>
  * \param enable uint8_t : <b> LCD ENABLE pin </b>
- * \param d0 uint8_t : <b> LCD d0 pin </b>
- * \param d1 uint8_t : <b> LCD d1 pin </b>
- * \param d2 uint8_t : <b> LCD d2 pin </b>
- * \param d3 uint8_t : <b> LCD d3 pin </b>
  * \param d4 uint8_t : <b> LCD d4 pin </b>
  * \param d5 uint8_t : <b> LCD d5 pin </b>
  * \param d6 uint8_t : <b> LCD d6 pin </b>
@@ -1925,8 +2025,8 @@ void aLCD::clearValue(uint8_t row, int destMinus)
  * \param rows uint8_t : <b> LCD rows </b>
  *
  */
-aDCDisplay::aDCDisplay(aDCEngine *parent, uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cols, uint8_t rows) :
-        aLCD(rs, enable, d0, d1, d2, d3, d4, d5, d6, d7, cols, rows),
+aDCDisplay::aDCDisplay(aDCEngine *parent, uint8_t rs, uint8_t enable, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cols, uint8_t rows) :
+        aLCD(rs, enable, d4, d5, d6, d7, cols, rows),
         m_Parent(parent), m_dimmed(false), m_dimmerTick(0), m_nextUpdate(0)
 {
 }
@@ -2089,7 +2189,7 @@ void aDCDisplay::updateField(aDCSettings::OperationMode_t opMode, float vSet, fl
  */
 void aDCDisplay::updateDisplay()
 {
-    aDCSettings                    *d           = (aDCSettings *)m_Parent->_getSettings();
+    aDCSettings                    *d           = (aDCSettings *)m_Parent->getSettings();
     bool                            fullRedraw  = false;
     aDCSettings::OperationMode_t    opMode;
     unsigned long                   m = millis();
@@ -2117,6 +2217,9 @@ void aDCDisplay::updateDisplay()
 #ifdef RESISTANCE
                     aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_RESISTANCE + 1);
                     aLCD::print("R: ");
+#else
+                    aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_PULSE + 1);
+                    aLCD::print("t: ");
 #endif
                     aLCD::setCursor(OFFSET_UNIT, aDCSettings::SELECTION_MODE_POWER + 1);
                     aLCD::print("P: ");
@@ -2160,6 +2263,12 @@ void aDCDisplay::updateDisplay()
                 {
                     updateField(opMode, d->getResistance(aDCSettings::OPERATION_MODE_SET), d->getResistance(aDCSettings::OPERATION_MODE_READ), aDCSettings::SELECTION_MODE_RESISTANCE + 1, char(0xF4));
                     d->syncData((opMode == aDCSettings::OPERATION_MODE_READ) ? aDCSettings::DATA_RESISTANCE_READ : aDCSettings::DATA_RESISTANCE_SETS);
+                }
+#else
+                if (d->isDataEnabled(aDCSettings::DATA_PULSE_SETS) || fullRedraw)
+                {
+                    updateField(opMode, d->getPulse(), d->getPulse(), aDCSettings::SELECTION_MODE_PULSE + 1, 's');
+                    d->syncData(aDCSettings::DATA_PULSE_SETS);
                 }
 #endif // RESISTANCE
 
@@ -2440,10 +2549,6 @@ bool aDCDisplay::isBacklightDimmed()
  *
  * \param rs uint8_t : <b> LCD RS pin </b>
  * \param enable uint8_t : <b> LCD ENABLE pin </b>
- * \param d0 uint8_t : <b> LCD d0 pin </b>
- * \param d1 uint8_t : <b> LCD d1 pin </b>
- * \param d2 uint8_t : <b> LCD d2 pin </b>
- * \param d3 uint8_t : <b> LCD d3 pin </b>
  * \param d4 uint8_t : <b> LCD d4 pin </b>
  * \param d5 uint8_t : <b> LCD d5 pin </b>
  * \param d6 uint8_t : <b> LCD d6 pin </b>
@@ -2456,10 +2561,9 @@ bool aDCDisplay::isBacklightDimmed()
  * \param encsteps uint8_t : <b> Encoder steps per notch </b>
  *
  */
-aDCEngine::aDCEngine(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
-                     uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cols, uint8_t rows,
+aDCEngine::aDCEngine(uint8_t rs, uint8_t enable, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cols, uint8_t rows,
                      uint8_t enca, uint8_t encb, uint8_t encpb, uint8_t encsteps)
-                     : aDCDisplay(this, rs, enable, d0, d1, d2, d3, d4, d5, d6, d7, cols, rows),
+                     : aDCDisplay(this, rs, enable, d4, d5, d6, d7, cols, rows),
                        m_encoder(new ClickEncoder(enca, encb, encpb, encsteps)),
                        m_RXoffset(0)
 {
@@ -2564,6 +2668,10 @@ void aDCEngine::_handleLoggingAndRemote()
 #ifdef RESISTANCE
                                 case aDCSettings::SELECTION_MODE_RESISTANCE:
                                     m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getResistance(aDCSettings::OPERATION_MODE_SET)) * 1000.000)));
+                                    break;
+#else
+                                case aDCSettings::SELECTION_MODE_PULSE:
+                                    m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getPulse()) * 1000.000)));
                                     break;
 #endif
                                 case aDCSettings::SELECTION_MODE_POWER:
@@ -2687,6 +2795,23 @@ void aDCEngine::_handleLoggingAndRemote()
                             _setDAC(v, DAC_CURRENT_CHAN);
                             valid = true;
                         }
+#ifndef RESISTANCE
+                        else if (!strcmp((const char *)cmd, "PUL?")) // Pulse
+                        {
+                            serialPrint(floatRounding(floatRounding(m_Data.getPulse()) * 1000.000), 0);
+                            valid = true;
+                        }
+                        else if (!strcmp((const char *)cmd, "PUL")) // Pulse
+                        {
+                            float v = (atof((const char *)arg) / 1000.000);
+
+                            m_Data.updateValuesFromMode(v, aDCSettings::SELECTION_MODE_PULSE);
+
+                            serialPrint(floatRounding(floatRounding(m_Data.getPulse()) * 1000.000), 0);
+
+                            valid = (m_Data.getPulse() == v);
+                        }
+#endif
                         else if (!strcmp((const char *)cmd, "I?")) // Report Current Read
                         {
                             serialPrint(floatRounding(floatRounding(m_Data.getCurrent(aDCSettings::OPERATION_MODE_READ)) * 1000.000), 0);
@@ -2758,6 +2883,29 @@ void aDCEngine::_handleLoggingAndRemote()
     }
 }
 
+#ifndef RESISTANCE
+/** \brief ISR callback function for Timer3, used for pulse feature
+ *
+ * \return void
+ *
+ */
+void timer3ISR(void)
+{
+    noInterrupts();
+    aDCSettings *d = (aDCSettings *)pThis->getSettings();
+
+    if (d->isPulseEnabled())
+        d->setPulseHigh(!d->isPulseHigh());
+    else
+    {
+        if (!d->isPulseHigh())
+            d->setPulseHigh(true);
+    }
+    interrupts();
+
+}
+#endif
+
 /** \brief Setup function, should be called before any other member
  *
  * \param isr ISRCallback : <b> pointer to callback function that may call service() </b>
@@ -2781,9 +2929,15 @@ void aDCEngine::setup(ISRCallback isr)
     // Set SPI clock divider to 16, therfore a 1 MhZ signal due to the maximum frequency of the ADC.
     SPI.setClockDivider(SPI_CLOCK_DIV32); // WAS 16
 
-    // Initialise timer
+    // Initialise Encoder timer
     Timer1.initialize(1000);
     Timer1.attachInterrupt(isr);
+
+#ifndef RESISTANCE
+    // Initialize Pulse timer
+    Timer3.initialize((PULSE_MAXIMUM * 1000.000) * 1000);
+    Timer3.attachInterrupt(timer3ISR);
+#endif
 
     aDCDisplay::setup();
     aDCDisplay::showBanner();
@@ -2798,6 +2952,8 @@ void aDCEngine::setup(ISRCallback isr)
 
     // Workaround TX LED indicator
     TXLED0;
+
+    pThis = this;
 }
 
 /** \brief Main loop function.
@@ -2980,6 +3136,10 @@ void aDCEngine::_handleButtonEvent(ClickEncoder::Button button)
                     case aDCSettings::SELECTION_MODE_RESISTANCE:
                         m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getResistance(aDCSettings::OPERATION_MODE_SET)) * 1000.000)));
                         break;
+#else
+                    case aDCSettings::SELECTION_MODE_PULSE:
+                        m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getPulse()) * 1000.000)));
+                        break;
 #endif
                     case aDCSettings::SELECTION_MODE_POWER:
                         m_Data.setEncoderPosition(static_cast<int32_t>(floatRounding(floatRounding(m_Data.getPower(aDCSettings::OPERATION_MODE_SET)) * 1000.000)));
@@ -3004,11 +3164,7 @@ void aDCEngine::_handleButtonEvent(ClickEncoder::Button button)
                             m_Data.enableFeature(FEATURE_AUTODIM, !m_Data.isFeatureEnabled(FEATURE_AUTODIM));
                             break;
 
-#ifdef RESISTANCE
-                        case aDCSettings::SELECTION_MODE_RESISTANCE:
-#else
                         case aDCSettings::SELECTION_MODE_POWER:
-#endif
                             m_Data.enableFeature(FEATURE_AUTOLOCK, !m_Data.isFeatureEnabled(FEATURE_AUTOLOCK));
                             break;
 
@@ -3135,6 +3291,10 @@ void aDCEngine::_updateLoadCurrent()
             case aDCSettings::SELECTION_MODE_RESISTANCE:
                 m_Data.updateValuesFromMode(m_Data.getEncoderPosition() / 1000.000, aDCSettings::SELECTION_MODE_RESISTANCE);
                 break;
+#else
+            case aDCSettings::SELECTION_MODE_PULSE:
+                m_Data.updateValuesFromMode(m_Data.getEncoderPosition() / 1000.000, aDCSettings::SELECTION_MODE_PULSE);
+                break;
 #endif
             case aDCSettings::SELECTION_MODE_POWER:
                 m_Data.updateValuesFromMode(m_Data.getEncoderPosition() / 1000.000, aDCSettings::SELECTION_MODE_POWER);
@@ -3208,12 +3368,24 @@ void aDCEngine::_adjustLoadCurrent()
         uint16_t dacCurrent = static_cast<uint16_t>(((currentSets * 1000.000) * cal.slope) + cal.offset);
 
         // Send the value to the DAC.
-        if (!m_Data.getCalibrationMode() && (dacCurrent != m_Data.getCurrentDAC()))
+        if (!m_Data.getCalibrationMode() && ((dacCurrent != m_Data.getCurrentDAC())
+#ifndef RESISTANCE
+                                             || m_Data.isPulseEnabled()
+#endif
+                                             ))
         {
+#ifndef RESISTANCE
+            // Pulse is low, no Current
+            if (m_Data.isPulseEnabled() && (m_Data.isPulseHigh() == false))
+                dacCurrent = 0;
+#endif // RESISTANCE
+
             if (dacCurrent > 4095)
                 dacCurrent = 4095;
 
-            _setDAC(dacCurrent, DAC_CURRENT_CHAN);
+            // Recheck values due to pulse mode
+            if (dacCurrent != m_Data.getCurrentDAC())
+                _setDAC(dacCurrent, DAC_CURRENT_CHAN);
 
             m_Data.setCurrentDAC(dacCurrent);
         }
@@ -3388,7 +3560,7 @@ void aDCEngine::_updateFanSpeed()
  * \return const aDCSettings*
  *
  */
-const aDCSettings *aDCEngine::_getSettings() const
+const aDCSettings *aDCEngine::getSettings() const
 {
     return &m_Data;
 }
