@@ -57,7 +57,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #define MAX_POWER                                 1                ///< Define this if you want 192W support (otherwise 50W)
 //#define SIMU 1                                              ///< Define this if you want to simulate ADC/DAC/whatever (debug mode)
-//#define RESISTANCE 1                                        ///< Define this if you want to display Resistance settings (disabled for various reasons, Flash size first)
+
+/**
+ * Define this if you want to display Resistance settings.
+ * Undefine this to enable PULSE feature.
+ */
+#undef RESISTANCE
 
 // Set Constants
 static const uint8_t       ADC_CHIPSELECT_PIN          = 8;        ///< set pin 8 as the chip select for the ADC:
@@ -73,14 +78,18 @@ static const uint8_t       DAC_FAN_CHAN                = 1;        ///< set The 
 static const uint8_t       LCD_RS_PIN                  = 10;       ///< LCD RS pin.
 static const uint8_t       LCD_ENABLE_PIN              = 12;       ///< LCD ENABLE pin.
 
-static const uint8_t       LCD_D0_PIN                  = A0;       ///< LCD d0 pin.
-static const uint8_t       LCD_D1_PIN                  = A1;       ///< LCD d1 pin.
-static const uint8_t       LCD_D2_PIN                  = A2;       ///< LCD d3 pin.
-static const uint8_t       LCD_D3_PIN                  = A3;       ///< LCD d2 pin.
-static const uint8_t       LCD_D4_PIN                  = 4;        ///< LCD d4 pin.
-static const uint8_t       LCD_D5_PIN                  = 13;       ///< LCD d5 pin.
-static const uint8_t       LCD_D6_PIN                  = 6;        ///< LCD d6 pin.
-static const uint8_t       LCD_D7_PIN                  = 5;        ///< LCD d7 pin.
+/** \warning pin 5 shouldn't be used, since Timer3 use it
+*/
+static const uint8_t       LCD_D4_PIN                  = A0;       ///< LCD d4 pin.
+/** \warning pin 5 shouldn't be used, since Timer3 use it
+*/
+static const uint8_t       LCD_D5_PIN                  = A1;       ///< LCD d5 pin.
+/** \warning pin 5 shouldn't be used, since Timer3 use it
+*/
+static const uint8_t       LCD_D6_PIN                  = A2;       ///< LCD d6 pin.
+/** \warning pin 5 shouldn't be used, since Timer3 use it
+*/
+static const uint8_t       LCD_D7_PIN                  = A3;       ///< LCD d7 pin.
 
 static const uint8_t       LCD_COLS_NUM                = 20;       ///< LCD columns size
 static const uint8_t       LCD_ROWS_NUM                = 4;        ///< LCD rows size
@@ -141,12 +150,14 @@ static const float         POWER_MAXIMUM               = 50.000;   ///< Maximum 
 #endif // MAX_POWER
 #ifdef RESISTANCE
 static const float         RESISTANCE_MAXIMUM          = FLT_MAX;  ///< Maximum resistance value (R)
+#else
+static const float         PULSE_MAXIMUM               = 8.192;   ///< Maximum pulse value (ms) (unsigned 16-bit)
 #endif // RESISTANCE
 static const uint16_t      TEMPERATURE_MAXIMUM         = 80;      ///< Over-temperature threshold
 
 // Software version
 static const int8_t        SOFTWARE_VERSION_MAJOR      = 2;        ///< Software major version
-static const int8_t        SOFTWARE_VERSION_MINOR      = 4;        ///< Software minor version
+static const int8_t        SOFTWARE_VERSION_MINOR      = 6;        ///< Software minor version
 
 // Features bitfield (max 16)
 static const uint16_t      FEATURE_LOGGING             = 1;        ///< Bitfield logging feature
@@ -245,10 +256,12 @@ class aDCSettings : public aStepper
         typedef enum
         {
             SELECTION_MODE_CURRENT,     ///< Current selected
+            SELECTION_MODE_POWER,       ///< Power selected
 #ifdef RESISTANCE
             SELECTION_MODE_RESISTANCE,  ///< Resistance selected
+#else
+            SELECTION_MODE_PULSE,       ///< Pulse selected
 #endif
-            SELECTION_MODE_POWER,       ///< Power selected
             SELECTION_MODE_UNKNOWN      ///< Nothing selected (internal)
         } SelectionMode_t;
 
@@ -305,6 +318,8 @@ class aDCSettings : public aStepper
 #ifdef RESISTANCE
         static const uint16_t   DATA_RESISTANCE_SETS    = 1 << 3;   ///< bit-field storage: Resistance sets
         static const uint16_t   DATA_RESISTANCE_READ    = 1 << 4;   ///< bit-field storage: Resistance readed
+#else
+        static const uint16_t   DATA_PULSE_SETS         = 1 << 3;
 #endif
         static const uint16_t   DATA_POWER_SETS         = 1 << 5;   ///< bit-field storage: Power sets
         static const uint16_t   DATA_POWER_READ         = 1 << 6;   ///< bit-field storage: Power readed
@@ -341,6 +356,14 @@ class aDCSettings : public aStepper
         // Resistance
         SettingError_t      setResistance(float, OperationMode_t);
         float               getResistance(OperationMode_t);
+#else
+        // Pulse
+        SettingError_t      setPulse(float);
+        float               getPulse();
+        bool                isPulseEnabled() { return m_pulseEnabled; }
+        void                enablePulse(bool enable) { m_pulseEnabled = enable; }
+        bool                isPulseHigh() { return m_pulseHigh; }
+        void                setPulseHigh(bool high) { m_pulseHigh = high; }
 #endif
 
         // Power
@@ -421,6 +444,8 @@ class aDCSettings : public aStepper
         float               m_setsCurrent, m_readCurrent;           ///< current storage
 #ifdef RESISTANCE
         float               m_setsResistance, m_readResistance;     ///< resistance storage
+#else
+        float               m_setsPulse;                            ///< Pulse time length (ms)
 #endif
         float               m_setsPower, m_readPower;               ///< power storage
         uint16_t            m_readTemperature;                      ///< temperature storage
@@ -443,6 +468,11 @@ class aDCSettings : public aStepper
         uint16_t            m_datas;                                ///< boolean displayes data storage
 
         CalibrationData_t   m_calibrationValues[CALIBRATION_MAX];   ///< Calibration datas, restored from EEPROM
+
+#ifndef RESISTANCE
+        volatile bool       m_pulseEnabled;                         ///< Pulse is enabled
+        volatile bool       m_pulseHigh;                            ///< Pulse is high ?
+#endif
 };
 
 
@@ -454,7 +484,7 @@ class aLCD : public LiquidCrystal
         //static const unsigned long SCROLL_DELAY = 300; // Disabled due to memory footprint
 
     public:
-        aLCD(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
+        aLCD(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
         ~aLCD();
 
         void                begin(uint8_t, uint8_t);
@@ -475,7 +505,7 @@ class aDCEngine;
 class aDCDisplay : public aLCD
 {
     public:
-        aDCDisplay(aDCEngine *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
+        aDCDisplay(aDCEngine *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
         ~aDCDisplay();
 
         void                setup();
@@ -508,12 +538,13 @@ class aDCEngine : public aDCDisplay
         static const uint8_t RXBUFFER_MAXLEN = 64;
 
     public:
-        aDCEngine(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t = 1);
+        aDCEngine(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t = 1);
         ~aDCEngine();
 
         void                setup(ISRCallback);
         void                run();
         void                service();
+        const aDCSettings  *getSettings() const;
 
     private:
         void                _handleButtonEvent(ClickEncoder::Button);
@@ -525,7 +556,6 @@ class aDCEngine : public aDCDisplay
         float               _getMeasuredCurrent();
         void                _updateLoadCurrent();
         void                _adjustLoadCurrent();
-        const aDCSettings  *_getSettings() const;
         void                _handleLoggingAndRemote();
 
     private:

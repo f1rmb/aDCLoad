@@ -63,3 +63,8 @@
 #include "ClickEncoder.cpp"
 #include "TimerOne.cpp"
 
+#ifndef RESISTANCE
+#include "TimerThree.cpp"
+#endif
+
+

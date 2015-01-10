@@ -6,6 +6,8 @@ var searchData=
   ['isbacklightdimmed',['isBacklightDimmed',['../classa_d_c_display.html#a0944aaa5ee7979af8d7d115ee363d553',1,'aDCDisplay']]],
   ['isdataenabled',['isDataEnabled',['../classa_d_c_settings.html#ab2a5ab44dd9f10e5b842b32a9de2c432',1,'aDCSettings']]],
   ['isfeatureenabled',['isFeatureEnabled',['../classa_d_c_settings.html#ac5398bce9dfacdccfea88b59607b7720',1,'aDCSettings']]],
+  ['ispulseenabled',['isPulseEnabled',['../classa_d_c_settings.html#afe485abbf478322900a37e5db5daadde',1,'aDCSettings']]],
+  ['ispulsehigh',['isPulseHigh',['../classa_d_c_settings.html#aa44042ec9d72e592b5e9efbd2121c724',1,'aDCSettings']]],
   ['isr',['isr',['../sketch_8cpp.html#a3d333c5a3d38fce478f9b973ab06b294',1,'sketch.cpp']]],
   ['issynced',['isSynced',['../classa_stepper.html#a1f2dceb1ac4337dee4cc0d3789f4e1c8',1,'aStepper']]]
 ];

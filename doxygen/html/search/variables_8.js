@@ -22,6 +22,8 @@ var searchData=
   ['m_5foperationmode',['m_operationMode',['../classa_d_c_settings.html#a7e9a79d70084e611063fbe34c7e5945c',1,'aDCSettings']]],
   ['m_5foperationtick',['m_operationTick',['../classa_d_c_settings.html#a5e8db9cc2d318e1393d1049aa20843df',1,'aDCSettings']]],
   ['m_5fparent',['m_Parent',['../classa_d_c_display.html#a285992a92161daa422701242a679d2b9',1,'aDCDisplay']]],
+  ['m_5fpulseenabled',['m_pulseEnabled',['../classa_d_c_settings.html#aa4a60de5938ec9ddd8670e9d804c0a85',1,'aDCSettings']]],
+  ['m_5fpulsehigh',['m_pulseHigh',['../classa_d_c_settings.html#a658fddc3ab44736d44aa9805801ea6a3',1,'aDCSettings']]],
   ['m_5freadcurrent',['m_readCurrent',['../classa_d_c_settings.html#a52ff092b321102a5c8443bf0b1e9427a',1,'aDCSettings']]],
   ['m_5freadpower',['m_readPower',['../classa_d_c_settings.html#a2d6daca878d695657f4254e7175f88b1',1,'aDCSettings']]],
   ['m_5freadtemperature',['m_readTemperature',['../classa_d_c_settings.html#a49a36d5a39b71e6c2c20369f9da46d09',1,'aDCSettings']]],
@@ -31,5 +33,6 @@ var searchData=
   ['m_5frxoffset',['m_RXoffset',['../classa_d_c_engine.html#a15d3419f187e0f56ffc9d1a832493f72',1,'aDCEngine']]],
   ['m_5fsetscurrent',['m_setsCurrent',['../classa_d_c_settings.html#a631ecdee0a528eed9e5e44ac9c2e4d6b',1,'aDCSettings']]],
   ['m_5fsetspower',['m_setsPower',['../classa_d_c_settings.html#a8eabad0a2cd9f00a64849a762b09216a',1,'aDCSettings']]],
+  ['m_5fsetspulse',['m_setsPulse',['../classa_d_c_settings.html#ae0d03d4f3e8613b5e37e0a4b200dbf12',1,'aDCSettings']]],
   ['max_5fvalue',['MAX_VALUE',['../classa_stepper.html#ab5c22269335321d72d4deed0b5b6d391',1,'aStepper']]]
 ];

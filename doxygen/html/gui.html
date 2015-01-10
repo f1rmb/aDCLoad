@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.4</span>
+   &#160;<span id="projectnumber">2.6</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -114,11 +114,11 @@ $(document).ready(function(){initNavTree('gui.html','');});
 </li>
 <li><p class="startli">There are two display modes, <b>input values</b> and <b>settings values</b>. <br/>
  When you rotate the encoder, the DC Load switches automatically to <b>settings mode</b>. <br/>
- You just need to rotate the encoder to define the desired value, accordingly to the focus : <b>Current</b> or <b>Power</b>.</p>
+ You just need to rotate the encoder to define the desired value, accordingly to the focus : <b>Current</b>, <b>Power</b> or <b>Pulse Transient Time</b>.</p>
 <p class="startli"><br/>
 </p>
 </li>
-<li><p class="startli">In both display modes, a double click changes the focus (delimited by '<b>[</b>' and '<b>]</b>' symbols) to the next value parameter, Current (<b>I</b>) or Power (<b>P</b>).</p>
+<li><p class="startli">In both display modes, a double click changes the focus (delimited by '<b>[</b>' and '<b>]</b>' symbols) to the next value parameter, Current (<b>I</b>), Power (<b>P</b>) or Pulse Transient Time (<b>t</b>).</p>
 <p class="startli"><br/>
 </p>
 </li>
@@ -151,8 +151,16 @@ $(document).ready(function(){initNavTree('gui.html','');});
 </center><p class="startli"><br/>
 </p>
 </li>
-<li>By default, the DC Load displays <b>Input Voltage</b>, <b>Current load</b>, <b>Power dissipation</b> values and <b>heatsink temperature</b>. <dl class="section note"><dt>Note</dt><dd>The Voltage is measured on the input connectors of the DC Load and may differs from the measured value out of the power supply source.</dd></dl>
+<li>By default, the DC Load displays <b>Input Voltage</b>, <b>Current load</b>, <b>Power dissipation</b>, <b>Pulse Transient Time</b> values and <b>heatsink temperature</b>. <dl class="section note"><dt>Note</dt><dd>The Voltage is measured on the input connectors of the DC Load and may differs from the measured value out of the power supply source.</dd></dl>
 <br/>
+</li>
+<li><p class="startli">The <b>Pulse Transient Time</b> permits you to define a pulse duration, from <b>0mA</b> to the defined loading current value. After this peak, the DC Load will switch to <b>0mA</b> loading current, for same duration. This will cycle endlessly until you set the <b>Pulse Transient Time</b> to <b>0s</b>.</p>
+<div class="image">
+<img src="aDCLoad-Pulse.png" alt="aDCLoad-Pulse.png"/>
+</div>
+  <dl class="section note"><dt>Note</dt><dd>The maximum duration is <b>8.192s</b></dd></dl>
+<p><br/>
+</p>
 </li>
 <li><p class="startli">After 3 seconds in settings mode, without any encoder action, the DC Load returns to the <b>input values</b> display mode.</p>
 <p class="startli"><br/>
@@ -240,7 +248,7 @@ $(document).ready(function(){initNavTree('gui.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jan 6 2015 21:01:29 for aDCLoad by
+    <li class="footer">Generated on Fri Jan 9 2015 19:20:29 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

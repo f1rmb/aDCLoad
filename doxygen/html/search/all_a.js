@@ -1,10 +1,6 @@
 var searchData=
 [
   ['lcd_5fcols_5fnum',['LCD_COLS_NUM',['../a_d_c_load_8h.html#aea58e4f5bc71beb485c1bfee30b00519',1,'aDCLoad.h']]],
-  ['lcd_5fd0_5fpin',['LCD_D0_PIN',['../a_d_c_load_8h.html#a5f2a9b8e6d3d417e24b775033615de18',1,'aDCLoad.h']]],
-  ['lcd_5fd1_5fpin',['LCD_D1_PIN',['../a_d_c_load_8h.html#a6dbe781f0d4106bc944e7c295726ee67',1,'aDCLoad.h']]],
-  ['lcd_5fd2_5fpin',['LCD_D2_PIN',['../a_d_c_load_8h.html#a697779e830c40af2f99159e20d122a39',1,'aDCLoad.h']]],
-  ['lcd_5fd3_5fpin',['LCD_D3_PIN',['../a_d_c_load_8h.html#ae9f3e38d7c79aff9ffbf6afa52e03ea8',1,'aDCLoad.h']]],
   ['lcd_5fd4_5fpin',['LCD_D4_PIN',['../a_d_c_load_8h.html#ac625a031f5582c0b6892030ae9d65b9d',1,'aDCLoad.h']]],
   ['lcd_5fd5_5fpin',['LCD_D5_PIN',['../a_d_c_load_8h.html#aae4ca2d664747d2f633623e6c4c52c0c',1,'aDCLoad.h']]],
   ['lcd_5fd6_5fpin',['LCD_D6_PIN',['../a_d_c_load_8h.html#a533cfc8d6a12f1bd8cda99e8b594c5d9',1,'aDCLoad.h']]],

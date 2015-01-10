@@ -11,6 +11,7 @@ var searchData=
   ['data_5foperation',['DATA_OPERATION',['../classa_d_c_settings.html#a1a03cd57eba06b4bf45641d32360e4bf',1,'aDCSettings']]],
   ['data_5fpower_5fread',['DATA_POWER_READ',['../classa_d_c_settings.html#a5026074b06e19de944327dd117613a82',1,'aDCSettings']]],
   ['data_5fpower_5fsets',['DATA_POWER_SETS',['../classa_d_c_settings.html#aca3bd63bd2b5e4857308898c3f4015de',1,'aDCSettings']]],
+  ['data_5fpulse_5fsets',['DATA_PULSE_SETS',['../classa_d_c_settings.html#a878a639c4fa2272b506c9d1774095f51',1,'aDCSettings']]],
   ['data_5fselection',['DATA_SELECTION',['../classa_d_c_settings.html#a87b8ec9b903a55b2073b5c1572a4c670',1,'aDCSettings']]],
   ['data_5ftemperature',['DATA_TEMPERATURE',['../classa_d_c_settings.html#a4fa84d371d5fe67fe58b3238dce5d30c',1,'aDCSettings']]],
   ['data_5fvoltage',['DATA_VOLTAGE',['../classa_d_c_settings.html#ab880e71d031ef8be5e59f36195311361',1,'aDCSettings']]],

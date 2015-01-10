@@ -16,7 +16,6 @@ var searchData=
   ['_5fgetadc',['_getADC',['../classa_d_c_engine.html#a2f9c7e9823c90775a27290cd11e6133f',1,'aDCEngine']]],
   ['_5fgetinputvoltage',['_getInputVoltage',['../classa_d_c_engine.html#aa282d750c537a5082a40f8d72ba9f79b',1,'aDCEngine']]],
   ['_5fgetmeasuredcurrent',['_getMeasuredCurrent',['../classa_d_c_engine.html#aedb9a636e6dee9f1805c5f2c5933afc3',1,'aDCEngine']]],
-  ['_5fgetsettings',['_getSettings',['../classa_d_c_engine.html#aee524ec75d3b2f85a0b54f40162c7fd2',1,'aDCEngine']]],
   ['_5fgettemp',['_getTemp',['../classa_d_c_engine.html#a27efcf87ef03952c1faa70f22d9b883d',1,'aDCEngine']]],
   ['_5fhandlebuttonevent',['_handleButtonEvent',['../classa_d_c_engine.html#a5f4a57bd54020fb3a06d5ea0cfd12d1e',1,'aDCEngine']]],
   ['_5fhandleloggingandremote',['_handleLoggingAndRemote',['../classa_d_c_engine.html#aaca080b82db4bda078d1cafe7b33ae04',1,'aDCEngine']]],

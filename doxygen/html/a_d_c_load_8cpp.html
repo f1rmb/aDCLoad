@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.4</span>
+   &#160;<span id="projectnumber">2.6</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -106,7 +106,8 @@ $(document).ready(function(){initNavTree('a_d_c_load_8cpp.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">aDCLoad.cpp File Reference</div>  </div>
 </div><!--header-->
@@ -118,6 +119,7 @@ $(document).ready(function(){initNavTree('a_d_c_load_8cpp.html','');});
 <code>#include &lt;EEPROM.h&gt;</code><br/>
 <code>#include &lt;ClickEncoder.h&gt;</code><br/>
 <code>#include &lt;TimerOne.h&gt;</code><br/>
+<code>#include &lt;TimerThree.h&gt;</code><br/>
 <code>#include &quot;<a class="el" href="a_d_c_load_8h_source.html">aDCLoad.h</a>&quot;</code><br/>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -164,6 +166,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a910f6d10ce9ed56158e95218514f495a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8cpp.html#a910f6d10ce9ed56158e95218514f495a">floatRounding</a> (float f)</td></tr>
 <tr class="memdesc:a910f6d10ce9ed56158e95218514f495a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Float number rounding, extensively used.  <a href="#a910f6d10ce9ed56158e95218514f495a">More...</a><br/></td></tr>
 <tr class="separator:a910f6d10ce9ed56158e95218514f495a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a016c9ed55ea1cc27392911ab155fcd57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8cpp.html#a016c9ed55ea1cc27392911ab155fcd57">timer3ISR</a> (void)</td></tr>
+<tr class="memdesc:a016c9ed55ea1cc27392911ab155fcd57"><td class="mdescLeft">&#160;</td><td class="mdescRight">ISR callback function for Timer3, used for pulse feature.  <a href="#a016c9ed55ea1cc27392911ab155fcd57">More...</a><br/></td></tr>
+<tr class="separator:a016c9ed55ea1cc27392911ab155fcd57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:af589c45283478f402680f545b576489b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classa_d_c_engine.html">aDCEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a_d_c_load_8cpp.html#af589c45283478f402680f545b576489b">pThis</a> = NULL</td></tr>
+<tr class="separator:af589c45283478f402680f545b576489b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2014-2015 F1RMB, Daniel Caujolle-Bert <a href="#" onclick="location.href='mai'+'lto:'+'f1r'+'mb'+'.da'+'ni'+'el@'+'gm'+'ail'+'.c'+'om'; return false;">f1rmb<span style="display: none;">.nosp@m.</span>.dan<span style="display: none;">.nosp@m.</span>iel@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a> </dd>
@@ -560,13 +570,45 @@ Lee Wiggins <a href="#" onclick="location.href='mai'+'lto:'+'lee'+'@w'+'igw'+'eb
 
 </div>
 </div>
+<a class="anchor" id="a016c9ed55ea1cc27392911ab155fcd57"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void timer3ISR </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ISR callback function for Timer3, used for pulse feature. </p>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="af589c45283478f402680f545b576489b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classa_d_c_engine.html">aDCEngine</a>* pThis = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a_d_c_load_8cpp.html">aDCLoad.cpp</a></li>
-    <li class="footer">Generated on Tue Jan 6 2015 21:01:29 for aDCLoad by
+    <li class="footer">Generated on Fri Jan 9 2015 19:20:29 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -32,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="Logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">aDCLoad
-   &#160;<span id="projectnumber">2.4</span>
+   &#160;<span id="projectnumber">2.6</span>
    </div>
    <div id="projectbrief">Arduino Programmable Constant Current Power Resistance Load</div>
   </td>
@@ -185,9 +185,6 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>_getMeasuredCurrent()
 : <a class="el" href="classa_d_c_engine.html#aedb9a636e6dee9f1805c5f2c5933afc3">aDCEngine</a>
 </li>
-<li>_getSettings()
-: <a class="el" href="classa_d_c_engine.html#aee524ec75d3b2f85a0b54f40162c7fd2">aDCEngine</a>
-</li>
 <li>_getTemp()
 : <a class="el" href="classa_d_c_engine.html#a27efcf87ef03952c1faa70f22d9b883d">aDCEngine</a>
 </li>
@@ -220,17 +217,17 @@ $(document).ready(function(){initNavTree('functions.html','');});
 
 <h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
 <li>aDCDisplay()
-: <a class="el" href="classa_d_c_display.html#a7621579159afd1a848456374f03b068a">aDCDisplay</a>
+: <a class="el" href="classa_d_c_display.html#a2bce6ec33d7002f0332b5c27b965d5d1">aDCDisplay</a>
 , <a class="el" href="classa_d_c_engine.html#a6a9dcdceefd92057e7280ac95cc96803">aDCEngine</a>
 </li>
 <li>aDCEngine()
-: <a class="el" href="classa_d_c_engine.html#a588a1f72c3e0f0648472c81272ef9549">aDCEngine</a>
+: <a class="el" href="classa_d_c_engine.html#a0a434100a3a9638155f0bda3eff6bcee">aDCEngine</a>
 </li>
 <li>aDCSettings()
 : <a class="el" href="classa_d_c_settings.html#a177758febf898b0c8d93b5417f9e8826">aDCSettings</a>
 </li>
 <li>aLCD()
-: <a class="el" href="classa_l_c_d.html#ac3cd6cd3cefcb616ca8290d27b2c1180">aLCD</a>
+: <a class="el" href="classa_l_c_d.html#aef0934a1b9cfb221aacfda7d5a2f22e6">aLCD</a>
 </li>
 <li>aStepper()
 : <a class="el" href="classa_stepper.html#ad807a96795f77f8e553e086e1be0bd90">aStepper</a>
@@ -301,6 +298,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>DATA_POWER_SETS
 : <a class="el" href="classa_d_c_settings.html#aca3bd63bd2b5e4857308898c3f4015de">aDCSettings</a>
 </li>
+<li>DATA_PULSE_SETS
+: <a class="el" href="classa_d_c_settings.html#a878a639c4fa2272b506c9d1774095f51">aDCSettings</a>
+</li>
 <li>DATA_SELECTION
 : <a class="el" href="classa_d_c_settings.html#a87b8ec9b903a55b2073b5c1572a4c670">aDCSettings</a>
 </li>
@@ -331,6 +331,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>enableFeature()
 : <a class="el" href="classa_d_c_settings.html#a1ece600ded8bd29a72d096e8f8ea97b3">aDCSettings</a>
+</li>
+<li>enablePulse()
+: <a class="el" href="classa_d_c_settings.html#ac7e0065a7e94eef8a2a55d3deb922727">aDCSettings</a>
 </li>
 </ul>
 
@@ -369,8 +372,14 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>getPrevNextMode()
 : <a class="el" href="classa_d_c_settings.html#ad1a5f5653d308d5ada5a627e7c550178">aDCSettings</a>
 </li>
+<li>getPulse()
+: <a class="el" href="classa_d_c_settings.html#a89422471667e0538a7a224cb534c4b07">aDCSettings</a>
+</li>
 <li>getSelectionMode()
 : <a class="el" href="classa_d_c_settings.html#ab64f835f3a0f288f41d045936aa7e5f6">aDCSettings</a>
+</li>
+<li>getSettings()
+: <a class="el" href="classa_d_c_engine.html#a92399ec20e576ff37edaef6eb582391f">aDCEngine</a>
 </li>
 <li>getTemperature()
 : <a class="el" href="classa_d_c_settings.html#a744609d0eadf89407c92b85eb0d68a64">aDCSettings</a>
@@ -405,6 +414,12 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>isFeatureEnabled()
 : <a class="el" href="classa_d_c_settings.html#ac5398bce9dfacdccfea88b59607b7720">aDCSettings</a>
+</li>
+<li>isPulseEnabled()
+: <a class="el" href="classa_d_c_settings.html#afe485abbf478322900a37e5db5daadde">aDCSettings</a>
+</li>
+<li>isPulseHigh()
+: <a class="el" href="classa_d_c_settings.html#aa44042ec9d72e592b5e9efbd2121c724">aDCSettings</a>
 </li>
 <li>isSynced()
 : <a class="el" href="classa_stepper.html#a1f2dceb1ac4337dee4cc0d3789f4e1c8">aStepper</a>
@@ -479,6 +494,12 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>m_Parent
 : <a class="el" href="classa_d_c_display.html#a285992a92161daa422701242a679d2b9">aDCDisplay</a>
 </li>
+<li>m_pulseEnabled
+: <a class="el" href="classa_d_c_settings.html#aa4a60de5938ec9ddd8670e9d804c0a85">aDCSettings</a>
+</li>
+<li>m_pulseHigh
+: <a class="el" href="classa_d_c_settings.html#a658fddc3ab44736d44aa9805801ea6a3">aDCSettings</a>
+</li>
 <li>m_readCurrent
 : <a class="el" href="classa_d_c_settings.html#a52ff092b321102a5c8443bf0b1e9427a">aDCSettings</a>
 </li>
@@ -505,6 +526,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>m_setsPower
 : <a class="el" href="classa_d_c_settings.html#a8eabad0a2cd9f00a64849a762b09216a">aDCSettings</a>
+</li>
+<li>m_setsPulse
+: <a class="el" href="classa_d_c_settings.html#ae0d03d4f3e8613b5e37e0a4b200dbf12">aDCSettings</a>
 </li>
 <li>MAX_VALUE
 : <a class="el" href="classa_stepper.html#ab5c22269335321d72d4deed0b5b6d391">aStepper</a>
@@ -570,6 +594,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>SELECTION_MODE_POWER
 : <a class="el" href="classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35a95400c9529da3d197e15ee2c21e19b3d">aDCSettings</a>
 </li>
+<li>SELECTION_MODE_PULSE
+: <a class="el" href="classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35aee61cbebe0cfa670b48330c0b7153d9c">aDCSettings</a>
+</li>
 <li>SELECTION_MODE_UNKNOWN
 : <a class="el" href="classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35abf13fab765b0da271af7c7c4e2075a7e">aDCSettings</a>
 </li>
@@ -608,6 +635,12 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>setPower()
 : <a class="el" href="classa_d_c_settings.html#a17469377e0b2f7df3b03b507700aa92b">aDCSettings</a>
+</li>
+<li>setPulse()
+: <a class="el" href="classa_d_c_settings.html#a0ea0ca3f471077aae336f61c0e060c09">aDCSettings</a>
+</li>
+<li>setPulseHigh()
+: <a class="el" href="classa_d_c_settings.html#a5d7ab7c41cc2e1bb2b29de225497c966">aDCSettings</a>
 </li>
 <li>setSelectionMode()
 : <a class="el" href="classa_d_c_settings.html#a9af567b4a4cd2473a0014a561b340271">aDCSettings</a>
@@ -694,7 +727,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jan 6 2015 21:01:29 for aDCLoad by
+    <li class="footer">Generated on Fri Jan 9 2015 19:20:29 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

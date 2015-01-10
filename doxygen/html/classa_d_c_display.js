@@ -1,6 +1,6 @@
 var classa_d_c_display =
 [
-    [ "aDCDisplay", "classa_d_c_display.html#a7621579159afd1a848456374f03b068a", null ],
+    [ "aDCDisplay", "classa_d_c_display.html#a2bce6ec33d7002f0332b5c27b965d5d1", null ],
     [ "~aDCDisplay", "classa_d_c_display.html#a59cfda8f4b16143805da4c441322dd07", null ],
     [ "_dimBacklight", "classa_d_c_display.html#ad39861bb66d8a5d2bc75c8b2c0321633", null ],
     [ "_dimmingBacklight", "classa_d_c_display.html#a13b29ea2db8545c09ff30627e046fbaf", null ],
