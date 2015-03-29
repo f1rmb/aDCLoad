@@ -221,10 +221,13 @@ $(document).ready(function(){initNavTree('functions.html','');});
 , <a class="el" href="classa_d_c_engine.html#a6a9dcdceefd92057e7280ac95cc96803">aDCEngine</a>
 </li>
 <li>aDCEngine()
-: <a class="el" href="classa_d_c_engine.html#a0a434100a3a9638155f0bda3eff6bcee">aDCEngine</a>
+: <a class="el" href="classa_d_c_engine.html#a056e88ee7dd99bea849cdcf4de38870b">aDCEngine</a>
 </li>
 <li>aDCSettings()
-: <a class="el" href="classa_d_c_settings.html#a177758febf898b0c8d93b5417f9e8826">aDCSettings</a>
+: <a class="el" href="classa_d_c_settings.html#a218243c66a39a2b3555fc8698dbe3ad7">aDCSettings</a>
+</li>
+<li>aInputRelay()
+: <a class="el" href="classa_input_relay.html#afa763da61f246dc175d5d3914f5d6d08">aInputRelay</a>
 </li>
 <li>aLCD()
 : <a class="el" href="classa_l_c_d.html#aef0934a1b9cfb221aacfda7d5a2f22e6">aLCD</a>
@@ -333,7 +336,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classa_d_c_settings.html#a1ece600ded8bd29a72d096e8f8ea97b3">aDCSettings</a>
 </li>
 <li>enablePulse()
-: <a class="el" href="classa_d_c_settings.html#ac7e0065a7e94eef8a2a55d3deb922727">aDCSettings</a>
+: <a class="el" href="classa_d_c_settings.html#ac12a32d8eab6903ec8c1cace8413fd74">aDCSettings</a>
 </li>
 </ul>
 
@@ -409,11 +412,17 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>isBacklightDimmed()
 : <a class="el" href="classa_d_c_display.html#a0944aaa5ee7979af8d7d115ee363d553">aDCDisplay</a>
 </li>
+<li>isClicked()
+: <a class="el" href="classa_input_relay.html#a3011b1dc5e1feb8d17ac4a88972dad3c">aInputRelay</a>
+</li>
 <li>isDataEnabled()
 : <a class="el" href="classa_d_c_settings.html#ab2a5ab44dd9f10e5b842b32a9de2c432">aDCSettings</a>
 </li>
 <li>isFeatureEnabled()
 : <a class="el" href="classa_d_c_settings.html#ac5398bce9dfacdccfea88b59607b7720">aDCSettings</a>
+</li>
+<li>isInput()
+: <a class="el" href="classa_input_relay.html#a61a8e2e917a899936716e73969773eaa">aInputRelay</a>
 </li>
 <li>isPulseEnabled()
 : <a class="el" href="classa_d_c_settings.html#afe485abbf478322900a37e5db5daadde">aDCSettings</a>
@@ -428,8 +437,17 @@ $(document).ready(function(){initNavTree('functions.html','');});
 
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
+<li>m_btnPin
+: <a class="el" href="classa_input_relay.html#aceb775c6a61810e3ba5f4141fa7a5c2b">aInputRelay</a>
+</li>
+<li>m_btnState
+: <a class="el" href="classa_input_relay.html#a549141c794056c207484c221cc7cc86a">aInputRelay</a>
+</li>
 <li>m_calibrationValues
 : <a class="el" href="classa_d_c_settings.html#a1be6dead4a441599565f7968d8e80531">aDCSettings</a>
+</li>
+<li>m_clicked
+: <a class="el" href="classa_input_relay.html#a464a31d62d6670c100ff685fe380eb16">aInputRelay</a>
 </li>
 <li>m_cols
 : <a class="el" href="classa_l_c_d.html#acc5e1b9602a2b327900e4287439954dd">aLCD</a>
@@ -476,6 +494,12 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>m_incPrev
 : <a class="el" href="classa_stepper.html#aa6204a14c91347d3f840ffe8baa5571e">aStepper</a>
 </li>
+<li>m_inputRelay
+: <a class="el" href="classa_d_c_engine.html#a21db35ace7e41dbeb5d9d3a0615b08ef">aDCEngine</a>
+</li>
+<li>m_isON
+: <a class="el" href="classa_input_relay.html#a96a62aa06040616d92b60f4521cb0f97">aInputRelay</a>
+</li>
 <li>m_lockTick
 : <a class="el" href="classa_d_c_settings.html#ae1e5d811fa18bc2349c2bf007cd8df49">aDCSettings</a>
 </li>
@@ -493,6 +517,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>m_Parent
 : <a class="el" href="classa_d_c_display.html#a285992a92161daa422701242a679d2b9">aDCDisplay</a>
+, <a class="el" href="classa_d_c_settings.html#ad6dd46f49da9cf9dae575de0d7b37e8b">aDCSettings</a>
 </li>
 <li>m_pulseEnabled
 : <a class="el" href="classa_d_c_settings.html#aa4a60de5938ec9ddd8670e9d804c0a85">aDCSettings</a>
@@ -511,6 +536,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>m_readVoltage
 : <a class="el" href="classa_d_c_settings.html#ad0f4f408e7dd2a6507d43adedc4b1a53">aDCSettings</a>
+</li>
+<li>m_relayPin
+: <a class="el" href="classa_input_relay.html#a5d45db215f814d545552892da78109b8">aInputRelay</a>
 </li>
 <li>m_rows
 : <a class="el" href="classa_l_c_d.html#a0e93d6c8eaf9930cedb37082799c790a">aLCD</a>
@@ -605,6 +633,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>service()
 : <a class="el" href="classa_d_c_engine.html#a5069574e77de5efa72c8e5fb8f24c688">aDCEngine</a>
+, <a class="el" href="classa_input_relay.html#a1e8d76eb5e00fa289d5df3d05b8e35d7">aInputRelay</a>
 </li>
 <li>setCalibationMode()
 : <a class="el" href="classa_d_c_settings.html#af390b82a1ddbeb9a08b4505c4630a367">aDCSettings</a>
@@ -630,6 +659,10 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>setFanSpeed()
 : <a class="el" href="classa_d_c_settings.html#a31cc9ffe3466374d156b92bfa19509c0">aDCSettings</a>
 </li>
+<li>setInput()
+: <a class="el" href="classa_d_c_engine.html#ac957b01c45e97c0e4dc61fccda2da6eb">aDCEngine</a>
+, <a class="el" href="classa_input_relay.html#a208ce000355a498f92f4ddedd15d6cc9">aInputRelay</a>
+</li>
 <li>setOperationMode()
 : <a class="el" href="classa_d_c_settings.html#ad8c96bcd6ed9edc4b161b3bee59b8ac6">aDCSettings</a>
 </li>
@@ -640,7 +673,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classa_d_c_settings.html#a0ea0ca3f471077aae336f61c0e060c09">aDCSettings</a>
 </li>
 <li>setPulseHigh()
-: <a class="el" href="classa_d_c_settings.html#a5d7ab7c41cc2e1bb2b29de225497c966">aDCSettings</a>
+: <a class="el" href="classa_d_c_settings.html#a65dea202a4f5691b5bc833c7dbcc9590">aDCSettings</a>
 </li>
 <li>setSelectionMode()
 : <a class="el" href="classa_d_c_settings.html#a9af567b4a4cd2473a0014a561b340271">aDCSettings</a>
@@ -715,6 +748,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>~aDCSettings()
 : <a class="el" href="classa_d_c_settings.html#ac670fa918e8e80207df07fdecf3e1b9b">aDCSettings</a>
 </li>
+<li>~aInputRelay()
+: <a class="el" href="classa_input_relay.html#abbf079022a4269e8c75c4b9e92478bc0">aInputRelay</a>
+</li>
 <li>~aLCD()
 : <a class="el" href="classa_l_c_d.html#a18b8cd3ba745f0b67d09882ada26ead0">aLCD</a>
 </li>
@@ -727,7 +763,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jan 9 2015 19:20:29 for aDCLoad by
+    <li class="footer">Generated on Sat Jan 17 2015 22:13:28 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -56,6 +56,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #define MAX_POWER                                 1                ///< Define this if you want 192W support (otherwise 50W)
+#define HAS_INPUT_RELAY                           1                ///< Define this if you want input relay support.
+#define HAS_TWIN_MOSFET                           1                ///< Define this if you're using two BUK MosFETs
 //#define SIMU 1                                              ///< Define this if you want to simulate ADC/DAC/whatever (debug mode)
 
 /**
@@ -93,6 +95,11 @@ static const uint8_t       LCD_D7_PIN                  = A3;       ///< LCD d7 p
 
 static const uint8_t       LCD_COLS_NUM                = 20;       ///< LCD columns size
 static const uint8_t       LCD_ROWS_NUM                = 4;        ///< LCD rows size
+
+#ifdef HAS_INPUT_RELAY
+static const uint8_t       INPUT_RELAY_BUTTON_PIN      = 13;        ///< Input Relay command button
+static const uint8_t       INPUT_RELAY_RELAY_PIN       = 4;       ///< Input Relay command pin
+#endif
 
 static const uint8_t       ENCODER_A_PIN               = 3;        ///< Encoder Channel A pin, INT 0
 static const uint8_t       ENCODER_B_PIN               = 2;        ///< Encoder Channel B pin, INT 1
@@ -198,14 +205,12 @@ static const int16_t       EEPROM_ADDR_CALIBRATION_DAC_CURRENT  = EEPROM_ADDR_CA
 static const int16_t       EEPROM_ADDR_CALIBRATION_VOLTAGE_DROP = EEPROM_ADDR_CALIBRATION_DAC_CURRENT + EEPROM_CALIBRATION_SIZE; ///< EEPROM start offset for DAC calibration values
 
 
-typedef void (*ISRCallback)();                                     ///< Function prototype for ISR callback
-
 
 /**
 *** Classes declarations
 **/
 
-/** \brief Class that handle increase/decrease step multiplier
+/** \brief Class that handles increase/decrease step multiplier
  */
 class aStepper
 {
@@ -231,8 +236,9 @@ class aStepper
         uint8_t             m_inc, m_incPrev; ///< Stepper counters
 };
 
+class aDCEngine;
 
-/** \brief Class that handle settings.
+/** \brief Class that handles settings.
  */
 class aDCSettings : public aStepper
 {
@@ -308,7 +314,7 @@ class aDCSettings : public aStepper
             CALIBRATION_VOLTAGE,        ///< Voltage calibration offset value
             CALIBRATION_READ_CURRENT,   ///< Readed Current calibration offset value
             CALIBRATION_DAC_CURRENT,    ///< DAC Current calibration offset value
-            CALIBRATION_VOLTAGE_DROP,    ///< Voltage drop calibration offset value
+            CALIBRATION_VOLTAGE_DROP,   ///< Voltage drop calibration offset value
             CALIBRATION_MAX             ///< Maximum offset in calibration array
         } CalibrationValues_t;
 
@@ -341,7 +347,7 @@ class aDCSettings : public aStepper
         };
 
     public:
-        aDCSettings();
+        aDCSettings(aDCEngine *);
         ~aDCSettings();
 
         // Voltage
@@ -360,10 +366,10 @@ class aDCSettings : public aStepper
         // Pulse
         SettingError_t      setPulse(float);
         float               getPulse();
-        bool                isPulseEnabled() { return m_pulseEnabled; }
-        void                enablePulse(bool enable) { m_pulseEnabled = enable; }
-        bool                isPulseHigh() { return m_pulseHigh; }
-        void                setPulseHigh(bool high) { m_pulseHigh = high; }
+        bool                isPulseEnabled();
+        void                enablePulse(bool);
+        bool                isPulseHigh();
+        void                setPulseHigh(bool);
 #endif
 
         // Power
@@ -440,6 +446,7 @@ class aDCSettings : public aStepper
         void                _enableDataCheck(uint16_t, bool);
 
     private:
+        aDCEngine          *m_Parent;
         float               m_readVoltage;                          ///< voltage storage
         float               m_setsCurrent, m_readCurrent;           ///< current storage
 #ifdef RESISTANCE
@@ -498,9 +505,9 @@ class aLCD : public LiquidCrystal
         uint8_t             m_curCol, m_curRow; ///< Current cursor position
 };
 
-class aDCEngine;
+class aDCEngine; // Opaque declaration
 
-/** \brief Class that handle LCD displaying
+/** \brief Class that handles LCD displaying
  */
 class aDCDisplay : public aLCD
 {
@@ -528,6 +535,29 @@ class aDCDisplay : public aLCD
         unsigned long       m_nextUpdate;
 };
 
+#ifdef HAS_INPUT_RELAY
+/** \brief Class that handles input relay
+ */
+class aInputRelay
+{
+    public:
+        aInputRelay(uint8_t, uint8_t);
+        ~aInputRelay();
+
+        void service();
+        bool isInput();
+        void setInput(bool = true);
+        bool isClicked();
+
+    private:
+        uint8_t             m_btnPin;
+        uint8_t             m_relayPin;
+        uint8_t             m_btnState;
+        bool                m_clicked;
+        bool                m_isON;
+};
+#endif
+
 /** \brief Main class
  */
 class aDCEngine : public aDCDisplay
@@ -538,13 +568,18 @@ class aDCEngine : public aDCDisplay
         static const uint8_t RXBUFFER_MAXLEN = 64;
 
     public:
-        aDCEngine(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t = 1);
+        aDCEngine(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t,
+#ifdef HAS_INPUT_RELAY
+                  uint8_t, uint8_t,
+#endif
+                  uint8_t, uint8_t, uint8_t, uint8_t = 1);
         ~aDCEngine();
 
-        void                setup(ISRCallback);
+        void                setup();
         void                run();
-        void                service();
         const aDCSettings  *getSettings() const;
+        const ClickEncoder *getEncoder() const;
+        void                setInput(bool);
 
     private:
         void                _handleButtonEvent(ClickEncoder::Button);
@@ -563,6 +598,9 @@ class aDCEngine : public aDCDisplay
         ClickEncoder       *m_encoder;                      ///< Encoder object
         uint8_t             m_RXbuffer[RXBUFFER_MAXLEN];    ///< USB rx buffer
         uint8_t             m_RXoffset;                     ///< USB rx buffer offset counter
+#ifdef HAS_INPUT_RELAY
+        aInputRelay         m_inputRelay;
+#endif
 };
 
 #endif // ADCLOAD_H

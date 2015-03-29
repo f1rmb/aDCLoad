@@ -22,7 +22,7 @@
 					<Add directory="$(ARDUINO_DIR)/include" />
 				</Compiler>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/ardusim" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/ardusim" />
 				</Environment>
 			</Target>
 			<Target title="Simulator - Release">
@@ -41,7 +41,7 @@
 					<Add directory="$(ARDUINO_DIR)/include" />
 				</Compiler>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/ardusim" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/ardusim" />
 				</Environment>
 			</Target>
 			<Target title="Tiny84 @ 16MHz">
@@ -67,17 +67,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Tiny84 @ 16MHz" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="8192" />
 					<Variable name="MAX_SRAM" value="512" />
 					<Variable name="MCU" value="attiny84" />
 					<Variable name="PROTOCOL" value="" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -105,17 +105,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Tiny84 @ 8MHz" />
 					<Variable name="CPU_FREQ" value="8000000L" />
 					<Variable name="MAX_SIZE" value="8192" />
 					<Variable name="MAX_SRAM" value="512" />
 					<Variable name="MCU" value="attiny84" />
 					<Variable name="PROTOCOL" value="" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -143,17 +143,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Tiny84 @ 1MHz" />
 					<Variable name="CPU_FREQ" value="1000000L" />
 					<Variable name="MAX_SIZE" value="8192" />
 					<Variable name="MAX_SRAM" value="512" />
 					<Variable name="MCU" value="attiny84" />
 					<Variable name="PROTOCOL" value="" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -181,17 +181,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Tiny85 @ 16MHz" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="8192" />
 					<Variable name="MAX_SRAM" value="512" />
 					<Variable name="MCU" value="attiny85" />
 					<Variable name="PROTOCOL" value="" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -219,17 +219,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Tiny85 @ 8MHz" />
 					<Variable name="CPU_FREQ" value="8000000L" />
 					<Variable name="MAX_SIZE" value="8192" />
 					<Variable name="MAX_SRAM" value="512" />
 					<Variable name="MCU" value="attiny85" />
 					<Variable name="PROTOCOL" value="" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -257,17 +257,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Tiny85 @ 1MHz" />
 					<Variable name="CPU_FREQ" value="1000000L" />
 					<Variable name="MAX_SIZE" value="8192" />
 					<Variable name="MAX_SRAM" value="512" />
 					<Variable name="MCU" value="attiny85" />
 					<Variable name="PROTOCOL" value="" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -295,17 +295,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="ATmega328p @ 8MHz" />
 					<Variable name="CPU_FREQ" value="8000000L" />
 					<Variable name="MAX_SIZE" value="32768" />
 					<Variable name="MAX_SRAM" value="2048" />
 					<Variable name="MCU" value="atmega328p" />
 					<Variable name="PROTOCOL" value="" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -333,17 +333,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="ATmega328p @ 16MHz" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="32768" />
 					<Variable name="MAX_SRAM" value="2048" />
 					<Variable name="MCU" value="atmega328p" />
 					<Variable name="PROTOCOL" value="" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -371,17 +371,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Leonardo" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="28672" />
 					<Variable name="MAX_SRAM" value="2560" />
 					<Variable name="MCU" value="atmega32u4" />
 					<Variable name="PROTOCOL" value="avr109" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="9600" />
 					<Variable name="UPLOAD_PORT" value="/dev/ttyACM3" />
 				</Environment>
@@ -409,17 +409,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Uno" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="32256" />
 					<Variable name="MAX_SRAM" value="2048" />
 					<Variable name="MCU" value="atmega328p" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="115200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -447,17 +447,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Duemilanove (328)" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="30720" />
 					<Variable name="MAX_SRAM" value="2048" />
 					<Variable name="MCU" value="atmega328p" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -485,17 +485,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Duemilanove (168)" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="14336" />
 					<Variable name="MAX_SRAM" value="1024" />
 					<Variable name="MCU" value="atmega168" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -523,17 +523,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Nano (328)" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="30720" />
 					<Variable name="MAX_SRAM" value="2048" />
 					<Variable name="MCU" value="atmega328p" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -561,17 +561,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Nano (168)" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="14336" />
 					<Variable name="MAX_SRAM" value="1024" />
 					<Variable name="MCU" value="atmega168" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -599,17 +599,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Mini (328)" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="28672" />
 					<Variable name="MAX_SRAM" value="2048" />
 					<Variable name="MCU" value="atmega328p" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -637,17 +637,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Mini (168)" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="14336" />
 					<Variable name="MAX_SRAM" value="1024" />
 					<Variable name="MCU" value="atmega168" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -675,17 +675,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Pro Mini (328)" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="30720" />
 					<Variable name="MAX_SRAM" value="2048" />
 					<Variable name="MCU" value="atmega328p" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -712,17 +712,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Pro Mini (168)" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="14336" />
 					<Variable name="MAX_SRAM" value="1024" />
 					<Variable name="MCU" value="atmega168p" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -750,17 +750,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Mega 2560/ADK" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="258048" />
 					<Variable name="MAX_SRAM" value="8192" />
 					<Variable name="MCU" value="atmega2560" />
 					<Variable name="PROTOCOL" value="stk500v2" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="115200" />
 					<Variable name="UPLOAD_PORT" value="/dev/ttyACM3" />
 				</Environment>
@@ -788,17 +788,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Mega 1280" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="126976" />
 					<Variable name="MAX_SRAM" value="4096" />
 					<Variable name="MCU" value="atmega1280" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -826,17 +826,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Ethernet" />
 					<Variable name="CPU_FREQ" value="16000000L" />
 					<Variable name="MAX_SIZE" value="32256" />
 					<Variable name="MAX_SRAM" value="2048" />
 					<Variable name="MCU" value="atmega328p" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="115200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
@@ -864,17 +864,17 @@
 				<ExtraCommands>
 					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
 					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/.codeblocks/helpers/avrsize_dump.txt; python $(HOME)/.codeblocks/helpers/test_avr_size.py -f $(HOME)/.codeblocks/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
+					<Add after="avr-size -A $(TARGET_OUTPUT_FILE) &gt;&gt; $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt; python $(HOME)/CodeBlocksArduino/helpers/test_avr_size.py -f $(HOME)/CodeBlocksArduino/helpers/avrsize_dump.txt -m $(MAX_SIZE) -s $(MAX_SRAM)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(HOME)/.codeblocks/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(HOME)/CodeBlocksArduino/arduino" />
 					<Variable name="BOARD" value="Arduino Lilypad" />
 					<Variable name="CPU_FREQ" value="8000000L" />
 					<Variable name="MAX_SIZE" value="30720" />
 					<Variable name="MAX_SRAM" value="2048" />
 					<Variable name="MCU" value="atmega328p" />
 					<Variable name="PROTOCOL" value="arduino" />
-					<Variable name="SKETCH_DIR" value="$(HOME)/.codeblocks/sketches" />
+					<Variable name="SKETCH_DIR" value="$(HOME)/CodeBlocksArduino/sketches" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>

@@ -1,13 +1,20 @@
 var NAVTREE =
 [
   [ "aDCLoad", "index.html", [
-    [ "Arduino Programmable Constant Current Power Resistance Load", "md__home_daniel_tmp_a_d_c_load__r_e_a_d_m_e.html", null ],
+    [ "Arduino Programmable Constant Current Power Resistance Load", "mainpage.html", [
+      [ "Original README.md from Lee Wiggins", "mainpage.html#origlee", null ],
+      [ "Informations on this code from Daniel Caujolle-Bert", "mainpage.html#adddaniel", null ]
+    ] ],
     [ "ATmega32U4 fuses settings", "fuses.html", null ],
-    [ "User interface overview", "gui.html", null ],
+    [ "Hardware modifications for version 2.6", "mods26.html", null ],
+    [ "User interface overview", "gui.html", [
+      [ "Extra control since v2.6", "gui.html#enhance26", null ]
+    ] ],
     [ "Remote Commands", "remote.html", [
       [ "Get Identification", "remote.html#idn", null ],
       [ "Current setting getter", "remote.html#curget", null ],
       [ "Current setting setter", "remote.html#curset", null ],
+      [ "Calibration values getter", "remote.html#calinfo", null ],
       [ "Calibration", "remote.html#cal", null ],
       [ "DAC value setter (calibration purpose)", "remote.html#dac", null ],
       [ "Current readed getter", "remote.html#curread", null ],
@@ -16,12 +23,15 @@ var NAVTREE =
       [ "Logging enability", "remote.html#logrun", null ],
       [ "Pulse value getter", "remote.html#pulseinfo", null ],
       [ "Pulse value setter", "remote.html#pulse", null ],
+      [ "Input Relay status getter", "remote.html#relayinfo", null ],
+      [ "Input Relay status setter", "remote.html#relay", null ],
       [ "Return value", "remote.html#retval", null ]
     ] ],
     [ "Logging data format", "logging.html", [
       [ "CSV logging format", "logging.html#logform", null ]
     ] ],
     [ "Calibration Process", "calibration.html", null ],
+    [ "Todo List", "todo.html", null ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
       [ "Class Index", "classes.html", null ],
@@ -51,7 +61,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_c_d_c_8cpp.html",
-"classa_d_c_settings.html#ac5398bce9dfacdccfea88b59607b7720"
+"classa_d_c_settings.html#ac2a05efdf566179e1e7104adbb972043"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -53,17 +53,14 @@ To - Dos
 **/
 
 aDCEngine engine(LCD_RS_PIN, LCD_ENABLE_PIN, LCD_D4_PIN, LCD_D5_PIN, LCD_D6_PIN, LCD_D7_PIN, LCD_COLS_NUM, LCD_ROWS_NUM,
+#ifdef HAS_INPUT_RELAY
+                 INPUT_RELAY_BUTTON_PIN, INPUT_RELAY_RELAY_PIN,
+#endif
                  ENCODER_A_PIN, ENCODER_B_PIN, ENCODER_PB_PIN, ENCODER_STEPS_PER_NOTCH);
-
-
-void isr()
-{
-    engine.service();
-}
 
 void setup()
 {
-    engine.setup(isr);
+    engine.setup();
 }
 
 void loop()

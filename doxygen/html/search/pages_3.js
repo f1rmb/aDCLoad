@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['remote_20commands',['Remote Commands',['../remote.html',1,'']]]
+  ['logging_20data_20format',['Logging data format',['../logging.html',1,'']]]
 ];

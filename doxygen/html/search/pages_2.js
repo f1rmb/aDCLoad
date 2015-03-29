@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['logging_20data_20format',['Logging data format',['../logging.html',1,'']]]
+  ['hardware_20modifications_20for_20version_202_2e6',['Hardware modifications for version 2.6',['../mods26.html',1,'']]]
 ];

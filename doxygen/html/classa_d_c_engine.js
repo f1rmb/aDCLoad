@@ -1,6 +1,6 @@
 var classa_d_c_engine =
 [
-    [ "aDCEngine", "classa_d_c_engine.html#a0a434100a3a9638155f0bda3eff6bcee", null ],
+    [ "aDCEngine", "classa_d_c_engine.html#a056e88ee7dd99bea849cdcf4de38870b", null ],
     [ "~aDCEngine", "classa_d_c_engine.html#a7e348dd923c8ceb2b034de425295d3d8", null ],
     [ "_adjustLoadCurrent", "classa_d_c_engine.html#a21c5fe5c67802fa775113e09eb75d962", null ],
     [ "_getADC", "classa_d_c_engine.html#a2f9c7e9823c90775a27290cd11e6133f", null ],
@@ -15,10 +15,12 @@ var classa_d_c_engine =
     [ "getSettings", "classa_d_c_engine.html#a92399ec20e576ff37edaef6eb582391f", null ],
     [ "run", "classa_d_c_engine.html#aa012a3c6bc647ffc456ad93bf08b269f", null ],
     [ "service", "classa_d_c_engine.html#a5069574e77de5efa72c8e5fb8f24c688", null ],
+    [ "setInput", "classa_d_c_engine.html#ac957b01c45e97c0e4dc61fccda2da6eb", null ],
     [ "setup", "classa_d_c_engine.html#a59c7629fa3d7762ab9368fa34db5bb4f", null ],
     [ "aDCDisplay", "classa_d_c_engine.html#a6a9dcdceefd92057e7280ac95cc96803", null ],
     [ "m_Data", "classa_d_c_engine.html#a25414c5108fbbc0a07d82e0ff82d93d8", null ],
     [ "m_encoder", "classa_d_c_engine.html#aab05581cd36bf6ebcee9626704cbca93", null ],
+    [ "m_inputRelay", "classa_d_c_engine.html#a21db35ace7e41dbeb5d9d3a0615b08ef", null ],
     [ "m_RXbuffer", "classa_d_c_engine.html#aa302ade4d81c22c58f31c46440ac4686", null ],
     [ "m_RXoffset", "classa_d_c_engine.html#a15d3419f187e0f56ffc9d1a832493f72", null ],
     [ "RXBUFFER_MAXLEN", "classa_d_c_engine.html#a9efe073abe646fae5a57e086b082ac7e", null ]

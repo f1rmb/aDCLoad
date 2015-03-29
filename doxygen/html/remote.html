@@ -133,6 +133,17 @@ Current setting setter</h1>
 </li>
 </ul>
 <p>See <a class="el" href="remote.html#retval">Return value</a>.</p>
+<h1><a class="anchor" id="calinfo"></a>
+Calibration values getter</h1>
+<ul>
+<li><b>:CAL?:</b><ul>
+<li>Returns the stored calibration values for <b>V</b>, <b>C</b>, <b>D</b> or <b>VD</b>.<br/>
+</li>
+</ul>
+</li>
+</ul>
+<p>See <a class="el" href="remote.html#retval">Return value</a>. <br/>
+See <a class="el" href="remote.html#cal">Calibration</a>.</p>
 <h1><a class="anchor" id="cal"></a>
 Calibration</h1>
 <ul>
@@ -222,6 +233,27 @@ Pulse value setter</h1>
 </li>
 </ul>
 <p>See <a class="el" href="remote.html#retval">Return value</a>.</p>
+<h1><a class="anchor" id="relayinfo"></a>
+Input Relay status getter</h1>
+<ul>
+<li><b>:INP?:</b><ul>
+<li>Printout if the input relay is <b><em>ON</em></b> or <b><em>OFF</em></b>.</li>
+</ul>
+</li>
+</ul>
+<p>See <a class="el" href="remote.html#retval">Return value</a>. <br/>
+See <a class="el" href="mods26.html">Hardware modifications for version 2.6</a>.</p>
+<h1><a class="anchor" id="relay"></a>
+Input Relay status setter</h1>
+<ul>
+<li><b>:INP:<em>toggle</em></b><ul>
+<li>Turns <b><em>ON</em></b> or <b><em>OFF</em></b> the input relay.<br/>
+</li>
+</ul>
+</li>
+</ul>
+<p>See <a class="el" href="remote.html#retval">Return value</a>. <br/>
+See <a class="el" href="mods26.html">Hardware modifications for version 2.6</a>.</p>
 <h1><a class="anchor" id="retval"></a>
 Return value</h1>
 <p><b>:<em>value</em>:<em>status</em>:</b></p>
@@ -237,7 +269,7 @@ Return value</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jan 9 2015 19:20:29 for aDCLoad by
+    <li class="footer">Generated on Sat Jan 17 2015 22:13:28 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

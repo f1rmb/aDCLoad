@@ -49,6 +49,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 // A bit of user's manual
 /**
+ * \page mainpage Arduino Programmable Constant Current Power Resistance Load
+ *
+ * \section origlee Original README.md from Lee Wiggins
+ *
+ * This is all of the code, datasheets and design files for [my instructable](http://www.instructables.com/id/Arduino-Programmable-Constant-Current-Power-Resist/ "Arduino Programmable Constant Current Power Resistance Load")
+ *
+ * * Arduino - It contains the Arduino code that we will be talking about here, within the dummy load folder. It also contains all of the 3rd party libraries I have used.
+ * * Datasheets - It contains all of the datasheets for the major components used within the project.
+ * * DesignSpark - I have used the opensource schematic and PCB design software for this project, its a fantastic free tool that has no limitations and I find it easier to uses than Eagle - http://www.rs-online.com/designspark/electronics/eng/page/designspark-pcb-home-page The rev 1 folder contains all of my initial designs, please don't use this as there are 2 or 3 errors in the footprints plus I have completely revised the layout for rev 2, please only use these files. the gerber files are in there should you wish to have your own board done. See the next step for more information on this.
+ * * LTSpice - This contains all of the LtSpice files from simulating the operation of the MOSFET.
+ *
+ * Please checkout my instructable as it describes all of this code and the operation of the dummy load.
+ *
+ *
+ * \section adddaniel Informations on this code from Daniel Caujolle-Bert
+ *
+ * \todo write that!
+ * \todo notes on Code::Blocks, flashing with avrdude/Makefile, provided HEX file, and so on
+ */
+#warning WRITE THE STUFF ABOVE
+/**
  * \page fuses ATmega32U4 fuses settings
  *
  * Unlike the Arduino&trade; Leornardo board, the ATmega32U4 MCU used in this DC Load needs some special fuses settings.
@@ -63,11 +84,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  */
 
+/** \page mods26 Hardware modifications for version 2.6
+ *
+ *
+ * Since the <b>Pulse Transient Time</b> and the <b>Input Relay</b> features introduction, few small hardware modifications are required:
+ *  + The LCD cabling (<b>!!! on the LCD's PCB only !!!</b>) should be modified as below:
+ *     * resolder the cable from pins <b>d0</b>, <b>d1</b>, <b>d2</b> and <b>d3</b> to <b>d4</b>, <b>d5</b>, <b>d6</b> and <b>d7</b>, accordingly,
+ *  + Build the small input relay PCB (files available with source code),
+ *  + Get <b>GND</b> and <b>+5V</b> from the LCD connector (on the DC Load board, first and second pins),
+ *    and connect them to the relay's PCB,
+ *  + Get the <b>+12V</b> DC from your power supply,
+ *  + connect old <b>d4</b> and <b>d5</b> (from the DC Load board LCD connector) to the relay PCB as <b>Relay</b> and <b>Button</b>, accordingly.
+ *
+ */
+
 /**
  * \page gui User interface overview
  *
  *
- * - The DC load control is done using a simple rotary encoder, which integrates a push button.
+ * - The DC load control is done using a simple rotary encoder, which integrates a push button (see \ref enhance26 below for 2.6 specific enhancement).
  *
  *   <br>
  *
@@ -168,6 +203,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * <br>
  *
  * - The DC Load can be remotely controlled, see \ref remote
+ *
+ * <br>
+ *
+ * \section enhance26 Extra control since v2.6
+ * - Since version 2.6, the DC Load uses a mechanical input relay. It's driven by a push button or a remote command.
+ *   This permits to isolate the DC Load and the DUT.
+ *   On any alarm, the input relay will disengage the DUT, to keep both devices in a safe state.
+ *
+ * See \ref mods26
+ *
  */
 
 /**
@@ -194,6 +239,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *      - Set current <b><i>value</i></b> (in <b>mA</b>)
  *
  * See \ref retval.
+ *
+ * \section calinfo Calibration values getter
+ * * <b>:CAL?:</b>
+ *      - Returns the stored calibration values for <b>V</b>, <b>C</b>, <b>D</b> or <b>VD</b>.<br>
+ *
+ * See \ref retval.
+ * <br>See \ref cal.
  *
  * \section cal Calibration
  * * <b>:CAL:<i>toggle</i></b>
@@ -256,6 +308,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *      - Set pulse time <b><i>value</i></b> (in <b>ms</b>)
  *
  * See \ref retval.
+ *
+ * \section relayinfo Input Relay status getter
+ *
+ * * <b>:INP?:</b>
+ *      - Printout if the input relay is <b><i>ON</i></b> or <b><i>OFF</i></b>.
+ *
+ * See \ref retval.
+ * <br>See \ref mods26.
+ *
+ * \section relay Input Relay status setter
+ *
+ * * <b>:INP:<i>toggle</i></b>
+ *      - Turns <b><i>ON</i></b> or <b><i>OFF</i></b> the input relay.<br>
+ *
+ * See \ref retval.
+ * <br>See \ref mods26.
  *
  * \section retval Return value
  * <b>:<i>value</i>:<i>status</i>:</b>
@@ -413,7 +481,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  */
 
-aDCEngine *pThis = NULL;
+aDCEngine *pThis = NULL; // Hackish, used by Timer3 ISR.
 
 /**
 *** Implement our serial print function to save ~300ko
@@ -664,8 +732,11 @@ float floatRounding(float f)
 }
 
 /** \brief Constructor
+ *
+ * \param parent aDCEngine* : <b> Pointer to aDCEngine parent </b>
  */
-aDCSettings::aDCSettings() :
+aDCSettings::aDCSettings(aDCEngine *parent) :
+                    m_Parent(parent),
 #ifdef SIMU
                     m_readVoltage(24.000),
 #else
@@ -840,6 +911,49 @@ float aDCSettings::getPulse()
 {
     return m_setsPulse;
 }
+
+/** \brief Returns pulse enability
+ *
+ * \return bool
+ *
+ */
+bool aDCSettings::isPulseEnabled()
+{
+    return m_pulseEnabled;
+}
+
+/** \brief Set pulse enability.
+ *
+ * \param enable bool : <b> enability </b>
+ * \return void
+ *
+ */
+void aDCSettings::enablePulse(bool enable)
+{
+    m_pulseEnabled = enable;
+}
+
+/** \brief Returns if pulse is high (load should operate)
+ *
+ * \return bool
+ *
+ */
+bool aDCSettings::isPulseHigh()
+{
+    return m_pulseHigh;
+}
+
+/** \brief Set pulse high/low state value
+ *
+ * \param high bool : <b> pulse state </b>
+ * \return void
+ *
+ */
+void aDCSettings::setPulseHigh(bool high)
+{
+    m_pulseHigh = high;
+}
+
 #endif
 
 // Power
@@ -1402,6 +1516,10 @@ void aDCSettings::enableAlarm(uint16_t aBit)
     if (!isFeatureEnabled(aBit))
         enableFeature(aBit);
 
+#ifdef HAS_INPUT_RELAY
+    m_Parent->setInput(false);
+#else
+
     setCurrent(0.0, OPERATION_MODE_SET);
     setPower(0.0, OPERATION_MODE_SET);
 #ifdef RESISTANCE
@@ -1409,6 +1527,7 @@ void aDCSettings::enableAlarm(uint16_t aBit)
 #endif
     setEncoderPosition(0);
     syncData(aDCSettings::DATA_ENCODER);
+#endif // HAS_INPUT_RELAY
 }
 
 // Features bitfield
@@ -2542,10 +2661,112 @@ bool aDCDisplay::isBacklightDimmed()
     return m_dimmed;
 }
 
+
+/**
+*** Class to manage input relay
+**/
+/** \brief Constructor
+ *
+ * \param btnPin uint8_t : <b> Button pin </b>
+ * \param relayPin uint8_t : <b> Relay pin </b>
+ *
+ */
+aInputRelay::aInputRelay(uint8_t btnPin, uint8_t relayPin) : m_btnPin(btnPin), m_relayPin(relayPin), m_clicked(false), m_isON(false)
+{
+    pinMode(m_btnPin, INPUT);
+
+    pinMode(m_relayPin, OUTPUT);
+    digitalWrite(m_relayPin, LOW);
+
+    m_btnState = digitalRead(m_btnPin);
+}
+
+/** \brief Destructor
+ */
+aInputRelay::~aInputRelay()
+{
+}
+
+/** \brief Function to check button press checking, should be called inside the main loop
+ *
+ * \return void
+ *
+ */
+void aInputRelay::service()
+{
+    uint8_t state = digitalRead(m_btnPin);
+
+    if (m_btnState != state)
+    {
+        m_btnState = state;
+        m_clicked = (m_btnState == HIGH) ? true : false;
+
+        if (m_clicked)
+            setInput(!m_isON);
+    }
+}
+
+/** \brief Returns the relay's state.
+ *
+ * \return bool
+ *
+ */
+bool aInputRelay::isInput()
+{
+    return m_isON;
+}
+
+/** \brief Set relay's input state.
+ *
+ * \param on bool
+ * \return void
+ *
+ */
+void aInputRelay::setInput(bool on)
+{
+    m_isON = on;
+    digitalWrite(m_relayPin, m_isON ? HIGH : LOW);
+}
+
+/** \brief Returns true if button has been clicked (pressed then released)
+ *
+ * \return bool
+ *
+ */
+bool aInputRelay::isClicked()
+{
+    bool c = m_clicked;
+    m_clicked = false;
+    return c;
+}
+
+
 /**
 *** Class to manage settings
 **/
-/** \brief
+#ifdef HAS_INPUT_RELAY
+// Hack:
+//   doxygen doesn't support conditional parameters
+/** \brief Main engine constructor
+ *
+ * \param rs uint8_t : <b> LCD RS pin </b>
+ * \param enable uint8_t : <b> LCD ENABLE pin </b>
+ * \param d4 uint8_t : <b> LCD d4 pin </b>
+ * \param d5 uint8_t : <b> LCD d5 pin </b>
+ * \param d6 uint8_t : <b> LCD d6 pin </b>
+ * \param d7 uint8_t : <b> LCD d7 pin </b>
+ * \param cols uint8_t : <b> LCD Columns number </b>
+ * \param rows uint8_t : <b> LCD Rows number </b>
+ * \param irbtn uint8_t : <b> Input Relay button pin </b>
+ * \param ir uint8_t : <b> Input Relay command pin </b>
+ * \param enca uint8_t : <b> Encoder A pin </b>
+ * \param encb uint8_t : <b> Encoder B pin </b>
+ * \param encpb uint8_t : <b> Encoder push button pin </b>
+ * \param encsteps uint8_t : <b> Encoder steps per notch </b>
+ *
+ */
+#else
+/** \brief Main engine constructor
  *
  * \param rs uint8_t : <b> LCD RS pin </b>
  * \param enable uint8_t : <b> LCD ENABLE pin </b>
@@ -2561,11 +2782,19 @@ bool aDCDisplay::isBacklightDimmed()
  * \param encsteps uint8_t : <b> Encoder steps per notch </b>
  *
  */
+#endif
 aDCEngine::aDCEngine(uint8_t rs, uint8_t enable, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cols, uint8_t rows,
+#ifdef HAS_INPUT_RELAY
+                     uint8_t irbtn, uint8_t ir,
+#endif
                      uint8_t enca, uint8_t encb, uint8_t encpb, uint8_t encsteps)
                      : aDCDisplay(this, rs, enable, d4, d5, d6, d7, cols, rows),
+                       m_Data(this),
                        m_encoder(new ClickEncoder(enca, encb, encpb, encsteps)),
                        m_RXoffset(0)
+#ifdef HAS_INPUT_RELAY
+                       , m_inputRelay(irbtn, ir)
+#endif
 {
 }
 
@@ -2720,6 +2949,51 @@ void aDCEngine::_handleLoggingAndRemote()
                             valid = true;
                         }
 #endif
+#ifdef HAS_INPUT_RELAY
+                        else if (!strcmp((const char *)cmd, "INP?")) // Input Relay Req
+                        {
+                            valid = true;
+                            serialPrint(m_inputRelay.isInput() ? "ON" : "OFF");
+                        }
+                        else if (!strcmp((const char *)cmd, "INP")) // Input Relay
+                        {
+                            bool inputON = false;
+
+                            if (!strcmp((const char *)arg, "ON"))
+                            {
+                                inputON = true;
+                                valid = true;
+                            }
+                            else if (!strcmp((const char *)arg, "OFF"))
+                                valid = true;
+
+                            if (valid)
+                            {
+                                m_inputRelay.setInput(inputON);
+                                serialPrint(m_inputRelay.isInput() ? "ON" : "OFF");
+                            }
+                        }
+#endif
+                        else if (!strcmp((const char *)cmd, "CAL?")) // Calibration Req
+                        {
+                            const char *labels[aDCSettings::CALIBRATION_MAX] = { "V", "C", "D", "VD" };
+                            valid = true;
+
+                            for (aDCSettings::CalibrationValues_t i = aDCSettings::CALIBRATION_VOLTAGE; i < aDCSettings::CALIBRATION_MAX; i = static_cast<aDCSettings::CalibrationValues_t>(i + 1))
+                            {
+                                aDCSettings::CalibrationData_t cal;
+
+                                m_Data.getCalibrationValues(static_cast<aDCSettings::CalibrationValues_t>(i), cal);
+                                serialPrint(labels[i]);
+                                serialPrint("=");
+                                serialPrint(cal.slope, 8);
+                                serialPrint(",");
+                                serialPrint(cal.offset, 8);
+
+                                if (i < aDCSettings::CALIBRATION_VOLTAGE_DROP)
+                                    serialPrint(":");
+                            }
+                        }
                         else if (!strcmp((const char *)cmd, "CAL")) // Calibration
                         {
                             valid = true;
@@ -2883,13 +3157,25 @@ void aDCEngine::_handleLoggingAndRemote()
     }
 }
 
+/** \brief ISR callback function for Timer1, used for encoder
+ *
+ * \return void
+ *
+ */
+static void timer1ISR(void)
+{
+    noInterrupts();
+    ((ClickEncoder *)pThis->getEncoder())->service();
+    interrupts();
+}
+
 #ifndef RESISTANCE
 /** \brief ISR callback function for Timer3, used for pulse feature
  *
  * \return void
  *
  */
-void timer3ISR(void)
+static void timer3ISR(void)
 {
     noInterrupts();
     aDCSettings *d = (aDCSettings *)pThis->getSettings();
@@ -2908,11 +3194,10 @@ void timer3ISR(void)
 
 /** \brief Setup function, should be called before any other member
  *
- * \param isr ISRCallback : <b> pointer to callback function that may call service() </b>
  * \return void
  *
  */
-void aDCEngine::setup(ISRCallback isr)
+void aDCEngine::setup()
 {
     // set outputs:
     pinMode(ADC_CHIPSELECT_PIN, OUTPUT);
@@ -2931,7 +3216,7 @@ void aDCEngine::setup(ISRCallback isr)
 
     // Initialise Encoder timer
     Timer1.initialize(1000);
-    Timer1.attachInterrupt(isr);
+    Timer1.attachInterrupt(timer1ISR);
 
 #ifndef RESISTANCE
     // Initialize Pulse timer
@@ -2969,6 +3254,9 @@ void aDCEngine::run()
 
     while(true)
     {
+#ifdef HAS_INPUT_RELAY
+        m_inputRelay.service();
+#endif
         int32_t v = m_encoder->getValue();
         float oldPos = m_Data.getEncoderPosition();
 
@@ -3183,16 +3471,6 @@ void aDCEngine::_handleButtonEvent(ClickEncoder::Button button)
     }
 }
 
-/** \brief Caller callback function that manages encoder clicking and so on.
- *
- * \return void
- *
- */
-void aDCEngine::service()
-{
-    m_encoder->service();
-}
-
 /** \brief Function to read the input voltage and return a float number represention volts.
  *
  * \return float : <b> readed input voltage </b>
@@ -3229,8 +3507,14 @@ float aDCEngine::_getInputVoltage()
     }
 #endif
 
-#warning DOUBLE CHECK THIS
-    return (v < 0.018 ? 0.000 : v);
+    return (
+#ifdef HAS_TWIN_MOSFET
+#warning TWIN MosFET Build
+            v < 0.036
+#else
+            v < 0.018
+#endif
+            ? 0.000 : v);
 }
 
 /** \brief Function to measure the actual load current.
@@ -3563,4 +3847,20 @@ void aDCEngine::_updateFanSpeed()
 const aDCSettings *aDCEngine::getSettings() const
 {
     return &m_Data;
+}
+
+const ClickEncoder *aDCEngine::getEncoder() const
+{
+    return m_encoder;
+}
+
+/** \brief
+ *
+ * \param enable bool
+ * \return void
+ *
+ */
+void aDCEngine::setInput(bool enable)
+{
+    m_inputRelay.setInput(enable);
 }

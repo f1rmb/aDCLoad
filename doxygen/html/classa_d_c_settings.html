@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('classa_d_c_settings.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Class that handle settings.  
+<p>Class that handles settings.  
  <a href="classa_d_c_settings.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="a_d_c_load_8h_source.html">aDCLoad.h</a>&gt;</code></p>
@@ -177,9 +177,9 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a177758febf898b0c8d93b5417f9e8826"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a177758febf898b0c8d93b5417f9e8826">aDCSettings</a> ()</td></tr>
-<tr class="memdesc:a177758febf898b0c8d93b5417f9e8826"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a177758febf898b0c8d93b5417f9e8826">More...</a><br/></td></tr>
-<tr class="separator:a177758febf898b0c8d93b5417f9e8826"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a218243c66a39a2b3555fc8698dbe3ad7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a218243c66a39a2b3555fc8698dbe3ad7">aDCSettings</a> (<a class="el" href="classa_d_c_engine.html">aDCEngine</a> *)</td></tr>
+<tr class="memdesc:a218243c66a39a2b3555fc8698dbe3ad7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a218243c66a39a2b3555fc8698dbe3ad7">More...</a><br/></td></tr>
+<tr class="separator:a218243c66a39a2b3555fc8698dbe3ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac670fa918e8e80207df07fdecf3e1b9b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#ac670fa918e8e80207df07fdecf3e1b9b">~aDCSettings</a> ()</td></tr>
 <tr class="memdesc:ac670fa918e8e80207df07fdecf3e1b9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#ac670fa918e8e80207df07fdecf3e1b9b">More...</a><br/></td></tr>
 <tr class="separator:ac670fa918e8e80207df07fdecf3e1b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,13 +202,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a89422471667e0538a7a224cb534c4b07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse getter.  <a href="#a89422471667e0538a7a224cb534c4b07">More...</a><br/></td></tr>
 <tr class="separator:a89422471667e0538a7a224cb534c4b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe485abbf478322900a37e5db5daadde"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#afe485abbf478322900a37e5db5daadde">isPulseEnabled</a> ()</td></tr>
+<tr class="memdesc:afe485abbf478322900a37e5db5daadde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pulse enability.  <a href="#afe485abbf478322900a37e5db5daadde">More...</a><br/></td></tr>
 <tr class="separator:afe485abbf478322900a37e5db5daadde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7e0065a7e94eef8a2a55d3deb922727"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#ac7e0065a7e94eef8a2a55d3deb922727">enablePulse</a> (bool enable)</td></tr>
-<tr class="separator:ac7e0065a7e94eef8a2a55d3deb922727"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac12a32d8eab6903ec8c1cace8413fd74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#ac12a32d8eab6903ec8c1cace8413fd74">enablePulse</a> (bool)</td></tr>
+<tr class="memdesc:ac12a32d8eab6903ec8c1cace8413fd74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pulse enability.  <a href="#ac12a32d8eab6903ec8c1cace8413fd74">More...</a><br/></td></tr>
+<tr class="separator:ac12a32d8eab6903ec8c1cace8413fd74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa44042ec9d72e592b5e9efbd2121c724"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#aa44042ec9d72e592b5e9efbd2121c724">isPulseHigh</a> ()</td></tr>
+<tr class="memdesc:aa44042ec9d72e592b5e9efbd2121c724"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if pulse is high (load should operate)  <a href="#aa44042ec9d72e592b5e9efbd2121c724">More...</a><br/></td></tr>
 <tr class="separator:aa44042ec9d72e592b5e9efbd2121c724"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d7ab7c41cc2e1bb2b29de225497c966"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a5d7ab7c41cc2e1bb2b29de225497c966">setPulseHigh</a> (bool high)</td></tr>
-<tr class="separator:a5d7ab7c41cc2e1bb2b29de225497c966"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65dea202a4f5691b5bc833c7dbcc9590"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a65dea202a4f5691b5bc833c7dbcc9590">setPulseHigh</a> (bool)</td></tr>
+<tr class="memdesc:a65dea202a4f5691b5bc833c7dbcc9590"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pulse high/low state value.  <a href="#a65dea202a4f5691b5bc833c7dbcc9590">More...</a><br/></td></tr>
+<tr class="separator:a65dea202a4f5691b5bc833c7dbcc9590"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17469377e0b2f7df3b03b507700aa92b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classa_d_c_settings.html#a493db8c7659fc379940eb2873c77b3f4">SettingError_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#a17469377e0b2f7df3b03b507700aa92b">setPower</a> (float, <a class="el" href="classa_d_c_settings.html#ab0ad0158433b15808e27a3e7551e07e3">OperationMode_t</a>)</td></tr>
 <tr class="memdesc:a17469377e0b2f7df3b03b507700aa92b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power setter.  <a href="#a17469377e0b2f7df3b03b507700aa92b">More...</a><br/></td></tr>
 <tr class="separator:a17469377e0b2f7df3b03b507700aa92b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -413,6 +417,8 @@ Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
+<tr class="memitem:ad6dd46f49da9cf9dae575de0d7b37e8b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classa_d_c_engine.html">aDCEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#ad6dd46f49da9cf9dae575de0d7b37e8b">m_Parent</a></td></tr>
+<tr class="separator:ad6dd46f49da9cf9dae575de0d7b37e8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0f4f408e7dd2a6507d43adedc4b1a53"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classa_d_c_settings.html#ad0f4f408e7dd2a6507d43adedc4b1a53">m_readVoltage</a></td></tr>
 <tr class="memdesc:ad0f4f408e7dd2a6507d43adedc4b1a53"><td class="mdescLeft">&#160;</td><td class="mdescRight">voltage storage  <a href="#ad0f4f408e7dd2a6507d43adedc4b1a53">More...</a><br/></td></tr>
 <tr class="separator:ad0f4f408e7dd2a6507d43adedc4b1a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -473,7 +479,7 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a658fddc3ab44736d44aa9805801ea6a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class that handle settings. </p>
+<div class="textblock"><p>Class that handles settings. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="ac36b040d05f53f0b88baa0bdb18efdc4"></a>
 <div class="memitem">
@@ -611,20 +617,27 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a177758febf898b0c8d93b5417f9e8826"></a>
+<a class="anchor" id="a218243c66a39a2b3555fc8698dbe3ad7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">aDCSettings::aDCSettings </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classa_d_c_engine.html">aDCEngine</a> *&#160;</td>
+          <td class="paramname"><em>parent</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parent</td><td>aDCEngine* : <b> Pointer to <a class="el" href="classa_d_c_engine.html" title="Main class. ">aDCEngine</a> parent </b> </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1124,12 +1137,9 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac7e0065a7e94eef8a2a55d3deb922727"></a>
+<a class="anchor" id="ac12a32d8eab6903ec8c1cace8413fd74"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void aDCSettings::enablePulse </td>
@@ -1139,12 +1149,16 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
+
+<p>Set pulse enability. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>bool : <b> enability </b> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -1546,9 +1560,6 @@ Private Attributes</h2></td></tr>
 <a class="anchor" id="afe485abbf478322900a37e5db5daadde"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool aDCSettings::isPulseEnabled </td>
@@ -1557,21 +1568,16 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
+
+<p>Returns pulse enability. </p>
+<dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
 
 </div>
 </div>
 <a class="anchor" id="aa44042ec9d72e592b5e9efbd2121c724"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool aDCSettings::isPulseHigh </td>
@@ -1580,12 +1586,10 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
+
+<p>Returns if pulse is high (load should operate) </p>
+<dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
 
 </div>
 </div>
@@ -1928,12 +1932,9 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5d7ab7c41cc2e1bb2b29de225497c966"></a>
+<a class="anchor" id="a65dea202a4f5691b5bc833c7dbcc9590"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void aDCSettings::setPulseHigh </td>
@@ -1943,12 +1944,16 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
+
+<p>Set pulse high/low state value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">high</td><td>bool : <b> pulse state </b> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -2625,6 +2630,26 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ad6dd46f49da9cf9dae575de0d7b37e8b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classa_d_c_engine.html">aDCEngine</a>* aDCSettings::m_Parent</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aa4a60de5938ec9ddd8670e9d804c0a85"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2829,7 +2854,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classa_d_c_settings.html">aDCSettings</a></li>
-    <li class="footer">Generated on Fri Jan 9 2015 19:20:29 for aDCLoad by
+    <li class="footer">Generated on Sat Jan 17 2015 22:13:28 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

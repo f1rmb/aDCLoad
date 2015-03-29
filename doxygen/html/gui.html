@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('gui.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><ul>
-<li><p class="startli">The DC load control is done using a simple rotary encoder, which integrates a push button.</p>
+<li><p class="startli">The DC load control is done using a simple rotary encoder, which integrates a push button (see <a class="el" href="gui.html#enhance26">Extra control since v2.6</a> below for 2.6 specific enhancement).</p>
 <p class="startli"><br/>
 </p>
 </li>
@@ -241,14 +241,22 @@ $(document).ready(function(){initNavTree('gui.html','');});
 <p><br/>
 </p>
 <ul>
-<li>The DC Load can be remotely controlled, see <a class="el" href="remote.html">Remote Commands</a> </li>
+<li>The DC Load can be remotely controlled, see <a class="el" href="remote.html">Remote Commands</a></li>
 </ul>
+<p><br/>
+</p>
+<h1><a class="anchor" id="enhance26"></a>
+Extra control since v2.6</h1>
+<ul>
+<li>Since version 2.6, the DC Load uses a mechanical input relay. It's driven by a push button or a remote command. This permits to isolate the DC Load and the DUT. On any alarm, the input relay will disengage the DUT, to keep both devices in a safe state.</li>
+</ul>
+<p>See <a class="el" href="mods26.html">Hardware modifications for version 2.6</a> </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jan 9 2015 19:20:29 for aDCLoad by
+    <li class="footer">Generated on Sat Jan 17 2015 22:13:28 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
