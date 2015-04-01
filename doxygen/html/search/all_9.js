@@ -13,7 +13,5 @@ var searchData=
   ['isinput',['isInput',['../classa_input_relay.html#a61a8e2e917a899936716e73969773eaa',1,'aInputRelay']]],
   ['ispulseenabled',['isPulseEnabled',['../classa_d_c_settings.html#afe485abbf478322900a37e5db5daadde',1,'aDCSettings']]],
   ['ispulsehigh',['isPulseHigh',['../classa_d_c_settings.html#aa44042ec9d72e592b5e9efbd2121c724',1,'aDCSettings']]],
-  ['isr',['isr',['../sketch_8cpp.html#a3d333c5a3d38fce478f9b973ab06b294',1,'sketch.cpp']]],
-  ['isrcallback',['ISRCallback',['../a_d_c_load_8h.html#a398836a1d5ab903d8431c7cf974f4c55',1,'aDCLoad.h']]],
   ['issynced',['isSynced',['../classa_stepper.html#a1f2dceb1ac4337dee4cc0d3789f4e1c8',1,'aStepper']]]
 ];

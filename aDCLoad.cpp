@@ -76,7 +76,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * The following command line defines them to the correct values:
  *
- * \code avrdude -F -p atmega32u4 -C /etc/avrdude.conf -v -e -V -c usbasp -P usb -U lfuse:w:0xFF:m -U hfuse:w:0xD1:m -U efuse:w:0xCB:m -F lfuse:w:0xE1:m \endcode
+ * \code avrdude -F -p atmega32u4 -C /etc/avrdude.conf -v -e -V -c usbasp -P usb -U lfuse:w:0xFF:m -U hfuse:w:0xD1:m -U efuse:w:0xCB:m -F \endcode
  *
  * You can also invoke the provided <i>Makefile</i>, as:
  *
@@ -375,6 +375,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  *          Connect the amp-meter and the power supply to the DC load, for current measurements.
  *          Open your serial terminal emulator, connect the DC load, then type:
+ *          \code :CAL:ON \endcode
  *          \code :DAC:4095 \endcode
  *          Write down the <b>mA</b> value readed on the amp-meter to the “<b><i>mA<sub>max</sub></i></b>” column.
  *          Now, type:
@@ -394,7 +395,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *          Select “<i>Step 2</i>” tab in the calibration spreadsheet file.
  *
  *          Connect your power supply to the DC load, sets to <b>0V</b>. The DC Load should the sets to <b>0mA</b>.
- *          In the serial terminal emulator, type:
+ *          If you've reflashed the firmware or didn't go through the step 1, then, in the serial terminal emulator, type:
  *          \code :CAL:ON \endcode
  *          Set your power supply voltage output for each value in “<b><i>V<sub>set</sub></i></b>” column, and write down the readed
  *          value in “<b><i>V<sub>read</sub></i></b>” column.

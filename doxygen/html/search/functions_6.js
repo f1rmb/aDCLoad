@@ -5,6 +5,7 @@ var searchData=
   ['getcurrent',['getCurrent',['../classa_d_c_settings.html#a93718b8b4536130a1b926d4610f67725',1,'aDCSettings']]],
   ['getcurrentdac',['getCurrentDAC',['../classa_d_c_settings.html#ae2a9751cbde4521c4a8c297b7116a1cc',1,'aDCSettings']]],
   ['getdisplaymode',['getDisplayMode',['../classa_d_c_settings.html#a288034dfaf8a156d90f07dcc09e9f28f',1,'aDCSettings']]],
+  ['getencoder',['getEncoder',['../classa_d_c_engine.html#a1928d9c3ebb804d2ea3697b2d31bfa2e',1,'aDCEngine']]],
   ['getencoderposition',['getEncoderPosition',['../classa_d_c_settings.html#a49d33909a94375f61008000639c0eb81',1,'aDCSettings']]],
   ['getfanspeed',['getFanSpeed',['../classa_d_c_settings.html#ad0b439c61388f692aea1afdd319b357a',1,'aDCSettings']]],
   ['getmult',['getMult',['../classa_stepper.html#a926da7aa54e63f355cae926b6d161a57',1,'aStepper']]],

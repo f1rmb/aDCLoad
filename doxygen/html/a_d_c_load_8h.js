@@ -11,7 +11,6 @@ var a_d_c_load_8h =
     [ "HAS_INPUT_RELAY", "a_d_c_load_8h.html#a698287f1cda57b0fa3a7ba22c07b5090", null ],
     [ "HAS_TWIN_MOSFET", "a_d_c_load_8h.html#a6c0a48e70a92cc3f2fdd47c87235f97b", null ],
     [ "MAX_POWER", "a_d_c_load_8h.html#a6e5f254e637637d3a3256dfd7a1399c7", null ],
-    [ "ISRCallback", "a_d_c_load_8h.html#a398836a1d5ab903d8431c7cf974f4c55", null ],
     [ "ADC_CHIPSELECT_PIN", "a_d_c_load_8h.html#a1a23fb6043d623e2555b778671c32fd5", null ],
     [ "ADC_INPUTVOLTAGE_CHAN", "a_d_c_load_8h.html#ac382ee5538e7af5d2c1376416069323b", null ],
     [ "ADC_MEASUREDCURRENT_CHAN", "a_d_c_load_8h.html#a4ee78b6b8ad9ac750519a784ddb8f025", null ],

@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -356,6 +356,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>getDisplayMode()
 : <a class="el" href="classa_d_c_settings.html#a288034dfaf8a156d90f07dcc09e9f28f">aDCSettings</a>
+</li>
+<li>getEncoder()
+: <a class="el" href="classa_d_c_engine.html#a1928d9c3ebb804d2ea3697b2d31bfa2e">aDCEngine</a>
 </li>
 <li>getEncoderPosition()
 : <a class="el" href="classa_d_c_settings.html#a49d33909a94375f61008000639c0eb81">aDCSettings</a>
@@ -632,8 +635,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classa_d_c_settings.html#a7196879b7e9027f248a92dfc1b7e4e35">aDCSettings</a>
 </li>
 <li>service()
-: <a class="el" href="classa_d_c_engine.html#a5069574e77de5efa72c8e5fb8f24c688">aDCEngine</a>
-, <a class="el" href="classa_input_relay.html#a1e8d76eb5e00fa289d5df3d05b8e35d7">aInputRelay</a>
+: <a class="el" href="classa_input_relay.html#a1e8d76eb5e00fa289d5df3d05b8e35d7">aInputRelay</a>
 </li>
 <li>setCalibationMode()
 : <a class="el" href="classa_d_c_settings.html#af390b82a1ddbeb9a08b4505c4630a367">aDCSettings</a>
@@ -695,7 +697,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>setup()
 : <a class="el" href="classa_d_c_display.html#a4622e023f968931a0a55d6a258c65df7">aDCDisplay</a>
-, <a class="el" href="classa_d_c_engine.html#a59c7629fa3d7762ab9368fa34db5bb4f">aDCEngine</a>
+, <a class="el" href="classa_d_c_engine.html#aeba9667ac7f260e019c7d4642cb9c628">aDCEngine</a>
 </li>
 <li>setVoltage()
 : <a class="el" href="classa_d_c_settings.html#a5a383d28100c6cf6d7b7c2e003574b17">aDCSettings</a>
@@ -763,7 +765,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 17 2015 22:13:28 for aDCLoad by
+    <li class="footer">Generated on Wed Apr 1 2015 18:05:07 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

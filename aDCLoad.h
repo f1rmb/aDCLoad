@@ -32,26 +32,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 /*
     Calibrations:
 
-    RMB:
+    F1RMB:
         :CAL:V:12.0164739328,0.0341809174
         :CAL:C:0.9597601497,0.0211903263
         :CAL:D:0.522215448,7.4469088399
 
       twin:
+        CURRENT_MAXIMUM = 7.845
         :CAL:V:12.0165258544,0.029649335
         :CAL:C:0.9602825049,0.0367962659
         :CAL:D:0.5218646521,3.9098266577
         :CAL:VD:0.013555,0.000
 
-    JKY:
-        :CAL:V:
-        :CAL:C:
-        :CAL:D:
+    F1JKY:
+      twin:
+        CURRENT_MAXIMUM = 7.663
+        :CAL:V:12.0254445629,0.0347973
+        :CAL:C:0.9400053884,0.0247592798
+        :CAL:D:0.5332555706,10.2110947421
+        :CAL:VD:0.0169354737,0.000
 
-    AZZ:
+    F6AZZ:
         :CAL:V:
         :CAL:C:
         :CAL:D:
+        :CAL:CV:
 
 */
 

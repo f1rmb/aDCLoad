@@ -89,7 +89,7 @@ $(document).ready(function(){initNavTree('calibration.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -135,7 +135,8 @@ $(document).ready(function(){initNavTree('calibration.html','');});
 <li><p class="startli"><b>Step 1: Maximum Current</b></p>
 <p class="startli">Select “<em>Step 1</em>” tab in the calibration spreadsheet file.</p>
 <p class="startli">Connect the amp-meter and the power supply to the DC load, for current measurements. Open your serial terminal emulator, connect the DC load, then type: </p>
-<div class="fragment"><div class="line">:DAC:4095 </div>
+<div class="fragment"><div class="line">:CAL:ON </div>
+</div><!-- fragment --> <div class="fragment"><div class="line">:DAC:4095 </div>
 </div><!-- fragment --><p> Write down the <b>mA</b> value readed on the amp-meter to the “<b><em>mA<sub>max</sub></em></b>” column. Now, type: </p>
 <div class="fragment"><div class="line">:DAC:0 </div>
 </div><!-- fragment --><p> Edit the <a class="el" href="a_d_c_load_8h.html">aDCLoad.h</a> source file, browse down the file, looking for the following line: </p>
@@ -148,7 +149,7 @@ $(document).ready(function(){initNavTree('calibration.html','');});
 </li>
 <li><p class="startli"><b>Step 2: Voltage</b></p>
 <p class="startli">Select “<em>Step 2</em>” tab in the calibration spreadsheet file.</p>
-<p class="startli">Connect your power supply to the DC load, sets to <b>0V</b>. The DC Load should the sets to <b>0mA</b>. In the serial terminal emulator, type: </p>
+<p class="startli">Connect your power supply to the DC load, sets to <b>0V</b>. The DC Load should the sets to <b>0mA</b>. If you've reflashed the firmware or didn't go through the step 1, then, in the serial terminal emulator, type: </p>
 <div class="fragment"><div class="line">:CAL:ON </div>
 </div><!-- fragment --><p> Set your power supply voltage output for each value in “<b><em>V<sub>set</sub></em></b>” column, and write down the readed value in “<b><em>V<sub>read</sub></em></b>” column.</p>
 <p class="startli">Once you went through the whole array, the calibration string should be entered into the serial terminal emulator, like: </p>
@@ -228,7 +229,7 @@ $(document).ready(function(){initNavTree('calibration.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 17 2015 22:13:28 for aDCLoad by
+    <li class="footer">Generated on Wed Apr 1 2015 18:05:07 for aDCLoad by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

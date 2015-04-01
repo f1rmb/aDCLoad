@@ -14,6 +14,7 @@ var a_d_c_load_8cpp =
     [ "serialPrintln", "a_d_c_load_8cpp.html#a620e9b70ab07b89618b3577ea5a2f82d", null ],
     [ "serialRead", "a_d_c_load_8cpp.html#a59f0e20bde84102af723e44163b7a592", null ],
     [ "serialWrite", "a_d_c_load_8cpp.html#aa1d0c8f870edae14a5ca85154b24a1e1", null ],
-    [ "timer3ISR", "a_d_c_load_8cpp.html#a016c9ed55ea1cc27392911ab155fcd57", null ],
+    [ "timer1ISR", "a_d_c_load_8cpp.html#afe69f1aae544262a5b8da47b880c0380", null ],
+    [ "timer3ISR", "a_d_c_load_8cpp.html#acea93279f27f376526e939b1fa183226", null ],
     [ "pThis", "a_d_c_load_8cpp.html#af589c45283478f402680f545b576489b", null ]
 ];
